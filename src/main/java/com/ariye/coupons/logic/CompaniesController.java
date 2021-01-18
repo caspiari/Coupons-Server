@@ -3,7 +3,7 @@ package com.ariye.coupons.logic;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import com.ariye.coupons.dao.ICompaniesDao;
+import com.ariye.coupons.dao.CompaniesDao;
 import com.ariye.coupons.dto.CompanyDto;
 import com.ariye.coupons.dto.UserLoginData;
 import com.ariye.coupons.entities.Company;
@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class CompaniesController {
 
 	@Autowired
-	private ICompaniesDao iCompaniesDao;
+	private CompaniesDao iCompaniesDao;
 
 	public long createCompany(CompanyDto companyDto, UserLoginData userLoginData) throws ApplicationException {
 		if (userLoginData.getUserType() != UserType.ADMIN) {

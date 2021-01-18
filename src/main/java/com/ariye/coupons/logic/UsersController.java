@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import com.ariye.coupons.dao.IUsersDao;
+import com.ariye.coupons.dao.UsersDao;
 import com.ariye.coupons.dto.SuccessfulLoginData;
 import com.ariye.coupons.dto.UserDto;
 import com.ariye.coupons.dto.UserLoginData;
@@ -21,7 +21,7 @@ import com.ariye.coupons.exeptions.ApplicationException;
 public class UsersController {
 
 	@Autowired
-	private IUsersDao iUsersDao;
+	private UsersDao iUsersDao;
 	@Autowired
 	private CompaniesController companiesController;
 	@Autowired

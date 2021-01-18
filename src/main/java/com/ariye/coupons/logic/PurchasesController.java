@@ -5,7 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import com.ariye.coupons.dao.IPurchasesDao;
+import com.ariye.coupons.dao.PurchasesDao;
 import com.ariye.coupons.dto.PurchaseDto;
 import com.ariye.coupons.dto.UserLoginData;
 import com.ariye.coupons.entities.Company;
@@ -20,7 +20,7 @@ import com.ariye.coupons.exeptions.ApplicationException;
 public class PurchasesController {
 
 	@Autowired
-	private IPurchasesDao iPurchasesDao;
+	private PurchasesDao iPurchasesDao;
 	@Autowired
 	private CouponsController couponsController;
 	@Autowired

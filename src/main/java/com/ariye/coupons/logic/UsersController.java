@@ -16,6 +16,7 @@ import com.ariye.coupons.entities.User;
 import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Controller
 public class UsersController {
@@ -97,6 +98,7 @@ public class UsersController {
 		return user;
 	}
 
+	@JsonIgnore
 	public List<User> getAllUsers(UserLoginData userLoginData) throws ApplicationException {
 		if (userLoginData.getUserType() != UserType.ADMIN) {
 			throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION);
@@ -122,7 +124,7 @@ public class UsersController {
 					"Login failed for " + userLoginDetails.getUsername());
 		}
 		if (userLoginData == null) {
-			throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION);
+			throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
 		}
 		String token = generateToken(username);
 		this.cacheController.put(token, userLoginData);

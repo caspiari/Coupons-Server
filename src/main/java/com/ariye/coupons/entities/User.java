@@ -47,7 +47,7 @@ public class User implements Serializable {
 	@Column(name = "user_type", nullable = false)
 	private UserType userType;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Company company;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)

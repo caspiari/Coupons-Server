@@ -159,7 +159,7 @@ public class CouponsController {
 	private Coupon createCouponFromCouponDto(CouponDto couponDto, UserLoginData userLoginData)
 			throws ApplicationException {
 		Company company = null;
-		if (userLoginData.getUserType() != UserType.ADMIN || userLoginData.getUserType() != UserType.COMPANY) {
+		if (userLoginData.getUserType() == UserType.CUSTOMER) {
 			throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
 		} else {
 			company = this.companiesController.getCompany(couponDto.getCompanyId(), userLoginData);

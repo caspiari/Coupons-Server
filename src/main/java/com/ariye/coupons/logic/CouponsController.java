@@ -62,8 +62,7 @@ public class CouponsController {
 	// I also made change in get purchases by company id
 	// and all purchases and users api
 	public void updateCoupon(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
-		// Coupon coupon = this.createCouponFromCouponDto(couponDto,
-		// userLoginData);
+		// Coupon coupon = this.createCouponFromCouponDto(couponDto, userLoginData);
 		validateUpdateCoupon(couponDto, userLoginData);
 		Coupon coupon = this.getCoupon(couponDto.getId());
 		coupon.setId(couponDto.getId());
@@ -240,20 +239,16 @@ public class CouponsController {
 		// third layer
 		// throw new Exception("Coupon name already exist");
 		// }
+		if (userLoginData.getUserType() == UserType.CUSTOMER) {
+			throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
+		}
 		if (userLoginData.getUserType() == UserType.COMPANY) {
 			Coupon couponFromDb = this.getCoupon(couponDto.getId());
 			if (couponFromDb.getCompany().getId() != userLoginData.getCompanyId()) {
 				throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
 			}
 		}
-		this.validateCreateCoupon(couponDto, userLoginData);
-	}
-
-	private void validateUserData(UserLoginData userLoginData) throws ApplicationException {
-		if (userLoginData.getUserType() == UserType.CUSTOMER) {
-			throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
-		}
-		
+		this.validateCreateCoupon(couponDto);
 	}
 
 }

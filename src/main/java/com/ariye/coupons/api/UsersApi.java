@@ -65,8 +65,9 @@ public class UsersApi {
 	}
 
 	@GetMapping
-	public List<User> getAllUsers() throws ApplicationException {
-		List<User> users = usersController.getAllUsers();
+	public List<User> getAllUsers(HttpServletRequest request) throws ApplicationException {
+		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
+		List<User> users = usersController.getAllUsers(userLoginData);
 		return users;
 	}
 

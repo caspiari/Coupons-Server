@@ -62,7 +62,7 @@ public class PurchasesController {
 
 	public void deletePurchase(long id, UserLoginData userLoginData) throws ApplicationException {
 		if (userLoginData.getUserType() != UserType.ADMIN) {
-			throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
+			throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION);
 		}
 		if (!(this.isPurchaseExist(id))) {
 			throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Purchase id");
@@ -78,7 +78,7 @@ public class PurchasesController {
 	@JsonIgnore
 	public List<Purchase> getAllPurchases(UserLoginData userLoginData) throws ApplicationException {
 		if (userLoginData.getUserType() != UserType.ADMIN) {
-			throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
+			throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION);
 		}
 		try {
 			List<Purchase> purchases = (List<Purchase>) this.iPurchasesDao.findAll();
@@ -107,7 +107,7 @@ public class PurchasesController {
 			if (userLoginData.getUserType() == UserType.COMPANY) {
 				companyId = userLoginData.getCompanyId();
 			} else {
-				throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
+				throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION);
 			}
 		}
 		try {
@@ -163,12 +163,12 @@ public class PurchasesController {
 	private void validateGetPurchase(Purchase purchase, UserLoginData userLoginData) throws ApplicationException {
 		if (userLoginData.getUserType() == UserType.COMPANY) {
 			if (!(this.isPurchaseBelongToCompany(purchase, userLoginData.getCompanyId()))) {
-				throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
+				throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION);
 			}
 		} else if (userLoginData.getUserType() == UserType.CUSTOMER) {
 			User user = purchase.getUser();
 			if (user.getId() != userLoginData.getId()) {
-				throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
+				throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION);
 			}
 		}
 	}

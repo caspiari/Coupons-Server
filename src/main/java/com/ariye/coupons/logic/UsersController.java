@@ -44,10 +44,10 @@ public class UsersController {
 	}
 
 	public User getUser(long id, UserLoginData userLoginData) throws ApplicationException {
+		if (userLoginData.getUserType() != UserType.ADMIN) {
+			id = userLoginData.getId();
+		}
 		try {
-			if (userLoginData.getUserType() != UserType.ADMIN) {
-				id = userLoginData.getId();
-			}
 			User user = this.iUsersDao.findById(id).get();
 			return user;
 		} catch (Exception e) {
@@ -75,7 +75,7 @@ public class UsersController {
 	public void deleteUser(long id, UserLoginData userLoginData) throws ApplicationException {
 		try {
 			if (userLoginData.getUserType() != UserType.ADMIN) {
-				id = userLoginData.getId();
+				throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION);
 			}
 			this.iUsersDao.deleteById(id);
 		} catch (Exception e) {
@@ -85,7 +85,7 @@ public class UsersController {
 
 	public User getUserByUsername(String username, UserLoginData userLoginData) throws ApplicationException {
 		if (userLoginData.getUserType() != UserType.ADMIN) {
-			throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
+			throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION);
 		}
 		this.validateEmail(username);
 		User user;
@@ -99,7 +99,7 @@ public class UsersController {
 
 	public List<User> getAllUsers(UserLoginData userLoginData) throws ApplicationException {
 		if (userLoginData.getUserType() != UserType.ADMIN) {
-			throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
+			throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION);
 		}
 		try {
 			List<User> users = (List<User>) this.iUsersDao.findAll();
@@ -122,7 +122,7 @@ public class UsersController {
 					"Login failed for " + userLoginDetails.getUsername());
 		}
 		if (userLoginData == null) {
-			throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
+			throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION);
 		}
 		String token = generateToken(username);
 		this.cacheController.put(token, userLoginData);

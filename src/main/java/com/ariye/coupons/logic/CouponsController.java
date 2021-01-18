@@ -57,7 +57,7 @@ public class CouponsController {
 		Coupon coupon = this.getCoupon(couponDto.getId());
 		if (userLoginData.getUserType() == UserType.COMPANY) {
 			if (coupon.getCompany().getId() != userLoginData.getCompanyId()) {
-				throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS,
+				throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION,
 						"This coupon belongs to another company");
 			}
 		}
@@ -97,7 +97,7 @@ public class CouponsController {
 				Coupon coupon = this.iCouponsDao.findById(id).get();
 				CouponDto couponDto = new CouponDto(coupon);
 				if (couponDto.getCompanyId() != userLoginData.getCompanyId()) {
-					throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
+					throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION);
 				}
 			}
 			this.iCouponsDao.deleteById(id);
@@ -213,7 +213,7 @@ public class CouponsController {
 		// throw new Exception("Coupon name already exist");
 		// }
 		if (userLoginData.getUserType() == UserType.CUSTOMER) {
-			throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
+			throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION);
 		}
 		if (couponDto.getName() == null) {
 			throw new ApplicationException(ErrorType.MUST_ENTER_NAME);

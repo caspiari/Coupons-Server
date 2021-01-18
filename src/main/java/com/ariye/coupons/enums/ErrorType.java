@@ -23,8 +23,9 @@ public enum ErrorType {
 	NAME_IS_TOO_SHORT(619, "Name must be at least 3 letters", false),
 	USERNAME_DOES_NOT_EXIST(620, "This username doesn't exist", false),
 	INVALID_ADDRESS(621, "Invalid address", false),
-	INVALID_LOGIN_DETAILS(622, "Invalid login details", true),
-	WRONG_PASSWORD(623, "Wrong password", false);
+	INVALID_LOGIN_DETAILS(622, "Invalid login details", false),
+	WRONG_PASSWORD(623, "Wrong password", false),
+	UNAUTHORIZED_OPERATION(624, "You have no access to this action", true);
 	
 
 

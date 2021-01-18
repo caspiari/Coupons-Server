@@ -20,7 +20,7 @@ public class CompaniesController {
 
 	public long createCompany(CompanyDto companyDto, UserLoginData userLoginData) throws ApplicationException {
 		if (userLoginData.getUserType() != UserType.ADMIN) {
-			throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
+			throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION);
 		}
 		Company company = this.createCompanyFromDto(companyDto);
 		try {
@@ -84,7 +84,7 @@ public class CompaniesController {
 	@JsonIgnore
 	public List<Company> getAllCompanies(UserLoginData userLoginData) throws ApplicationException {
 		if (userLoginData.getUserType() != UserType.ADMIN) {
-			throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
+			throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION);
 		}
 		try {
 			List<Company> companies = (List<Company>) this.iCompaniesDao.findAll();

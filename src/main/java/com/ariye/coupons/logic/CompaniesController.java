@@ -39,7 +39,7 @@ public class CompaniesController {
 
 	public void deleteCompany(long id, UserLoginData userLoginData) throws ApplicationException {
 		if (userLoginData.getUserType() != UserType.ADMIN) {
-			id = userLoginData.getCompanyId();
+			throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION);
 		}
 		try {
 			this.iCompaniesDao.deleteById(id);

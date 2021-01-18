@@ -209,7 +209,8 @@ public class CouponsController {
 	}
 
 	private void validateCreateCoupon(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
-		// if (couponsDao.isCouponNameExist(coupon.getName())) { -Apply after third layer
+		// if (couponsDao.isCouponNameExist(coupon.getName())) { -Apply after
+		// third layer
 		// throw new Exception("Coupon name already exist");
 		// }
 		if (userLoginData.getUserType() == UserType.CUSTOMER) {

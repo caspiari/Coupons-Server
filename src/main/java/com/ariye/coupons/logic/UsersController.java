@@ -18,7 +18,7 @@ import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
 
 @Controller
-public class UsersController {
+public class UsersController {//check
 
 	@Autowired
 	private IUsersDao iUsersDao;

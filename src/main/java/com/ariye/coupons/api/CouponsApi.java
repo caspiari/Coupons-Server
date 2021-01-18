@@ -77,5 +77,6 @@ public class CouponsApi {
 		List<Coupon> coupons = this.couponsController.getPurchasedCouponsByMaxPrice(userId, maxPrice, userLoginData);
 		return coupons;
 	}
+	
 
 }

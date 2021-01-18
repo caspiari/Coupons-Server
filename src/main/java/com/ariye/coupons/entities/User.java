@@ -55,8 +55,7 @@ public class User implements Serializable {
 	@JsonIgnore
 	List<Purchase> purchases;
 
-	public User(String username, String firstName, String lastName, String password, UserType userType,
-			Company company) {
+	public User(String username, String firstName, String lastName, String password, UserType userType,	Company company) {
 		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -65,16 +64,18 @@ public class User implements Serializable {
 		this.company = company;
 	}
 
-	public User(Long id, String username, String firstName, String lastName, String password, UserType userType,
-			Company company) {
+	public User(Long id, String username, String firstName, String lastName, String password, UserType userType, Company company) {
 		this(username, firstName, lastName, password, userType, company);
 		this.id = id;
+	}
+	
+	public User(UserDto userDto) {
+		this(userDto.getId(),userDto.getUsername(), userDto.getFirstName(), userDto.getLastName(), userDto.getPassword(), userDto.getUserType(), null);
 	}
 	/*
 	 * - Full ctor
 	 */
-	public User(Long id, String username, String firstName, String lastName, String password, UserType userType,
-			Company company, List<Purchase> purchases) {
+	public User(Long id, String username, String firstName, String lastName, String password, UserType userType, Company company, List<Purchase> purchases) {
 		this(id, username, firstName, lastName, password, userType, company);
 		this.purchases = purchases;
 	}

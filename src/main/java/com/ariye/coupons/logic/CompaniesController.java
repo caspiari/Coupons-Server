@@ -18,7 +18,10 @@ public class CompaniesController {
 	@Autowired
 	private ICompaniesDao iCompaniesDao;
 
-	public long createCompany(CompanyDto companyDto) throws ApplicationException {
+	public long createCompany(CompanyDto companyDto, UserLoginData userLoginData) throws ApplicationException {
+		if (userLoginData.getUserType() != UserType.ADMIN) {
+			throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
+		}
 		Company company = this.createCompanyFromDto(companyDto);
 		try {
 			this.validateUpdateCompany(company); // <--Same validations
@@ -42,20 +45,6 @@ public class CompaniesController {
 			this.iCompaniesDao.deleteById(id);
 		} catch (Exception e) {
 			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete company failed " + id);
-		}
-	}
-	/*
-	 * - For new user
-	 */
-	public Company getCompany(Long id) throws ApplicationException {
-		if(!(this.isCompanyExist(id))) {
-			return null;
-		}
-		try {
-			Company company = this.iCompaniesDao.findById(id).get();
-			return company;
-		} catch (Exception e) {
-			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get company failed " + id);
 		}
 	}
 	
@@ -93,7 +82,10 @@ public class CompaniesController {
 	}
 
 	@JsonIgnore
-	public List<Company> getAllCompanies() throws ApplicationException {
+	public List<Company> getAllCompanies(UserLoginData userLoginData) throws ApplicationException {
+		if (userLoginData.getUserType() != UserType.ADMIN) {
+			throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
+		}
 		try {
 			List<Company> companies = (List<Company>) this.iCompaniesDao.findAll();
 			return companies;

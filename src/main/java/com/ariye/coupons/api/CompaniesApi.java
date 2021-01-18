@@ -25,8 +25,9 @@ public class CompaniesApi {
 	private CompaniesController companiesController;
 
 	@PostMapping
-	public long createCompany(@RequestBody CompanyDto companyDto) throws ApplicationException {
-		long id = this.companiesController.createCompany(companyDto);
+	public long createCompany(@RequestBody CompanyDto companyDto, HttpServletRequest request) throws ApplicationException {
+		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
+		long id = this.companiesController.createCompany(companyDto, userLoginData);
 		return id;
 	}
 
@@ -53,8 +54,9 @@ public class CompaniesApi {
 	}
 
 	@GetMapping
-	public List<Company> getAllCompanies() throws ApplicationException {
-		List<Company> companies = this.companiesController.getAllCompanies();
+	public List<Company> getAllCompanies(HttpServletRequest request) throws ApplicationException {
+		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
+		List<Company> companies = this.companiesController.getAllCompanies(userLoginData);
 		return companies;
 	}
 

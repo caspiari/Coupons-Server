@@ -31,10 +31,7 @@ public class UsersController {
 
 	public long createUser(UserDto userDto) throws ApplicationException {
 		this.validateUpdateUser(userDto); // Same validations...
-		Company company = null;
-		company = this.companiesController.getCompany(userDto.getCompanyId());
-		User user = new User(userDto.getId(), userDto.getUsername(), userDto.getFirstName(), userDto.getLastName(),
-				userDto.getPassword(), userDto.getUserType(), company);
+		User user = new User(userDto);
 		try {
 			String password = String.valueOf(user.getPassword().hashCode());
 			user.setPassword(password);

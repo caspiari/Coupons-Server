@@ -48,7 +48,6 @@ public class User implements Serializable {
 	private UserType userType;
 
 	@ManyToOne
-	@JsonIgnore
 	private Company company;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)

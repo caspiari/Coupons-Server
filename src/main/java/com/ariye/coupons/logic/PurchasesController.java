@@ -26,7 +26,6 @@ public class PurchasesController {
 	@Autowired
 	private UsersController usersController;
 
-	
 	public Long createPurchase(PurchaseDto purchaseDto, UserLoginData userLoginData) throws ApplicationException {
 		if (userLoginData.getUserType() != UserType.ADMIN) {
 			purchaseDto.setUserId(userLoginData.getId());
@@ -51,32 +50,30 @@ public class PurchasesController {
 		if (!(this.isPurchaseExist(id))) {
 			throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Purchase id");
 		}
+		Purchase purchase;
 		try {
-			Purchase purchase = this.iPurchasesDao.findById(id).get();
-			this.validateGetPurchase(purchase, userLoginData);
-			return purchase;
+			purchase = this.iPurchasesDao.findById(id).get();
 		} catch (Exception e) {
 			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get purchase failed " + id);
 		}
+		this.validateGetPurchase(purchase, userLoginData);
+		return purchase;
 	}
 
-	// public void deletePurchase(long id, UserLoginData userLoginData) throws
-	// ApplicationException {
-	// if (userLoginData.getUserType() != UserType.ADMIN) {
-	// throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
-	// }
-	// if (!(this.isPurchaseExist(id))) {
-	// throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Purchase
-	// id");
-	// }
-	// try {
-	// this.iPurchasesDao.deleteById(id);
-	// } catch (Exception e) {
-	// throw new ApplicationException(ErrorType.GENERAL_ERROR, "Delete purchase
-	// failed " + id);
-	// }
-	//
-	// }
+	public void deletePurchase(long id, UserLoginData userLoginData) throws ApplicationException {
+		if (userLoginData.getUserType() != UserType.ADMIN) {
+			throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
+		}
+		if (!(this.isPurchaseExist(id))) {
+			throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Purchase id");
+		}
+		try {
+			this.iPurchasesDao.deleteById(id);
+		} catch (Exception e) {
+			throw new ApplicationException(ErrorType.GENERAL_ERROR, "Delete purchase failed " + id);
+		}
+
+	}
 
 	@JsonIgnore
 	public List<Purchase> getAllPurchases(UserLoginData userLoginData) throws ApplicationException {
@@ -92,8 +89,7 @@ public class PurchasesController {
 	}
 
 	@JsonIgnore
-	public List<Purchase> getAllPurchasesByUserId(long userId, UserLoginData userLoginData)
-			throws ApplicationException {
+	public List<Purchase> getAllPurchasesByUserId(long userId, UserLoginData userLoginData)	throws ApplicationException {
 		if (userLoginData.getUserType() != UserType.ADMIN) {
 			userId = userLoginData.getId();
 		}
@@ -106,8 +102,7 @@ public class PurchasesController {
 	}
 
 	@JsonIgnore
-	public List<Purchase> getAllPurchasesByCompanyId(long companyId, UserLoginData userLoginData)
-			throws ApplicationException {
+	public List<Purchase> getAllPurchasesByCompanyId(long companyId, UserLoginData userLoginData) throws ApplicationException {
 		if (userLoginData.getUserType() != UserType.ADMIN) {
 			if (userLoginData.getUserType() == UserType.COMPANY) {
 				companyId = userLoginData.getCompanyId();
@@ -119,13 +114,11 @@ public class PurchasesController {
 			List<Purchase> purchases = this.iPurchasesDao.findAllByCompanyID(companyId);
 			return purchases;
 		} catch (Exception e) {
-			throw new ApplicationException(e, ErrorType.GENERAL_ERROR,
-					"Get all purchases by company id failed " + companyId);
+			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get all purchases by company id failed " + companyId);
 		}
 	}
 
-	private Purchase createPurchaseFromDto(PurchaseDto purchaseDto, UserLoginData userLoginData)
-			throws ApplicationException {
+	private Purchase createPurchaseFromDto(PurchaseDto purchaseDto, UserLoginData userLoginData) throws ApplicationException {//I stopped here
 		try {
 			User user = this.usersController.getUser(purchaseDto.getUserId(), userLoginData);
 			Coupon coupon = this.couponsController.getCoupon(purchaseDto.getCouponId());
@@ -160,7 +153,7 @@ public class PurchasesController {
 			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Is purchase exist failed " + id);
 		}
 	}
-	
+
 	private void validateCreatePurchase(Purchase purchase, Coupon coupon) throws ApplicationException {
 		if (purchase.getAmount() > coupon.getAmount()) {
 			throw new ApplicationException(ErrorType.NOT_ENOUGH_COUPONS_LEFT);
@@ -169,7 +162,7 @@ public class PurchasesController {
 			throw new ApplicationException(ErrorType.COUPON_EXPIERED);
 		}
 	}
-	
+
 	private void validateGetPurchase(Purchase purchase, UserLoginData userLoginData) throws ApplicationException {
 		if (userLoginData.getUserType() == UserType.COMPANY) {
 			if (!(this.isPurchaseBelongToCompany(purchase, userLoginData.getCompanyId()))) {
@@ -191,6 +184,5 @@ public class PurchasesController {
 		}
 		return false;
 	}
-
 
 }

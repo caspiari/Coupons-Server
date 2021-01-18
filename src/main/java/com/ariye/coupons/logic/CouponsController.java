@@ -27,11 +27,11 @@ public class CouponsController {
 	private CompaniesController companiesController;
 
 	public long createCoupon(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
-		if (this.isCouponExistByName(couponDto.getName())) {
-			throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS, "Coupon name");
-		}
+		if (userLoginData.getUserType() == UserType.CUSTOMER) {
+			throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
+	}
+		this.validateCreateCoupon(couponDto, userLoginData);
 		Coupon coupon = this.createCouponFromCouponDto(couponDto, userLoginData);
-		this.validateUpdateCoupon(coupon);// <- Same validations
 		try {
 			coupon = this.iCouponsDao.save(coupon);
 			long id = coupon.getId();
@@ -59,9 +59,11 @@ public class CouponsController {
 	// I also made change in get purchases by company id
 	// and all purchases and users api
 	public void updateCoupon(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
-		Coupon coupon = this.createCouponFromCouponDto(couponDto, userLoginData);
+//		Coupon coupon = this.createCouponFromCouponDto(couponDto, userLoginData);
+		validateUpdateCoupon(couponDto, userLoginData);
+		Coupon coupon = this.getCoupon(couponDto.getId());
 		coupon.setId(couponDto.getId());
-		validateUpdateCoupon(coupon);
+		coupon.setName(couponDto.getName());
 		try {
 			this.iCouponsDao.save(coupon);
 		} catch (Exception e) {
@@ -157,12 +159,9 @@ public class CouponsController {
 		}
 	}
 
-	private Coupon createCouponFromCouponDto(CouponDto couponDto, UserLoginData userLoginData)
-			throws ApplicationException {
+	private Coupon createCouponFromCouponDto(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
 		Company company = null;
-		if (userLoginData.getUserType() == UserType.CUSTOMER) {
-			throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
-		}
+
 		company = this.companiesController.getCompany(couponDto.getCompanyId(), userLoginData);
 		Coupon coupon = new Coupon(couponDto.getName(), couponDto.getDescription(), couponDto.getPrice(), company,
 				couponDto.getStartDate(), couponDto.getEndDate(), couponDto.getCategory(), couponDto.getAmount());
@@ -203,38 +202,60 @@ public class CouponsController {
 		}
 	}
 
-	private void validateUpdateCoupon(Coupon coupon) throws ApplicationException {
+	private void validateCreateCoupon(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
+		if (userLoginData.getUserType() == UserType.CUSTOMER) {
+			throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
+		}
+		if (this.isCouponExistByName(couponDto.getName())) {
+			throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS, "Coupon name");
+		}
+		if (couponDto.getName() == null) {
+			throw new ApplicationException(ErrorType.MUST_ENTER_NAME);
+		}
+		if (couponDto.getDescription() == null) {
+			throw new ApplicationException(ErrorType.MUST_INSERT_A_VALUE, "Description");
+		}
+		if (couponDto.getStartDate() == null) {
+			throw new ApplicationException(ErrorType.INVALID_DATES, "Start date is null");
+		}
+		if (couponDto.getEndDate() == null) {
+			throw new ApplicationException(ErrorType.INVALID_DATES, "End date is null");
+		}
+		if (couponDto.getName().length() < 2) {
+			throw new ApplicationException(ErrorType.NAME_IS_TOO_SHORT);
+		}
+		if (couponDto.getPrice() < 0) {
+			throw new ApplicationException(ErrorType.INVALID_VALUE, "Price must be positive");
+		}
+		if (couponDto.getEndDate().before(Calendar.getInstance().getTime())) {
+			throw new ApplicationException(ErrorType.INVALID_DATES);
+		}
+		if (couponDto.getEndDate().before(couponDto.getStartDate())) {
+			throw new ApplicationException(ErrorType.INVALID_DATES);
+		}
+		if (couponDto.getAmount() < 0) {
+			throw new ApplicationException(ErrorType.INVALID_AMOUNT, "Must be positive");
+		}
+	}
+	
+	private void validateUpdateCoupon(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
 		// if (couponsDao.isCouponNameExist(coupon.getName())) { -Apply after
 		// third layer
 		// throw new Exception("Coupon name already exist");
 		// }
-		if (coupon.getName() == null) {
-			throw new ApplicationException(ErrorType.MUST_ENTER_NAME);
+		if (userLoginData.getUserType() == UserType.COMPANY) {
+			Coupon couponFromDb = this.getCoupon(couponDto.getId());
+			if (couponFromDb.getCompany().getId() != userLoginData.getCompanyId()) {
+				throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
+			}
 		}
-		if (coupon.getDescription() == null) {
-			throw new ApplicationException(ErrorType.MUST_INSERT_A_VALUE, "Description");
-		}
-		if (coupon.getStartDate() == null) {
-			throw new ApplicationException(ErrorType.INVALID_DATES, "Start date is null");
-		}
-		if (coupon.getEndDate() == null) {
-			throw new ApplicationException(ErrorType.INVALID_DATES, "End date is null");
-		}
-		if (coupon.getName().length() < 2) {
-			throw new ApplicationException(ErrorType.NAME_IS_TOO_SHORT);
-		}
-		if (coupon.getPrice() < 0) {
-			throw new ApplicationException(ErrorType.INVALID_VALUE, "Price must be positive");
-		}
-		if (coupon.getEndDate().before(Calendar.getInstance().getTime())) {
-			throw new ApplicationException(ErrorType.INVALID_DATES);
-		}
-		if (coupon.getEndDate().before(coupon.getStartDate())) {
-			throw new ApplicationException(ErrorType.INVALID_DATES);
-		}
-		if (coupon.getAmount() < 0) {
-			throw new ApplicationException(ErrorType.INVALID_AMOUNT, "Must be positive");
-		}
+		this.validateCreateCoupon(couponDto, userLoginData);
+	}
+	
+	private void validateUserData(UserLoginData userLoginData) throws ApplicationException {
+		if (userLoginData.getUserType() == UserType.CUSTOMER) {
+			throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
+	}
 	}
 
 }

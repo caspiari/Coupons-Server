@@ -60,11 +60,12 @@ public class CouponsController {
 	// and all purchases and users api
 	public void updateCoupon(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
 		Coupon coupon = this.createCouponFromCouponDto(couponDto, userLoginData);
+		coupon.setId(couponDto.getId());
 		validateUpdateCoupon(coupon);
 		try {
 			this.iCouponsDao.save(coupon);
 		} catch (Exception e) {
-			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "update coupon failed " + coupon.toString());
+			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "update coupon failed " + couponDto.toString());
 		}
 	}
 
@@ -161,9 +162,8 @@ public class CouponsController {
 		Company company = null;
 		if (userLoginData.getUserType() == UserType.CUSTOMER) {
 			throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
-		} else {
-			company = this.companiesController.getCompany(couponDto.getCompanyId(), userLoginData);
 		}
+		company = this.companiesController.getCompany(couponDto.getCompanyId(), userLoginData);
 		Coupon coupon = new Coupon(couponDto.getName(), couponDto.getDescription(), couponDto.getPrice(), company,
 				couponDto.getStartDate(), couponDto.getEndDate(), couponDto.getCategory(), couponDto.getAmount());
 		return coupon;

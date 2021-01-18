@@ -118,7 +118,7 @@ public class PurchasesController {
 		}
 	}
 
-	private Purchase createPurchaseFromDto(PurchaseDto purchaseDto, UserLoginData userLoginData) throws ApplicationException {//I stopped here
+	private Purchase createPurchaseFromDto(PurchaseDto purchaseDto, UserLoginData userLoginData) throws ApplicationException {
 		try {
 			User user = this.usersController.getUser(purchaseDto.getUserId(), userLoginData);
 			Coupon coupon = this.couponsController.getCoupon(purchaseDto.getCouponId());
@@ -126,8 +126,7 @@ public class PurchasesController {
 					purchaseDto.getTimestamp());
 			return purchase;
 		} catch (Exception e) {
-			throw new ApplicationException(e, ErrorType.GENERAL_ERROR,
-					"Create purchase from dto failed " + purchaseDto.toString());
+			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create purchase from dto failed " + purchaseDto.toString());
 		}
 	}
 
@@ -135,12 +134,10 @@ public class PurchasesController {
 		try {
 			User user = purchase.getUser();
 			Coupon coupon = purchase.getCoupon();
-			PurchaseDto purchaseDto = new PurchaseDto(purchase.getId(), user.getId(), coupon.getId(),
-					purchase.getAmount(), purchase.getTimestamp());
+			PurchaseDto purchaseDto = new PurchaseDto(purchase.getId(), user.getId(), coupon.getId(), purchase.getAmount(), purchase.getTimestamp());
 			return purchaseDto;
 		} catch (Exception e) {
-			throw new ApplicationException(e, ErrorType.GENERAL_ERROR,
-					"Create dto from purchase failed " + purchase.toString());
+			throw new ApplicationException(e, ErrorType.GENERAL_ERROR,	"Create dto from purchase failed " + purchase.toString());
 		}
 	}
 

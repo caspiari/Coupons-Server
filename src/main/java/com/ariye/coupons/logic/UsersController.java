@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import com.ariye.coupons.dao.IUsersDao;
 import com.ariye.coupons.dto.SuccessfulLoginData;
@@ -65,6 +64,7 @@ public class UsersController {
 			if (userLoginData.getUserType() != UserType.ADMIN) {
 				userDto.setId(userLoginData.getId());
 				userDto.setUserType(userLoginData.getUserType());
+				userDto.setCompanyId(userLoginData.getCompanyId());
 			}
 			User user = this.createUserFromDto(userDto, userLoginData);
 			String password = String.valueOf(user.getPassword().hashCode());
@@ -100,7 +100,10 @@ public class UsersController {
 		return user;
 	}
 
-	public List<User> getAllUsers() throws ApplicationException {
+	public List<User> getAllUsers(UserLoginData userLoginData) throws ApplicationException {
+		if (userLoginData.getUserType() != UserType.ADMIN) {
+			throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
+		}
 		try {
 			List<User> users = (List<User>) this.iUsersDao.findAll();
 			return users;

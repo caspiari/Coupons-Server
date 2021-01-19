@@ -76,7 +76,7 @@ public class UsersController {
 	public void deleteUser(long id, UserLoginData userLoginData) throws ApplicationException {
 		try {
 			if (userLoginData.getUserType() != UserType.ADMIN) {
-				throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION);
+				throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
 			}
 			this.iUsersDao.deleteById(id);
 		} catch (Exception e) {
@@ -86,7 +86,7 @@ public class UsersController {
 
 	public User getUserByUsername(String username, UserLoginData userLoginData) throws ApplicationException {
 		if (userLoginData.getUserType() != UserType.ADMIN) {
-			throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION);
+			throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
 		}
 		this.validateEmail(username);
 		User user;
@@ -101,7 +101,7 @@ public class UsersController {
 	@JsonIgnore
 	public List<User> getAllUsers(UserLoginData userLoginData) throws ApplicationException {
 		if (userLoginData.getUserType() != UserType.ADMIN) {
-			throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION);
+			throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
 		}
 		try {
 			List<User> users = (List<User>) this.iUsersDao.findAll();

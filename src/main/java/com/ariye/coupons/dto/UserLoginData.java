@@ -25,6 +25,12 @@ public class UserLoginData {
 	public Long getCompanyId() {
 		return companyId;
 	}
+
+	@Override
+	public String toString() {
+		return "\nUserLoginData [id=" + id + ", userType=" + userType + ", companyId=" + companyId + "]";
+	}
+	
 	
 	
 

@@ -13,22 +13,23 @@ public class UserDto {
 	private Long companyId;
 
 	
-	public UserDto(String username, String firstName, String lastName, String password, UserType userType,
-			Long companyId) {
+	public UserDto(String username, String firstName, String lastName, String password) {
 		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.password = password;
-		this.userType = userType;
-		this.companyId = companyId;
 	}
-
-	public UserDto(Long id, String username, String firstName, String lastName, String password, UserType userType,
-			Long companyId) {
-		this(username, firstName, lastName, password, userType, companyId);
+	
+	/**
+	 * - Full ctor
+	 */
+	public UserDto(Long id, String username, String firstName, String lastName, String password, Long companyId, UserType userType) {
+		this(username, firstName, lastName, password);
 		this.id = id;
-	}
-
+		this.companyId = companyId;
+		this.userType = userType;
+	}	
+	
 	public UserDto() {
 	}
 	

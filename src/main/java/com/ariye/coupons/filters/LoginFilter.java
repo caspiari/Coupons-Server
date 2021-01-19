@@ -39,6 +39,11 @@ public class LoginFilter implements Filter {
 			chain.doFilter(request, response);
 			return;
 		}
+		
+		if (pageRequested.endsWith("/coupons") && req.getMethod().toString().equals("GET")) {
+			chain.doFilter(request, response);
+			return;
+		}
 
 		String token = req.getHeader("Authorization");
 		UserLoginData userLoginData = (UserLoginData) cacheController.get(token);

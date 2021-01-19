@@ -13,16 +13,18 @@ public class PurchaseDto {
 	private int amount;
 	private Timestamp timestamp;
 	
+	/**
+	 * - Full ctor
+	 */
 	public PurchaseDto(long id, long userId, long couponId, int amount, Timestamp timestamp) {
 		this(couponId, amount, timestamp);
 		this.id = id;
 		this.userId = userId;
 	}
 
-	public PurchaseDto(long couponId, int amount, Timestamp timestamp) {
+	public PurchaseDto(long userId, long couponId, int amount) {
 		this.couponId = couponId;
 		this.amount = amount;
-		this.timestamp = timestamp;
 	}
 
 	public PurchaseDto() {

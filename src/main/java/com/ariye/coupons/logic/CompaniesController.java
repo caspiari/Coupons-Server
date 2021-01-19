@@ -65,7 +65,9 @@ public class CompaniesController {
 
 	public void updateCompany(CompanyDto companyDto, UserLoginData userLoginData) throws ApplicationException {
 		Company company = this.createCompanyFromDto(companyDto);
-		company.setId(userLoginData.getCompanyId());
+		if (userLoginData.getUserType() != UserType.ADMIN) {
+			company.setId(userLoginData.getCompanyId());
+		}
 		validateUpdateCompany(company);
 		try {
 			this.iCompaniesDao.save(company);

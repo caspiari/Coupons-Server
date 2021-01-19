@@ -46,14 +46,14 @@ public class CouponsApi {
 	}
 
 	@DeleteMapping("/{couponId}")
-	public void deleteCoupon(@PathVariable("couponId") long id, HttpServletRequest request) throws ApplicationException {
+	public void deleteCoupon(@PathVariable("couponId") long id, HttpServletRequest request)
+			throws ApplicationException {
 		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
 		this.couponsController.deleteCoupon(id, userLoginData);
 	}
 
 	@GetMapping("/byCompanyId/{companyId}")
-	public List<Coupon> getCouponsByCompanyId(@PathVariable("companyId") long companyId)
-			throws ApplicationException {
+	public List<Coupon> getCouponsByCompanyId(@PathVariable("companyId") long companyId) throws ApplicationException {
 		List<Coupon> coupons = this.couponsController.getCouponsByCompanyId(companyId);
 		return coupons;
 	}
@@ -77,6 +77,5 @@ public class CouponsApi {
 		List<Coupon> coupons = this.couponsController.getPurchasedCouponsByMaxPrice(userId, maxPrice, userLoginData);
 		return coupons;
 	}
-	
 
 }

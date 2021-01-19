@@ -1,6 +1,7 @@
 package com.ariye.coupons.logic;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -160,8 +161,9 @@ public class CouponsController {
 
 	public void deleteExpiredCoupons() throws ApplicationException {
 		try {
-			long now = System.currentTimeMillis();
-			this.iCouponsDao.deleteAllByEndDateLessThan(now);
+//			long now = System.currentTimeMillis();
+			Date now = new Date(System.currentTimeMillis());
+			this.iCouponsDao.deleteExpiredCoupons(now);
 		} catch (Exception e) {
 			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete expired coupons failed");
 		}
@@ -234,9 +236,9 @@ public class CouponsController {
 		if (couponDto.getPrice() < 0) {
 			throw new ApplicationException(ErrorType.INVALID_VALUE, "Price must be positive");
 		}
-		if (couponDto.getEndDate().before(Calendar.getInstance().getTime())) {
-			throw new ApplicationException(ErrorType.INVALID_DATES);
-		}
+//		if (couponDto.getEndDate().before(Calendar.getInstance().getTime())) {
+//			throw new ApplicationException(ErrorType.INVALID_DATES);
+//		}
 		if (couponDto.getEndDate().before(couponDto.getStartDate())) {
 			throw new ApplicationException(ErrorType.INVALID_DATES);
 		}

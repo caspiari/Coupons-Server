@@ -77,5 +77,10 @@ public class CouponsApi {
 		List<Coupon> coupons = this.couponsController.getPurchasedCouponsByMaxPrice(userId, maxPrice, userLoginData);
 		return coupons;
 	}
+	
+	@GetMapping("/deleteExpired")
+	public void deleteExpired() throws ApplicationException {
+		this.couponsController.deleteExpiredCoupons();
+	}
 
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -58,7 +59,7 @@ public class UsersApi {
 	}
 
 	@GetMapping("/byUsername")
-	public User getUserByUsername(@RequestParam("username") String username, HttpServletRequest request) throws ApplicationException {
+	public User getUserByUsername(@RequestParam String username, HttpServletRequest request) throws ApplicationException {
 		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
 		User user = this.usersController.getUserByUsername(username, userLoginData);
 		return user;

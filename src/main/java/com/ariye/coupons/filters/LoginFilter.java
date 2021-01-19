@@ -37,7 +37,7 @@ public class LoginFilter implements Filter {
 
 		if (pageRequested.endsWith("/users") && req.getMethod().toString().equals("POST")) {
 			chain.doFilter(request, response);
-			return;
+			return; 
 		}
 		
 		if (pageRequested.endsWith("/coupons") && req.getMethod().toString().equals("GET")) {

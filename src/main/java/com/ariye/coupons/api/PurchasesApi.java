@@ -40,7 +40,7 @@ public class PurchasesApi {
 	}
 
 	@DeleteMapping("/{purchaseId}")
-	public void deletePurchase(@RequestParam("purchaseId") long id, HttpServletRequest request) throws ApplicationException {
+	public void deletePurchase(@PathVariable("purchaseId") long id, HttpServletRequest request) throws ApplicationException {
 		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
 		purchasesController.deletePurchase(id, userLoginData);
 	}

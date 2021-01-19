@@ -48,6 +48,9 @@ public class UsersController {
 		if (userLoginData.getUserType() != UserType.ADMIN) {
 			id = userLoginData.getId();
 		}
+		if (!(this.isUserExist(id))) {
+			throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
+		}
 		try {
 			User user = this.iUsersDao.findById(id).get();
 			return user;
@@ -91,7 +94,7 @@ public class UsersController {
 		this.validateEmail(username);
 		User user;
 		try {
-			user = iUsersDao.getByUsername(username);
+			user = iUsersDao.findByUsername(username);
 		} catch (Exception e) {
 			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get user by username failed " + username);
 		}

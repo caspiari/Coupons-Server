@@ -2,8 +2,6 @@ package com.ariye.coupons.dto;
 
 import java.sql.Timestamp;
 
-import com.ariye.coupons.entities.Purchase;
-import com.ariye.coupons.entities.User;
 
 public class PurchaseDto {
 
@@ -17,12 +15,13 @@ public class PurchaseDto {
 	 * - Full ctor
 	 */
 	public PurchaseDto(long id, long userId, long couponId, int amount, Timestamp timestamp) {
-		this(couponId, amount, timestamp);
+		this(userId, couponId, amount);
 		this.id = id;
-		this.userId = userId;
+		this.timestamp = timestamp;
 	}
-
+	
 	public PurchaseDto(long userId, long couponId, int amount) {
+		this.userId = userId;
 		this.couponId = couponId;
 		this.amount = amount;
 	}

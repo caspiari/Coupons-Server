@@ -10,6 +10,7 @@ import com.ariye.coupons.enums.UserType;
 
 public interface UsersDao extends CrudRepository<User, Long>{
 	
+	@Query("select u from User u where u.username =?1")
 	public User findByUsername(String username);
 	
 	@Query("select new com.ariye.coupons.dto.UserLoginData(id, userType, company.id) from User u where u.username= :username and u.password= :password")

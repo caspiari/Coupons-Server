@@ -1,7 +1,6 @@
 package com.ariye.coupons.logic;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

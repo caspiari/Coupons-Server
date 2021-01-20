@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ExceptionsHandler {
 
-	//	Response - Object in Spring
+	//	Response - Object in Spring..
 	@ExceptionHandler
 	@ResponseBody
 	// Variable name is throwable in order to remember that it handles Exception and Error

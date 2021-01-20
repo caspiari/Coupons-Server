@@ -59,7 +59,7 @@ public class UsersApi {
 	}
 
 	@GetMapping("/byUsername")
-	public User getUserByUsername(@RequestParam String username, HttpServletRequest request) throws ApplicationException {
+	public User getUserByUsername(@RequestParam("username") String username, HttpServletRequest request) throws ApplicationException {
 		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
 		User user = this.usersController.getUserByUsername(username, userLoginData);
 		return user;

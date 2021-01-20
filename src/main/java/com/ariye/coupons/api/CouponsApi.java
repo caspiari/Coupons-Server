@@ -78,7 +78,7 @@ public class CouponsApi {
 		return coupons;
 	}
 	
-	@GetMapping("/deleteExpired")
+	@DeleteMapping("/deleteExpired")
 	public void deleteExpired() throws ApplicationException {
 		this.couponsController.deleteExpiredCoupons();
 	}

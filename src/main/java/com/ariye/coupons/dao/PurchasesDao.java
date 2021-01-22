@@ -11,8 +11,8 @@ import com.ariye.coupons.dto.PurchaseDto;
 public interface PurchasesDao extends CrudRepository<Purchase, Long>{
 	
 //	@Query("select new com.bytestree.restful.dto.CustomEmployeeRs(e.firstName, e.lastName, e.department.name) from Employee e")
-//	@Query("select PurchaseDto(c.name, p.amount, p.timestamp) from Purchase p join Coupon c on p.coupon.id = c.id where p.id = ?1") join Coupon c on p.coupon.id = c.id
-	@Query("select new com.ariye.coupons.dto.PurchaseDto(p.id, p.amount) from Purchase p where id = 1")
+//	@Query("select new com.ariye.coupons.dto.PurchaseDto(p.id, p.amount) from Purchase p where id = 1")
+	@Query("select new com.ariye.coupons.dto.PurchaseDto(c.name, p.amount, p.timestamp) from Purchase p join Coupon c on p.coupon.id = c.id where p.id = ?1")
 	PurchaseDto getByIdForCustomer(long id);
 
 	

@@ -1,5 +1,6 @@
 package com.ariye.coupons.dto;
 
+import java.util.Date;
 import java.sql.Timestamp;
 
 
@@ -30,15 +31,15 @@ public class PurchaseDto {
 		this.couponId = couponId;
 	}
 	/**
-	 * - Ctor for 'get' method for customer
+	 * - Ctor for get method for customer
 	 * @param couponName
 	 * @param amount
 	 * @param timestamp
 	 */
-	public PurchaseDto(String couponName, int amount, Timestamp timestamp) {
+	public PurchaseDto(String couponName, int amount, Date timestamp) {
 		this.couponName = couponName;
 		this.amount = amount;
-		this.timestamp = timestamp;
+		this.timestamp = new Timestamp(timestamp.getTime());
 	}
 	/**
 	 * - Ctor for 'get' method for company and admin

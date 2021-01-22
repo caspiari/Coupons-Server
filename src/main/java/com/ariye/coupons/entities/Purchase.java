@@ -27,7 +27,7 @@ public class Purchase implements Serializable {
 	@ManyToOne
 	private User user;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	@ManyToOne//(fetch = FetchType.EAGER)
 	private Coupon coupon;
 
 	private int amount;

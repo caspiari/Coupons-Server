@@ -14,6 +14,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.ariye.coupons.enums.CouponType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -47,8 +51,9 @@ public class Coupon implements Serializable {
 
 	private int amount;
 
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
-	@OneToMany(mappedBy = "coupon", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "coupon", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Purchase> purchases;
 
 	public Coupon() {

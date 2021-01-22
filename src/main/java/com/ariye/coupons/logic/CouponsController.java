@@ -160,7 +160,6 @@ public class CouponsController {
 
 	public void deleteExpiredCoupons() throws ApplicationException {
 		try {
-//			long now = System.currentTimeMillis();
 			Date now = new Date(System.currentTimeMillis());
 			this.iCouponsDao.deleteExpiredCoupons(now);
 		} catch (Exception e) {

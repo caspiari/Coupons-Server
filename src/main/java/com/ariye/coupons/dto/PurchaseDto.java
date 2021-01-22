@@ -8,29 +8,55 @@ public class PurchaseDto {
 	private long id;
 	private long userId;
 	private long couponId;
+	private String couponName;
 	private int amount;
 	private Timestamp timestamp;
 	
-	/**
-	 * - Full ctor
-	 */
-	public PurchaseDto(long id, long userId, long couponId, int amount, Timestamp timestamp) {
-		this(userId, couponId, amount);
+	public PurchaseDto(long id, int amount) {
+		super();
 		this.id = id;
-		this.timestamp = timestamp;
-	}
-	
-	public PurchaseDto(long userId, long couponId, int amount) {
-		this.userId = userId;
-		this.couponId = couponId;
 		this.amount = amount;
 	}
 
 	public PurchaseDto() {
-		super();
 	}
 	
-	
+	/**
+	 * - Full ctor
+	 */
+	public PurchaseDto(long id, long userId, long couponId, String couponName, int amount, Timestamp timestamp) {
+		this(userId, couponName, amount, timestamp);
+		this.id = id;
+		this.couponId = couponId;
+	}
+	/**
+	 * - Ctor for 'get' method for customer
+	 * @param couponName
+	 * @param amount
+	 * @param timestamp
+	 */
+	public PurchaseDto(String couponName, int amount, Timestamp timestamp) {
+		this.couponName = couponName;
+		this.amount = amount;
+		this.timestamp = timestamp;
+	}
+	/**
+	 * - Ctor for 'get' method for company and admin
+	 * @param userId
+	 * @param couponName
+	 * @param amount
+	 * @param timestamp
+	 */
+	public PurchaseDto(long userId, String couponName, int amount, Timestamp timestamp) {
+		this(couponName, amount, timestamp);
+		this.userId = userId;
+	}
+
+	@Override
+	public String toString() {
+		return "PurchaseDto [id=" + id + ", userId=" + userId + ", couponId=" + couponId + ", couponName=" + couponName
+				+ ", amount=" + amount + ", timestamp=" + timestamp + "]";
+	}
 
 	public long getId() {
 		return id;
@@ -54,6 +80,14 @@ public class PurchaseDto {
 
 	public void setCouponId(long couponId) {
 		this.couponId = couponId;
+	}
+
+	public String getCouponName() {
+		return couponName;
+	}
+
+	public void setCouponName(String couponName) {
+		this.couponName = couponName;
 	}
 
 	public int getAmount() {

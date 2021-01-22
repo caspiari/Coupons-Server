@@ -2,7 +2,7 @@ package com.ariye.coupons.dto;
 
 import com.ariye.coupons.enums.UserType;
 
-public class UserDto {
+public class UserDto{
 
 	private Long id;
 	private String username;

@@ -24,20 +24,20 @@ public class PurchasesApi {
 	@Autowired
 	PurchasesController purchasesController;
 
-	@PostMapping
-	public long createPurchase(@RequestBody PurchaseDto purchaseDto, HttpServletRequest request)
-			throws ApplicationException {
-		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-		long id = purchasesController.createPurchase(purchaseDto, userLoginData);
-		return id;
-	}
-
-	@GetMapping("/{purchaseId}")
-	public Purchase getPurchase(@PathVariable("purchaseId") long id, HttpServletRequest request) throws ApplicationException {
-		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-		Purchase purchase = purchasesController.getPurchase(id, userLoginData);
-		return purchase;
-	}
+//	@PostMapping
+//	public long createPurchase(@RequestBody PurchaseDto purchaseDto, HttpServletRequest request)
+//			throws ApplicationException {
+//		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
+//		long id = purchasesController.createPurchase(purchaseDto, userLoginData);
+//		return id;
+//	}
+//
+//	@GetMapping("/{purchaseId}")
+//	public Purchase getPurchase(@PathVariable("purchaseId") long id, HttpServletRequest request) throws ApplicationException {
+//		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
+//		Purchase purchase = purchasesController.getPurchase(id, userLoginData);
+//		return purchase;
+//	}
 
 	@DeleteMapping("/{purchaseId}")
 	public void deletePurchase(@PathVariable("purchaseId") long id, HttpServletRequest request) throws ApplicationException {

@@ -2,6 +2,9 @@ package com.ariye.coupons.logic;
 
 import java.sql.Timestamp;
 import java.util.List;
+
+import javax.annotation.PostConstruct;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,39 +29,41 @@ public class PurchasesController {
 	@Autowired
 	private UsersController usersController;
 
-	public Long createPurchase(PurchaseDto purchaseDto, UserLoginData userLoginData) throws ApplicationException {
-		if (userLoginData.getUserType() != UserType.ADMIN) {
-			purchaseDto.setUserId(userLoginData.getId());
-		}
-		Timestamp now = new Timestamp(System.currentTimeMillis());
-		purchaseDto.setTimestamp(now);
-		Purchase purchase = this.createPurchaseFromDto(purchaseDto, userLoginData);
-		Coupon coupon = purchase.getCoupon();
-		this.validateCreatePurchase(purchase, coupon);
-		this.couponsController.updateCouponAmount(coupon, purchase);
-		try {
-			purchase = this.iPurchasesDao.save(purchase);
-			long id = purchase.getId();
-			return id;
-		} catch (Exception e) {
-			throw new ApplicationException(e, ErrorType.GENERAL_ERROR,
-					"Create purchase failed " + purchaseDto.toString());
-		}
-	}
+//	public Long createPurchase(PurchaseDto purchaseDto, UserLoginData userLoginData) throws ApplicationException {
+//		if (userLoginData.getUserType() != UserType.ADMIN) {
+//			purchaseDto.setUserId(userLoginData.getId());
+//		}
+//		Timestamp now = new Timestamp(System.currentTimeMillis());
+//		purchaseDto.setTimestamp(now);
+//		Purchase purchase = this.createPurchaseFromDto(purchaseDto, userLoginData);
+//		Coupon coupon = purchase.getCoupon();
+//		this.validateCreatePurchase(purchase, coupon);
+//		this.couponsController.updateCouponAmount(coupon, purchase);
+//		try {
+//			purchase = this.iPurchasesDao.save(purchase);
+//			long id = purchase.getId();
+//			return id;
+//		} catch (Exception e) {
+//			throw new ApplicationException(e, ErrorType.GENERAL_ERROR,
+//					"Create purchase failed " + purchaseDto.toString());
+//		}
+//	}
 
-	public Purchase getPurchase(long id, UserLoginData userLoginData) throws ApplicationException {
-		if (!(this.isPurchaseExist(id))) {
-			throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Purchase id");
-		}
-		Purchase purchase;
-		try {
-			purchase = this.iPurchasesDao.findById(id).get();
-		} catch (Exception e) {
-			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get purchase failed " + id);
-		}
-		this.validateGetPurchase(purchase, userLoginData);
-		return purchase;
-	}
+//	public PurchaseDto getPurchase(long id, UserLoginData userLoginData) throws ApplicationException {
+//		if (!(this.isPurchaseExist(id))) {
+//			throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Purchase id");
+//		}
+//		Purchase purchase;
+//		try {
+//			purchase = this.iPurchasesDao.findById(id).get();
+//		} catch (Exception e) {
+//			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get purchase failed " + id);
+//		}
+//		this.validateGetPurchase(purchase, userLoginData);
+//		return purchase;
+//	}
+	
+	
 
 	public void deletePurchase(long id, UserLoginData userLoginData) throws ApplicationException {
 		if (userLoginData.getUserType() != UserType.ADMIN) {
@@ -118,27 +123,32 @@ public class PurchasesController {
 		}
 	}
 
-	private Purchase createPurchaseFromDto(PurchaseDto purchaseDto, UserLoginData userLoginData) throws ApplicationException {
-		try {
-			User user = this.usersController.getUser(purchaseDto.getUserId(), userLoginData);
-			Coupon coupon = this.couponsController.getCoupon(purchaseDto.getCouponId());
-			Purchase purchase = new Purchase(purchaseDto.getId(), user, coupon, purchaseDto.getAmount(),
-					purchaseDto.getTimestamp());
-			return purchase;
-		} catch (Exception e) {
-			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create purchase from dto failed " + purchaseDto.toString());
-		}
-	}
-
-	private PurchaseDto createDtoFromPurchase(Purchase purchase) throws ApplicationException {
-		try {
-			User user = purchase.getUser();
-			Coupon coupon = purchase.getCoupon();
-			PurchaseDto purchaseDto = new PurchaseDto(purchase.getId(), user.getId(), coupon.getId(), purchase.getAmount(), purchase.getTimestamp());
-			return purchaseDto;
-		} catch (Exception e) {
-			throw new ApplicationException(e, ErrorType.GENERAL_ERROR,	"Create dto from purchase failed " + purchase.toString());
-		}
+//	private Purchase createPurchaseFromDto(PurchaseDto purchaseDto, UserLoginData userLoginData) throws ApplicationException {
+//		try {
+//			User user = this.usersController.getUser(purchaseDto.getUserId(), userLoginData);
+//			Coupon coupon = this.couponsController.getCoupon(purchaseDto.getCouponId());
+//			Purchase purchase = new Purchase(purchaseDto.getId(), user, coupon, purchaseDto.getAmount(),
+//					purchaseDto.getTimestamp());
+//			return purchase;
+//		} catch (Exception e) {
+//			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create purchase from dto failed " + purchaseDto.toString());
+//		}
+//	}
+//
+//	private PurchaseDto createDtoFromPurchase(Purchase purchase) throws ApplicationException {
+//		try {
+//			User user = purchase.getUser();
+//			Coupon coupon = purchase.getCoupon();
+//			PurchaseDto purchaseDto = new PurchaseDto(purchase.getId(), user.getId(), coupon.getId(), purchase.getAmount(), purchase.getTimestamp());
+//			return purchaseDto;
+//		} catch (Exception e) {
+//			throw new ApplicationException(e, ErrorType.GENERAL_ERROR,	"Create dto from purchase failed " + purchase.toString());
+//		}
+//	}
+	
+	@PostConstruct
+	void checkGetPurchaseDto() {
+		System.out.println(this.iPurchasesDao.getByIdForCustomer(1));
 	}
 
 	// Validations:

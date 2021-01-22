@@ -1,3 +1,7 @@
+//import javax.annotation.PostConstruct;
+//
+//import org.springframework.stereotype.Component;
+
 //package com.ariye.coupons.dailyTask;
 //
 //import java.util.TimerTask;
@@ -5,6 +9,7 @@
 //import com.ariye.coupons.exeptions.ApplicationException;
 //import com.ariye.coupons.logic.CouponsController;
 //
+//  @Component //Or use this: https://www.baeldung.com/spring-scheduled-tasks
 //public class DailyTask extends TimerTask {
 //	
 //	@Autowired
@@ -19,6 +24,10 @@
 //			e.printStackTrace();
 //		}
 //		System.out.println("Daily task is running");
+//	}
+//	@PostConstruct
+//	public void init() {
+//		scheduleTimerTask..()
 //	}
 //	
 //}

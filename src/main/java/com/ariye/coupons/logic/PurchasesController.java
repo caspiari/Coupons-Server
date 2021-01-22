@@ -49,21 +49,17 @@ public class PurchasesController {
 //		}
 //	}
 
-//	public PurchaseDto getPurchase(long id, UserLoginData userLoginData) throws ApplicationException {
-//		if (!(this.isPurchaseExist(id))) {
-//			throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Purchase id");
-//		}
-//		Purchase purchase;
-//		try {
-//			purchase = this.iPurchasesDao.findById(id).get();
-//		} catch (Exception e) {
-//			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get purchase failed " + id);
-//		}
-//		this.validateGetPurchase(purchase, userLoginData);
-//		return purchase;
-//	}
-	
-	
+	public PurchaseDto getPurchase(long id) throws ApplicationException {
+		if (!(this.isPurchaseExist(id))) {
+			throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Purchase id");
+		}
+		try {
+			PurchaseDto purchaseDto = this.iPurchasesDao.getByIdForCustomer(id);
+			return purchaseDto;
+		} catch (Exception e) {
+			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get purchase failed " + id);
+		}
+	}
 
 	public void deletePurchase(long id, UserLoginData userLoginData) throws ApplicationException {
 		if (userLoginData.getUserType() != UserType.ADMIN) {
@@ -170,26 +166,5 @@ public class PurchasesController {
 		}
 	}
 
-	private void validateGetPurchase(Purchase purchase, UserLoginData userLoginData) throws ApplicationException {
-		if (userLoginData.getUserType() == UserType.COMPANY) {
-			if (!(this.isPurchaseBelongToCompany(purchase, userLoginData.getCompanyId()))) {
-				throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
-			}
-		} else if (userLoginData.getUserType() == UserType.CUSTOMER) {
-			User user = purchase.getUser();
-			if (user.getId() != userLoginData.getId()) {
-				throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
-			}
-		}
-	}
-
-	private boolean isPurchaseBelongToCompany(Purchase purchase, long companyId) {
-		Coupon coupon = purchase.getCoupon();
-		Company company = coupon.getCompany();
-		if (company.getId() == companyId) {
-			return true;
-		}
-		return false;
-	}
 
 }

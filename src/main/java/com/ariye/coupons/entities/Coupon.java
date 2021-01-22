@@ -49,7 +49,7 @@ public class Coupon implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private CouponType category;
 
-	private int amount;
+	private long amount;
 
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
@@ -60,7 +60,7 @@ public class Coupon implements Serializable {
 	}
 
 	public Coupon(String name, String description, float price, Company company, Date startDate, Date endDate,
-			CouponType category, int amount) {
+			CouponType category, long amount) {
 		super();
 		this.name = name;
 		this.description = description;
@@ -73,7 +73,7 @@ public class Coupon implements Serializable {
 	}
 
 	public Coupon(long id, String name, String description, float price, Company company, Date startDate, Date endDate,
-			CouponType category, int amount) {
+			CouponType category, long amount) {
 		this(name, description, price, company, startDate, endDate, category, amount);
 		this.id = id;
 	}
@@ -82,7 +82,7 @@ public class Coupon implements Serializable {
 	 * - Full ctor
 	 */
 	public Coupon(long id, String name, String description, float price, Company company, Date startDate, Date endDate,
-			CouponType category, int amount, List<Purchase> purchases) {
+			CouponType category, long amount, List<Purchase> purchases) {
 		this(name, description, price, company, startDate, endDate, category, amount);
 		this.id = id;
 		this.purchases = purchases;
@@ -152,11 +152,11 @@ public class Coupon implements Serializable {
 		this.category = category;
 	}
 
-	public int getAmount() {
+	public long getAmount() {
 		return amount;
 	}
 
-	public void setAmount(int amount) {
+	public void setAmount(long amount) {
 		this.amount = amount;
 	}
 

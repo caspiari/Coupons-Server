@@ -27,10 +27,10 @@ public class Purchase implements Serializable {
 	@ManyToOne
 	private User user;
 
-	@ManyToOne//(fetch = FetchType.EAGER)
+	@ManyToOne
 	private Coupon coupon;
 
-	private int amount;
+	private long amount;
 
 	@Column(name = "time_stamp")
 	private Timestamp timestamp;
@@ -38,7 +38,7 @@ public class Purchase implements Serializable {
 	/*
 	 * - Full ctor
 	 */
-	public Purchase(Long id, User user, Coupon coupon, int amount, Timestamp timestamp) {
+	public Purchase(Long id, User user, Coupon coupon, long amount, Timestamp timestamp) {
 		this.id = id;
 		this.user = user;
 		this.coupon = coupon;
@@ -73,11 +73,11 @@ public class Purchase implements Serializable {
 		this.coupon = coupon;
 	}
 
-	public int getAmount() {
+	public long getAmount() {
 		return amount;
 	}
 
-	public void setAmount(int amount) {
+	public void setAmount(long amount) {
 		this.amount = amount;
 	}
 

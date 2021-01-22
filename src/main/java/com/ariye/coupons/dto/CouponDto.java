@@ -15,7 +15,7 @@ public class CouponDto {
 	private Date startDate;
 	private Date endDate;
 	private CouponType category;
-	private int amount;
+	private long amount;
 	private long companyId;
 
 
@@ -23,7 +23,7 @@ public class CouponDto {
 	}
 
 	public CouponDto(String name, String description, float price, Date startDate, Date endDate,
-			CouponType category, int amount, long companyId) {
+			CouponType category, long amount, long companyId) {
 		this.name = name;
 		this.description = description;
 		this.price = price;
@@ -37,7 +37,7 @@ public class CouponDto {
 	 * - Full ctor
 	 */
 	public CouponDto(Long id, String name, String description, float price, Date startDate, Date endDate,
-			CouponType category, int amount, long companyId) {
+			CouponType category, long amount, long companyId) {
 		this(name, description, price, startDate, endDate, category, amount, companyId);
 		this.id = id;
 	}
@@ -111,11 +111,11 @@ public class CouponDto {
 		this.category = category;
 	}
 
-	public int getAmount() {
+	public long getAmount() {
 		return amount;
 	}
 
-	public void setAmount(int amount) {
+	public void setAmount(long amount) {
 		this.amount = amount;
 	}
 

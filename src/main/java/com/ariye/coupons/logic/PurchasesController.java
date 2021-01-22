@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import com.ariye.coupons.dao.PurchasesDao;
 import com.ariye.coupons.dto.PurchaseDto;
+import com.ariye.coupons.dto.UserDto;
 import com.ariye.coupons.dto.UserLoginData;
 import com.ariye.coupons.entities.Company;
 import com.ariye.coupons.entities.Coupon;
@@ -23,7 +24,7 @@ import com.ariye.coupons.exeptions.ApplicationException;
 public class PurchasesController {
 
 	@Autowired
-	private PurchasesDao iPurchasesDao;
+	private PurchasesDao purchasesDao;
 	@Autowired
 	private CouponsController couponsController;
 	@Autowired
@@ -40,7 +41,7 @@ public class PurchasesController {
 //		this.validateCreatePurchase(purchase, coupon);
 //		this.couponsController.updateCouponAmount(coupon, purchase);
 //		try {
-//			purchase = this.iPurchasesDao.save(purchase);
+//			purchase = this.purchasesDao.save(purchase);
 //			long id = purchase.getId();
 //			return id;
 //		} catch (Exception e) {
@@ -54,7 +55,7 @@ public class PurchasesController {
 			throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Purchase id");
 		}
 		try {
-			PurchaseDto purchaseDto = this.iPurchasesDao.getByIdForCustomer(id);
+			PurchaseDto purchaseDto = this.purchasesDao.getById(id);
 			return purchaseDto;
 		} catch (Exception e) {
 			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get purchase failed " + id);
@@ -69,20 +70,19 @@ public class PurchasesController {
 			throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Purchase id");
 		}
 		try {
-			this.iPurchasesDao.deleteById(id);
+			this.purchasesDao.deleteById(id);
 		} catch (Exception e) {
 			throw new ApplicationException(ErrorType.GENERAL_ERROR, "Delete purchase failed " + id);
 		}
 
 	}
 
-	@JsonIgnore
-	public List<Purchase> getAllPurchases(UserLoginData userLoginData) throws ApplicationException {
+	public List<PurchaseDto> getAllPurchases(UserLoginData userLoginData) throws ApplicationException {
 		if (userLoginData.getUserType() != UserType.ADMIN) {
 			throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
 		}
 		try {
-			List<Purchase> purchases = (List<Purchase>) this.iPurchasesDao.findAll();
+			List<PurchaseDto> purchases = (List<PurchaseDto>) this.purchasesDao.getAll();
 			return purchases;
 		} catch (Exception e) {
 			throw new ApplicationException(ErrorType.GENERAL_ERROR, "Get all purchases failed");
@@ -95,7 +95,7 @@ public class PurchasesController {
 			userId = userLoginData.getId();
 		}
 		try {
-			List<Purchase> purchases = this.iPurchasesDao.findAllByUserId(userId);
+			List<Purchase> purchases = this.purchasesDao.findAllByUserId(userId);
 			return purchases;
 		} catch (Exception e) {
 			throw new ApplicationException(ErrorType.GENERAL_ERROR, "Get all purchases by user id failed " + userId);
@@ -112,7 +112,7 @@ public class PurchasesController {
 			}
 		}
 		try {
-			List<Purchase> purchases = this.iPurchasesDao.findAllByCompanyID(companyId);
+			List<Purchase> purchases = this.purchasesDao.findAllByCompanyID(companyId);
 			return purchases;
 		} catch (Exception e) {
 			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get all purchases by company id failed " + companyId);
@@ -121,7 +121,8 @@ public class PurchasesController {
 
 //	private Purchase createPurchaseFromDto(PurchaseDto purchaseDto, UserLoginData userLoginData) throws ApplicationException {
 //		try {
-//			User user = this.usersController.getUser(purchaseDto.getUserId(), userLoginData);
+//			UserDto userDto = this.usersController.getUser(purchaseDto.getUserId(), userLoginData);
+//			User user = new User(userDto);
 //			Coupon coupon = this.couponsController.getCoupon(purchaseDto.getCouponId());
 //			Purchase purchase = new Purchase(purchaseDto.getId(), user, coupon, purchaseDto.getAmount(),
 //					purchaseDto.getTimestamp());
@@ -143,15 +144,15 @@ public class PurchasesController {
 //	}
 	
 	@PostConstruct
-	void checkGetPurchaseDto() {
-		System.out.println(this.iPurchasesDao.getByIdForCustomer(1));
+	void checkGetAll() {
+		System.out.println(this.purchasesDao.getAll());
 	}
 
 	// Validations:
 
 	private boolean isPurchaseExist(long id) throws ApplicationException {
 		try {
-			return this.iPurchasesDao.existsById(id);
+			return this.purchasesDao.existsById(id);
 		} catch (Exception e) {
 			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Is purchase exist failed " + id);
 		}

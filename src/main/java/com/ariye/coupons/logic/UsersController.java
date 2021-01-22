@@ -44,20 +44,20 @@ public class UsersController {
 		}
 	}
 
-//	public UserDto getUser(long id) throws ApplicationException {
-//		if (userLoginData.getUserType() != UserType.ADMIN) {
-//			id = userLoginData.getId();
-//		}
-//		if (!(this.isUserExist(id))) {
-//			throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
-//		}
-//		try {
-//			User user = this.iUsersDao.findById(id).get();
-//			return user;
-//		} catch (Exception e) {
-//			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get user failed. Id: " + id);
-//		}
-//	}
+	public UserDto getUser(long id, UserLoginData userLoginData) throws ApplicationException {
+		if (userLoginData.getUserType() != UserType.ADMIN) {
+			id = userLoginData.getId();
+		}
+		if (!(this.isUserExist(id))) {
+			throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
+		}
+		try {
+			User user = this.iUsersDao.findById(id).get();
+			return user;
+		} catch (Exception e) {
+			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get user failed. Id: " + id);
+		}
+	}
 
 	public void updateUser(UserDto userDto, UserLoginData userLoginData) throws ApplicationException {
 		this.validateUpdateUser(userDto);

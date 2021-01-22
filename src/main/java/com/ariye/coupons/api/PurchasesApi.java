@@ -46,9 +46,9 @@ public class PurchasesApi {
 	}
 
 	@GetMapping
-	public List<Purchase> getAllPurchases(HttpServletRequest request) throws ApplicationException {
+	public List<PurchaseDto> getAllPurchases(HttpServletRequest request) throws ApplicationException {
 		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-		List<Purchase> purchases = purchasesController.getAllPurchases(userLoginData);
+		List<PurchaseDto> purchases = purchasesController.getAllPurchases(userLoginData);
 		return purchases;
 	}
 

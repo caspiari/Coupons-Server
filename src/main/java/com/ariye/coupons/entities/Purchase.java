@@ -2,6 +2,7 @@ package com.ariye.coupons.entities;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,12 +34,9 @@ public class Purchase implements Serializable {
 	private long amount;
 
 	@Column(name = "time_stamp")
-	private Timestamp timestamp;
+	private Date timestamp;
 
-	/*
-	 * - Full ctor
-	 */
-	public Purchase(Long id, User user, Coupon coupon, long amount, Timestamp timestamp) {
+	public Purchase(Long id, User user, Coupon coupon, long amount, Date timestamp) {
 		this.id = id;
 		this.user = user;
 		this.coupon = coupon;
@@ -49,50 +47,51 @@ public class Purchase implements Serializable {
 	public Purchase() {
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public Coupon getCoupon() {
-		return this.coupon;
-	}
-
-	public void setCoupon(Coupon coupon) {
-		this.coupon = coupon;
-	}
-
-	public long getAmount() {
-		return amount;
-	}
-
-	public void setAmount(long amount) {
-		this.amount = amount;
-	}
-
-	public Timestamp getTimestamp() {
-		return timestamp;
-	}
-
-	public void setTimestamp(Timestamp timestamp) {
-		this.timestamp = timestamp;
-	}
 
 	@Override
 	public String toString() {
 		return "\nPurchase [id=" + id + ", user=" + user.getId() + ", coupon=" + coupon.getName() + ", amount=" + amount
 				+ ", timestamp=" + timestamp + "]";
+	}
+	
+	public Long getId() {
+		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	public User getUser() {
+		return user;
+	}
+	
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	public Coupon getCoupon() {
+		return this.coupon;
+	}
+	
+	public void setCoupon(Coupon coupon) {
+		this.coupon = coupon;
+	}
+	
+	public long getAmount() {
+		return amount;
+	}
+	
+	public void setAmount(long amount) {
+		this.amount = amount;
+	}
+	
+	public Date getTimestamp() {
+		return timestamp;
+	}
+	
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
 	}
 
 }

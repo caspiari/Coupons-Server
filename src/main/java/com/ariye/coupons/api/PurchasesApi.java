@@ -24,20 +24,20 @@ public class PurchasesApi {
 	@Autowired
 	PurchasesController purchasesController;
 
-//	@PostMapping
-//	public long createPurchase(@RequestBody PurchaseDto purchaseDto, HttpServletRequest request)
-//			throws ApplicationException {
-//		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-//		long id = purchasesController.createPurchase(purchaseDto, userLoginData);
-//		return id;
-//	}
-//
-//	@GetMapping("/{purchaseId}")
-//	public Purchase getPurchase(@PathVariable("purchaseId") long id, HttpServletRequest request) throws ApplicationException {
-//		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-//		Purchase purchase = purchasesController.getPurchase(id, userLoginData);
-//		return purchase;
-//	}
+	@PostMapping
+	public long createPurchase(@RequestBody PurchaseDto purchaseDto, HttpServletRequest request)
+			throws ApplicationException {
+		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
+		long id = purchasesController.createPurchase(purchaseDto, userLoginData);
+		return id;
+	}
+
+	@GetMapping("/{purchaseId}")
+	public PurchaseDto getPurchase(@PathVariable("purchaseId") long id, HttpServletRequest request) throws ApplicationException {
+		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData"); // Will be used for the UI
+		PurchaseDto purchaseDto = purchasesController.getPurchase(id);
+		return purchaseDto;
+	}
 
 	@DeleteMapping("/{purchaseId}")
 	public void deletePurchase(@PathVariable("purchaseId") long id, HttpServletRequest request) throws ApplicationException {
@@ -53,18 +53,18 @@ public class PurchasesApi {
 	}
 
 	@GetMapping("/byUserId/{id}")
-	public List<Purchase> getAllPurchasesByUserId(@PathVariable("id") long userId, HttpServletRequest request)
+	public List<PurchaseDto> getAllPurchasesByUserId(@PathVariable("id") long userId, HttpServletRequest request)
 			throws ApplicationException {
 		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-		List<Purchase> purchases = purchasesController.getAllPurchasesByUserId(userId, userLoginData);
+		List<PurchaseDto> purchases = purchasesController.getAllPurchasesByUserId(userId, userLoginData);
 		return purchases;
 	}
 
 	@GetMapping("/byCompanyId/{id}")
-	public List<Purchase> getAllPurchasesByCompanyId(@PathVariable("id") long companyId, HttpServletRequest request)
+	public List<PurchaseDto> getAllPurchasesByCompanyId(@PathVariable("id") long companyId, HttpServletRequest request)
 			throws ApplicationException {
 		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-		List<Purchase> purchases = purchasesController.getAllPurchasesByCompanyId(companyId, userLoginData);
+		List<PurchaseDto> purchases = purchasesController.getAllPurchasesByCompanyId(companyId, userLoginData);
 		return purchases;
 	}
 

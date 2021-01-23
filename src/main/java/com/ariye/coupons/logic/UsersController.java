@@ -52,10 +52,24 @@ public class UsersController {
 			throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
 		}
 		try {
+			UserDto userDto = this.iUsersDao.getById(id);
+			return userDto;
+		} catch (Exception e) {
+			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get user failed. Id: " + id);
+		}
+	}
+	
+	//For inner use
+	User getEntity(long id) throws ApplicationException {
+		if (!(this.isUserExist(id))) {
+			throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
+		}
+		try {
 			User user = this.iUsersDao.findById(id).get();
 			return user;
 		} catch (Exception e) {
-			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get user failed. Id: " + id);
+			// TODO: handle exception
+			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get user entity failed. Id: " + id);
 		}
 	}
 

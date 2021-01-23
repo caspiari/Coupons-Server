@@ -13,26 +13,25 @@ public class UserDto{
 	private Long companyId;
 
 	
-	public UserDto(String username, String firstName, String lastName, String password) {
+	public UserDto(Long id, String username, String firstName, String lastName, String password, UserType userType,
+			Long companyId) {
+		this.id = id;
 		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.password = password;
-	}
-	
-	/**
-	 * - Full ctor
-	 */
-	public UserDto(Long id, String username, String firstName, String lastName, String password, Long companyId, UserType userType) {
-		this(username, firstName, lastName, password);
-		this.id = id;
-		this.companyId = companyId;
 		this.userType = userType;
-	}	
-	
+		this.companyId = companyId;
+	}
+
 	public UserDto() {
 	}
 	
+	@Override
+	public String toString() {
+		return "UserDto [id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", password=" + password + ", userType=" + userType + ", companyId=" + companyId + "]";
+	}
 
 	public Long getId() {
 		return id;
@@ -89,13 +88,5 @@ public class UserDto{
 	public void setCompanyId(Long companyId) {
 		this.companyId = companyId;
 	}
-
-
-	@Override
-	public String toString() {
-		return "UserDto [id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", password=" + password + ", userType=" + userType + ", companyId=" + companyId + "]";
-	}
-	
 
 }

@@ -1,24 +1,20 @@
 package com.ariye.coupons.logic;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
-
 import javax.annotation.PostConstruct;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import com.ariye.coupons.dao.PurchasesDao;
 import com.ariye.coupons.dto.PurchaseDto;
-import com.ariye.coupons.dto.UserDto;
 import com.ariye.coupons.dto.UserLoginData;
-import com.ariye.coupons.entities.Company;
 import com.ariye.coupons.entities.Coupon;
 import com.ariye.coupons.entities.Purchase;
 import com.ariye.coupons.entities.User;
 import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
+
 
 @Controller
 public class PurchasesController {
@@ -30,25 +26,25 @@ public class PurchasesController {
 	@Autowired
 	private UsersController usersController;
 
-//	public Long createPurchase(PurchaseDto purchaseDto, UserLoginData userLoginData) throws ApplicationException {
-//		if (userLoginData.getUserType() != UserType.ADMIN) {
-//			purchaseDto.setUserId(userLoginData.getId());
-//		}
-//		Timestamp now = new Timestamp(System.currentTimeMillis());
-//		purchaseDto.setTimestamp(now);
-//		Purchase purchase = this.createPurchaseFromDto(purchaseDto, userLoginData);
-//		Coupon coupon = purchase.getCoupon();
-//		this.validateCreatePurchase(purchase, coupon);
-//		this.couponsController.updateCouponAmount(coupon, purchase);
-//		try {
-//			purchase = this.purchasesDao.save(purchase);
-//			long id = purchase.getId();
-//			return id;
-//		} catch (Exception e) {
-//			throw new ApplicationException(e, ErrorType.GENERAL_ERROR,
-//					"Create purchase failed " + purchaseDto.toString());
-//		}
-//	}
+	public Long createPurchase(PurchaseDto purchaseDto, UserLoginData userLoginData) throws ApplicationException {
+		if (userLoginData.getUserType() != UserType.ADMIN) {
+			purchaseDto.setUserId(userLoginData.getId());
+		}
+		Date now = new Date(System.currentTimeMillis());
+		purchaseDto.setTimestamp(now);
+		Purchase purchase = this.createPurchaseFromDto(purchaseDto);
+		Coupon coupon = purchase.getCoupon();
+		this.validateCreatePurchase(purchase, coupon);
+		this.couponsController.updateCouponAmount(coupon, purchase);
+		try {
+			purchase = this.purchasesDao.save(purchase);
+			long id = purchase.getId();
+			return id;
+		} catch (Exception e) {
+			throw new ApplicationException(e, ErrorType.GENERAL_ERROR,
+					"Create purchase failed " + purchaseDto.toString());
+		}
+	}
 
 	public PurchaseDto getPurchase(long id) throws ApplicationException {
 		if (!(this.isPurchaseExist(id))) {
@@ -89,21 +85,19 @@ public class PurchasesController {
 		}
 	}
 
-	@JsonIgnore
-	public List<Purchase> getAllPurchasesByUserId(long userId, UserLoginData userLoginData)	throws ApplicationException {
+	public List<PurchaseDto> getAllPurchasesByUserId(long userId, UserLoginData userLoginData)	throws ApplicationException {
 		if (userLoginData.getUserType() != UserType.ADMIN) {
 			userId = userLoginData.getId();
 		}
 		try {
-			List<Purchase> purchases = this.purchasesDao.findAllByUserId(userId);
+			List<PurchaseDto> purchases = this.purchasesDao.findAllByUserId(userId);
 			return purchases;
 		} catch (Exception e) {
 			throw new ApplicationException(ErrorType.GENERAL_ERROR, "Get all purchases by user id failed " + userId);
 		}
 	}
 
-	@JsonIgnore
-	public List<Purchase> getAllPurchasesByCompanyId(long companyId, UserLoginData userLoginData) throws ApplicationException {
+	public List<PurchaseDto> getAllPurchasesByCompanyId(long companyId, UserLoginData userLoginData) throws ApplicationException {
 		if (userLoginData.getUserType() != UserType.ADMIN) {
 			if (userLoginData.getUserType() == UserType.COMPANY) {
 				companyId = userLoginData.getCompanyId();
@@ -112,40 +106,34 @@ public class PurchasesController {
 			}
 		}
 		try {
-			List<Purchase> purchases = this.purchasesDao.findAllByCompanyID(companyId);
+			List<PurchaseDto> purchases = this.purchasesDao.findAllByCompanyID(companyId);
 			return purchases;
 		} catch (Exception e) {
 			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get all purchases by company id failed " + companyId);
 		}
 	}
 
-//	private Purchase createPurchaseFromDto(PurchaseDto purchaseDto, UserLoginData userLoginData) throws ApplicationException {
-//		try {
-//			UserDto userDto = this.usersController.getUser(purchaseDto.getUserId(), userLoginData);
-//			User user = new User(userDto);
-//			Coupon coupon = this.couponsController.getCoupon(purchaseDto.getCouponId());
-//			Purchase purchase = new Purchase(purchaseDto.getId(), user, coupon, purchaseDto.getAmount(),
-//					purchaseDto.getTimestamp());
-//			return purchase;
-//		} catch (Exception e) {
-//			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create purchase from dto failed " + purchaseDto.toString());
-//		}
-//	}
-//
-//	private PurchaseDto createDtoFromPurchase(Purchase purchase) throws ApplicationException {
-//		try {
-//			User user = purchase.getUser();
-//			Coupon coupon = purchase.getCoupon();
-//			PurchaseDto purchaseDto = new PurchaseDto(purchase.getId(), user.getId(), coupon.getId(), purchase.getAmount(), purchase.getTimestamp());
-//			return purchaseDto;
-//		} catch (Exception e) {
-//			throw new ApplicationException(e, ErrorType.GENERAL_ERROR,	"Create dto from purchase failed " + purchase.toString());
-//		}
-//	}
+	private Purchase createPurchaseFromDto(PurchaseDto purchaseDto) throws ApplicationException {
+		try {
+			User user = this.usersController.getEntity(purchaseDto.getUserId());
+			Coupon coupon = this.couponsController.getCoupon(purchaseDto.getCouponId());
+			Purchase purchase = new Purchase(purchaseDto.getId(), user, coupon, purchaseDto.getAmount(), purchaseDto.getTimestamp());
+			return purchase;
+		} catch (Exception e) {
+			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create purchase from dto failed " + purchaseDto.toString());
+		}
+	}
 	
 	@PostConstruct
-	void checkGetAll() {
-		System.out.println(this.purchasesDao.getAll());
+	void checkAll() throws ApplicationException {
+		UserLoginData userLoginData = new UserLoginData(1, UserType.ADMIN, 1l);
+		PurchaseDto purchaseDto = new PurchaseDto(null, 1, 1, 500, new Date(System.currentTimeMillis()), "SAYWHAT?!", "OHKKKKKKK", "ya@ya.ya");
+		long id = this.createPurchase(purchaseDto, userLoginData);
+		System.out.println("Get purchase: " + this.getPurchase(id));
+		this.deletePurchase(id, userLoginData);
+		this.getAllPurchases(userLoginData);
+		this.getAllPurchasesByCompanyId(1, userLoginData);
+		this.getAllPurchasesByUserId(1, userLoginData);
 	}
 
 	// Validations:

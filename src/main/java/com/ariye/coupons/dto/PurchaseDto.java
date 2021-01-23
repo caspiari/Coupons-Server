@@ -6,11 +6,11 @@ import java.sql.Timestamp;
 
 public class PurchaseDto {
 
-	private long id;
+	private Long id;
 	private long userId;
 	private long couponId;
 	private long amount;
-	private Timestamp timestamp;
+	private Date timestamp;
 	private String couponName;
 	private String companyName;
 	private String username;
@@ -30,7 +30,7 @@ public class PurchaseDto {
 	 * @param companyName
 	 * @param username
 	 */
-	public PurchaseDto(long id, long userId, long couponId, long amount, Timestamp timestamp, String couponName,
+	public PurchaseDto(Long id, long userId, long couponId, long amount, Date timestamp, String couponName,
 			String companyName, String username) {
 		this.id = id;
 		this.userId = userId;
@@ -58,25 +58,6 @@ public class PurchaseDto {
 		this.timestamp = new Timestamp(timestamp.getTime());
 	}
 	
-	/**
-	 * - Ctor for 'get all' method (for admins)
-	 * @param id
-	 * @param userId
-	 * @param couponId
-	 * @param amount
-	 * @param timestamp
-	 * @param companyName
-	 */
-	public PurchaseDto(long id, long userId, long couponId, long amount, Date timestamp, String companyName) {
-		super();
-		this.id = id;
-		this.userId = userId;
-		this.couponId = couponId;
-		this.amount = amount;
-		this.timestamp = new Timestamp(timestamp.getTime());
-		this.companyName = companyName;
-	}
-
 	@Override
 	public String toString() {
 		return "PurchaseDto [id=" + id + ", userId=" + userId + ", couponId=" + couponId + ", amount=" + amount
@@ -88,11 +69,11 @@ public class PurchaseDto {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public long getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
@@ -132,11 +113,11 @@ public class PurchaseDto {
 		this.amount = amount;
 	}
 
-	public Timestamp getTimestamp() {
+	public Date getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(Timestamp timestamp) {
+	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
 

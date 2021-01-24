@@ -14,21 +14,12 @@ public class PurchaseDto {
 	private String couponName;
 	private String companyName;
 	private String username;
-	
 
 	public PurchaseDto() {
 	}
 	
 	/**
 	 * - Full ctor
-	 * @param id
-	 * @param userId
-	 * @param couponId
-	 * @param amount
-	 * @param timestamp
-	 * @param couponName
-	 * @param companyName
-	 * @param username
 	 */
 	public PurchaseDto(Long id, long userId, long couponId, long amount, Date timestamp, String couponName,
 			String companyName, String username) {

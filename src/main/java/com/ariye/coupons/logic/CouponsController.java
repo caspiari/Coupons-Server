@@ -1,6 +1,7 @@
 package com.ariye.coupons.logic;
 
 import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,7 +42,7 @@ public class CouponsController {
 		}
 	}
 
-	public Coupon getCoupon(long id) throws ApplicationException {
+	public CouponDto getCoupon(long id) throws ApplicationException {
 		if (!(this.isCouponExist(id))) {
 			throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
 		}
@@ -54,6 +55,8 @@ public class CouponsController {
 	}
 
 	public void updateCoupon(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
+		this.validateCreateCoupon(couponDto, userLoginData); // <- Same
+		// validations
 		Coupon coupon = this.getCoupon(couponDto.getId());
 		if (userLoginData.getUserType() == UserType.COMPANY) {
 			if (coupon.getCompany().getId() != userLoginData.getCompanyId()) {
@@ -61,8 +64,6 @@ public class CouponsController {
 						"This coupon belongs to another company" + userLoginData.toString());
 			}
 		}
-		this.validateCreateCoupon(couponDto, userLoginData); // <- Same
-																// validations
 		coupon.setName(couponDto.getName());
 		coupon.setDescription(couponDto.getDescription());
 		coupon.setPrice(couponDto.getPrice());
@@ -140,7 +141,7 @@ public class CouponsController {
 			throw new ApplicationException(ErrorType.INVALID_VALUE, "Max price must be a positive number");
 		}
 		try {
-			List<Coupon> coupons = iCouponsDao.findByMaxPrice(userId, maxPrice);
+			List<Coupon> coupons = iCouponsDao.getByMaxPrice(userId, maxPrice);
 			return coupons;
 		} catch (Exception e) {
 			throw new ApplicationException(e, ErrorType.GENERAL_ERROR,
@@ -234,9 +235,9 @@ public class CouponsController {
 		if (couponDto.getPrice() < 0) {
 			throw new ApplicationException(ErrorType.INVALID_VALUE, "Price must be positive");
 		}
-//		if (couponDto.getEndDate().before(Calendar.getInstance().getTime())) {
-//			throw new ApplicationException(ErrorType.INVALID_DATES);
-//		}
+		if (couponDto.getEndDate().before(Calendar.getInstance().getTime())) {
+			throw new ApplicationException(ErrorType.INVALID_DATES);
+		}
 		if (couponDto.getEndDate().before(couponDto.getStartDate())) {
 			throw new ApplicationException(ErrorType.INVALID_DATES);
 		}

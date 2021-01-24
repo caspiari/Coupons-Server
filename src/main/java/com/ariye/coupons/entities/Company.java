@@ -44,12 +44,15 @@ public class Company implements Serializable {
 	private List<Coupon> coupons;
 
 
+	/**
+	 * - Ctor for creation - without id, users and coupons
+	 */
 	public Company(String name, String address, String phone) {
 		this.name = name;
 		this.address = address;
 		this.phone = phone;
 	}
-	/*
+	/**
 	 * - Full ctor
 	 */
 	public Company(long id, String name, String address, String phone, List<User> users, List<Coupon> coupons) {

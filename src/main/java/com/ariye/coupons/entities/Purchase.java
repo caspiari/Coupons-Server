@@ -23,7 +23,7 @@ public class Purchase implements Serializable {
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
-	private Long id;
+	private long id;
 
 	@ManyToOne
 	private User user;
@@ -36,7 +36,7 @@ public class Purchase implements Serializable {
 	@Column(name = "time_stamp")
 	private Date timestamp;
 
-	public Purchase(Long id, User user, Coupon coupon, long amount, Date timestamp) {
+	public Purchase(long id, User user, Coupon coupon, long amount, Date timestamp) {
 		this.id = id;
 		this.user = user;
 		this.coupon = coupon;
@@ -54,11 +54,11 @@ public class Purchase implements Serializable {
 				+ ", timestamp=" + timestamp + "]";
 	}
 	
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 	
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	

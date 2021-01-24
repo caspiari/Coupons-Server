@@ -2,7 +2,6 @@ package com.ariye.coupons.dto;
 
 import java.util.Date;
 
-import com.ariye.coupons.entities.Company;
 import com.ariye.coupons.entities.Coupon;
 import com.ariye.coupons.enums.CouponType;
 
@@ -18,12 +17,12 @@ public class CouponDto {
 	private long amount;
 	private long companyId;
 
-
 	public CouponDto() {
 	}
 
-	public CouponDto(String name, String description, float price, Date startDate, Date endDate,
+	public CouponDto(Long id, String name, String description, float price, Date startDate, Date endDate,
 			CouponType category, long amount, long companyId) {
+		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.price = price;
@@ -33,27 +32,18 @@ public class CouponDto {
 		this.amount = amount;
 		this.companyId = companyId;
 	}
-	/*
-	 * - Full ctor
-	 */
-	public CouponDto(Long id, String name, String description, float price, Date startDate, Date endDate,
-			CouponType category, long amount, long companyId) {
-		this(name, description, price, startDate, endDate, category, amount, companyId);
-		this.id = id;
-	}
-	
-	public CouponDto(Long id, String name) {
-		super();
-		this.id = id;
-		this.name = name;
-	}
 	
 	public CouponDto(Coupon coupon) {
 		this(coupon.getId(), coupon.getName(), coupon.getDescription(), coupon.getPrice(), coupon.getStartDate(),
 				coupon.getEndDate(), coupon.getCategory(), coupon.getAmount(), coupon.getCompany().getId());
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "CouponDto [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
+				+ ", startDate=" + startDate + ", endDate=" + endDate + ", category=" + category + ", amount=" + amount
+				+ ", companyId=" + companyId + "]";
+	}
 
 	public Long getId() {
 		return id;

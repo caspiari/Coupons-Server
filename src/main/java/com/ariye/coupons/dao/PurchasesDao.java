@@ -9,9 +9,6 @@ import com.ariye.coupons.dto.PurchaseDto;
 
 public interface PurchasesDao extends CrudRepository<Purchase, Long>{
 	
-	//insert into users (first_name, last_name, password, user_type, username, company_id) 
-	//values('aaa', 'bbb', '123', 'COMPANY', 'ggg@hhhh.cv', 1);
-	
 	@Query("select new com.ariye.coupons.dto.PurchaseDto(p.id, p.user.id, p.coupon.id, p.amount, p.timestamp, p.coupon.name, p.coupon.company.name,"
 			+ "p.user.username) from Purchase p where p.id = ?1")
 	PurchaseDto getById(long id);

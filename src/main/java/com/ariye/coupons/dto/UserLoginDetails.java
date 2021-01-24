@@ -1,6 +1,5 @@
 package com.ariye.coupons.dto;
 
-import com.ariye.coupons.enums.UserType;
 
 public class UserLoginDetails {
 

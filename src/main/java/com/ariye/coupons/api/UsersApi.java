@@ -39,12 +39,12 @@ public class UsersApi {
 		return id;
 	}
 
-//	@GetMapping("/{userId}")
-//	public UserDto getUser(@PathVariable("userId") long id, HttpServletRequest request) throws ApplicationException {
-//		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-//		UserDto userDto = this.usersController.getUser(id);
-//		return userDto;
-//	}
+	@GetMapping("/{userId}")
+	public UserDto getUser(@PathVariable("userId") long id, HttpServletRequest request) throws ApplicationException {
+		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
+		UserDto userDto = this.usersController.getUser(id, userLoginData);
+		return userDto;
+	}
 
 	@PutMapping
 	public void updateUser(@RequestBody UserDto userDto, HttpServletRequest request) throws ApplicationException {
@@ -59,16 +59,16 @@ public class UsersApi {
 	}
 
 	@GetMapping("/byUsername")
-	public User getUserByUsername(@RequestParam("username") String username, HttpServletRequest request) throws ApplicationException {
+	public UserDto getUserByUsername(@RequestParam("username") String username, HttpServletRequest request) throws ApplicationException {
 		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-		User user = this.usersController.getUserByUsername(username, userLoginData);
-		return user;
+		UserDto userDto = this.usersController.getUserByUsername(username, userLoginData);
+		return userDto;
 	}
 
 	@GetMapping
-	public List<User> getAllUsers(HttpServletRequest request) throws ApplicationException {
+	public List<UserDto> getAllUsers(HttpServletRequest request) throws ApplicationException {
 		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-		List<User> users = usersController.getAllUsers(userLoginData);
+		List<UserDto> users = usersController.getAllUsers(userLoginData);
 		return users;
 	}
 

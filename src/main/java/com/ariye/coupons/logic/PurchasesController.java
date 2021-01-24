@@ -112,29 +112,21 @@ public class PurchasesController {
 			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get all purchases by company id failed " + companyId);
 		}
 	}
-
+	
+	/**
+	 * - For creation, the received purchase id will be null
+	 */
 	private Purchase createPurchaseFromDto(PurchaseDto purchaseDto) throws ApplicationException {
 		try {
 			User user = this.usersController.getEntity(purchaseDto.getUserId());
 			Coupon coupon = this.couponsController.getCoupon(purchaseDto.getCouponId());
-			Purchase purchase = new Purchase(purchaseDto.getId(), user, coupon, purchaseDto.getAmount(), purchaseDto.getTimestamp());
+			Purchase purchase = new Purchase(null, user, coupon, purchaseDto.getAmount(), purchaseDto.getTimestamp());
 			return purchase;
 		} catch (Exception e) {
 			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create purchase from dto failed " + purchaseDto.toString());
 		}
 	}
 	
-	@PostConstruct
-	void checkAll() throws ApplicationException {
-		UserLoginData userLoginData = new UserLoginData(1, UserType.ADMIN, 1l);
-		PurchaseDto purchaseDto = new PurchaseDto(null, 1, 1, 500, new Date(System.currentTimeMillis()), "SAYWHAT?!", "OHKKKKKKK", "ya@ya.ya");
-		long id = this.createPurchase(purchaseDto, userLoginData);
-		System.out.println("Get purchase: " + this.getPurchase(id));
-		this.deletePurchase(id, userLoginData);
-		this.getAllPurchases(userLoginData);
-		this.getAllPurchasesByCompanyId(1, userLoginData);
-		this.getAllPurchasesByUserId(1, userLoginData);
-	}
 
 	// Validations:
 

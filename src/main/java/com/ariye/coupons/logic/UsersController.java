@@ -4,6 +4,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import com.ariye.coupons.dao.UsersDao;
@@ -16,7 +19,6 @@ import com.ariye.coupons.entities.User;
 import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Controller
 public class UsersController {
@@ -33,9 +35,9 @@ public class UsersController {
 	public long createUser(UserDto userDto) throws ApplicationException {
 		this.validateUpdateUser(userDto); // Same validations...
 		User user = new User(userDto);
+		String password = String.valueOf(user.getPassword().hashCode());
+		user.setPassword(password);
 		try {
-			String password = String.valueOf(user.getPassword().hashCode());
-			user.setPassword(password);
 			user = this.iUsersDao.save(user);
 			long id = user.getId();
 			return id;
@@ -58,8 +60,8 @@ public class UsersController {
 			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get user failed. Id: " + id);
 		}
 	}
-	
-	//For inner use
+
+	// For inner use
 	User getEntity(long id) throws ApplicationException {
 		if (!(this.isUserExist(id))) {
 			throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
@@ -75,15 +77,15 @@ public class UsersController {
 
 	public void updateUser(UserDto userDto, UserLoginData userLoginData) throws ApplicationException {
 		this.validateUpdateUser(userDto);
+		if (userLoginData.getUserType() != UserType.ADMIN) {
+			userDto.setId(userLoginData.getId());
+			userDto.setUserType(userLoginData.getUserType());
+			userDto.setCompanyId(userLoginData.getCompanyId());
+		}
+		User user = this.createUserFromDto(userDto, userLoginData);
+		String password = String.valueOf(user.getPassword().hashCode());
+		user.setPassword(password);
 		try {
-			if (userLoginData.getUserType() != UserType.ADMIN) {
-				userDto.setId(userLoginData.getId());
-				userDto.setUserType(userLoginData.getUserType());
-				userDto.setCompanyId(userLoginData.getCompanyId());
-			}
-			User user = this.createUserFromDto(userDto, userLoginData);
-			String password = String.valueOf(user.getPassword().hashCode());
-			user.setPassword(password);
 			this.iUsersDao.save(user);
 		} catch (Exception e) {
 			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Update user failed " + userDto.toString());
@@ -91,37 +93,36 @@ public class UsersController {
 	}
 
 	public void deleteUser(long id, UserLoginData userLoginData) throws ApplicationException {
+		if (userLoginData.getUserType() != UserType.ADMIN) {
+			throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
+		}
 		try {
-			if (userLoginData.getUserType() != UserType.ADMIN) {
-				throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
-			}
 			this.iUsersDao.deleteById(id);
 		} catch (Exception e) {
 			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete user failed. Id: " + id);
 		}
 	}
 
-	public User getUserByUsername(String username, UserLoginData userLoginData) throws ApplicationException {
+	public UserDto getUserByUsername(String username, UserLoginData userLoginData) throws ApplicationException {
 		if (userLoginData.getUserType() != UserType.ADMIN) {
 			throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
 		}
 		this.validateEmail(username);
-		User user;
+		UserDto userDto;
 		try {
-			user = iUsersDao.findByUsername(username);
+			userDto = iUsersDao.findByUsername(username);
+			return userDto;
 		} catch (Exception e) {
 			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get user by username failed " + username);
 		}
-		return user;
 	}
 
-	@JsonIgnore
-	public List<User> getAllUsers(UserLoginData userLoginData) throws ApplicationException {
+	public List<UserDto> getAllUsers(UserLoginData userLoginData) throws ApplicationException {
 		if (userLoginData.getUserType() != UserType.ADMIN) {
 			throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
 		}
 		try {
-			List<User> users = (List<User>) this.iUsersDao.findAll();
+			List<UserDto> users = (List<UserDto>) this.iUsersDao.getAll();
 			return users;
 		} catch (Exception e) {
 			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get all users failed");
@@ -161,8 +162,9 @@ public class UsersController {
 				userDto.getPassword(), userDto.getUserType(), company);
 		return user;
 	}
+	
 
-	// // Validations:
+/////////////// Validations:
 
 	// not private because being used by another controller
 	boolean isUserExist(long id) throws ApplicationException {

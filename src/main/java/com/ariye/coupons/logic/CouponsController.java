@@ -1,6 +1,6 @@
 package com.ariye.coupons.logic;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,6 +142,7 @@ public class CouponsController {
         }
     }
 
+    // I deleted the purchases separately because JPA blocks custom delete queries if there are associated foreign keys to delete
 	public void deleteExpiredCoupons() throws ApplicationException {
 		try {
 			this.purchasesController.deleteExpiredPurchases();

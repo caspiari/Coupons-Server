@@ -1,6 +1,6 @@
 package com.ariye.coupons.logic;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;

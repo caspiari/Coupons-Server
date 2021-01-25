@@ -1,12 +1,15 @@
 package com.ariye.coupons.dao;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import com.ariye.coupons.entities.Purchase;
 import com.ariye.coupons.dto.PurchaseDto;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface PurchasesDao extends CrudRepository<Purchase, Long>{
 	
@@ -26,6 +29,8 @@ public interface PurchasesDao extends CrudRepository<Purchase, Long>{
 			+ "p.user.username) from Purchase p where p.user.id = ?1")
 	List<PurchaseDto> findAllByUserId(long id);
 
-	@Query("delete from Purchase p where p.coupon.endDate < ?1")
+	@Transactional
+	@Modifying
+	@Query("delete from Purchase p where p.id in(select id from Coupon where endDate < ?1)")
 	public void deleteExpiredPurchases(Date now);
 }

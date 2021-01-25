@@ -73,8 +73,7 @@ public class CouponsController {
         }
     }
 
-
-    // Used from purchases controller
+    // Default access modifier because being used from purchases controller
     void updateCouponAmount(Coupon coupon, Purchase purchase) throws ApplicationException {
         coupon.setAmount(coupon.getAmount() - purchase.getAmount());
         try {
@@ -102,19 +101,15 @@ public class CouponsController {
         }
     }
 
-//	@JsonIgnore
-//	public List<Coupon> getCouponsByCompanyId(long companyId) throws ApplicationException {
-//		// if (!(this.companiesController.isCompanyExist(companyId))) {
-//		// throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Company
-//		// id");
-//		// }
-//		try {
-//			List<Coupon> coupons = this.couponsDao.findByCompanyId(companyId);
-//			return coupons;
-//		} catch (Exception e) {
-//			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupons by company id failed " + companyId);
-//		}
-//	}
+	@JsonIgnore
+	public List<CouponDto> getCouponsByCompanyId(long companyId) throws ApplicationException {
+		try {
+			List<Coupon> coupons = this.couponsDao.findByCompanyId(companyId);
+			return coupons;
+		} catch (Exception e) {
+			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupons by company id failed " + companyId);
+		}
+	}
 
 //	@JsonIgnore
 //	public List<Coupon> getCouponsByType(CouponType couponType) throws ApplicationException {
@@ -206,8 +201,7 @@ public class CouponsController {
     }
 
     private void validateCreateCoupon(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
-        // if (couponsDao.isCouponNameExist(coupon.getName())) { -Apply after
-        // third layer
+        // if (couponsDao.isCouponNameExist(coupon.getName())) { -Apply after third layer
         // throw new Exception("Coupon name already exist");
         // }
         if (userLoginData.getUserType() == UserType.CUSTOMER) {
@@ -239,6 +233,21 @@ public class CouponsController {
         }
         if (couponDto.getAmount() < 0) {
             throw new ApplicationException(ErrorType.INVALID_AMOUNT, "Must be positive");
+        }
+    }
+
+    private Coupon validateUpdateCoupon(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
+        this.validateCreateCoupon(couponDto, userLoginData);
+        Coupon coupon;
+        try {
+            coupon = this.couponsDao.findById(couponDto.getId()).get();
+        } catch (Exception e) {
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Validate update coupon failed " + couponDto.toString());
+        }
+        if (userLoginData.getUserType() == UserType.COMPANY) {
+            if (userLoginData.getCompanyId() != coupon.getCompany().getId()) {
+                throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, "This coupon belongs to another company" + userLoginData.toString());
+            }
         }
     }
 

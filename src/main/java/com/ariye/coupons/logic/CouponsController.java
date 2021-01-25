@@ -142,7 +142,7 @@ public class CouponsController {
         }
     }
 
-    // I deleted the purchases separately because JPA blocks custom delete queries if there are associated foreign keys to delete
+    // I deleted the purchases separately because JPA blocks custom delete queries if there are associated purchases to delete
 	public void deleteExpiredCoupons() throws ApplicationException {
 		try {
 			this.purchasesController.deleteExpiredPurchases();
@@ -153,7 +153,7 @@ public class CouponsController {
 		}
 	}
 
-	//Default
+	//Default access modifier because being used from purchases controller
     Coupon createCouponFromDto(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
         Company company = this.companiesController.getCompany(couponDto.getCompanyId(), userLoginData);
         Coupon coupon = new Coupon(couponDto.getName(), couponDto.getDescription(), couponDto.getPrice(), company,
@@ -161,7 +161,7 @@ public class CouponsController {
         return coupon;
     }
 
-    // Validations:
+/////////////// Validations:
 
     private boolean isCouponExistByName(String name) throws ApplicationException {
         try {
@@ -198,7 +198,7 @@ public class CouponsController {
 
     private void validateCreateCoupon(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
         // if (couponsDao.isCouponNameExist(coupon.getName())) { -Apply after third layer
-        // throw new Exception("Coupon name already exist");
+        //      throw new Exception("Coupon name already exist");
         // }
         if (userLoginData.getUserType() == UserType.CUSTOMER) {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());

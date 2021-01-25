@@ -16,20 +16,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class CompaniesController {
 
 	@Autowired
-	private CompaniesDao iCompaniesDao;
+	private CompaniesDao companiesDao;
 
 	public long createCompany(CompanyDto companyDto, UserLoginData userLoginData) throws ApplicationException {
 		if (userLoginData.getUserType() != UserType.ADMIN) {
 			throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
 		}
 		Company company = this.createCompanyFromDto(companyDto);
-		try {
 			this.validateUpdateCompany(company); // <--Same validations
 			String name = company.getName();
-			if (this.iCompaniesDao.findCompanyByName(name) != null) {
+		try {
+			if (this.companiesDao.findCompanyByName(name) != null) {
 				throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS);
 			}
-			company = this.iCompaniesDao.save(company);
+			company = this.companiesDao.save(company);
 			long id = company.getId();
 			return id;
 		} catch (Exception e) {
@@ -42,7 +42,7 @@ public class CompaniesController {
 			throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
 		}
 		try {
-			this.iCompaniesDao.deleteById(id);
+			this.companiesDao.deleteById(id);
 		} catch (Exception e) {
 			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete company failed " + id);
 		}
@@ -56,7 +56,7 @@ public class CompaniesController {
 			return null;
 		}
 		try {
-			Company company = this.iCompaniesDao.findById(id).get();
+			Company company = this.companiesDao.findById(id).get();
 			return company;
 		} catch (Exception e) {
 			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get company failed " + id);
@@ -70,7 +70,7 @@ public class CompaniesController {
 		}
 		validateUpdateCompany(company);
 		try {
-			this.iCompaniesDao.save(company);
+			this.companiesDao.save(company);
 		} catch (Exception e) {
 			throw new ApplicationException(e, ErrorType.GENERAL_ERROR,
 					"Update company failed " + companyDto.toString());
@@ -89,7 +89,7 @@ public class CompaniesController {
 			throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
 		}
 		try {
-			List<Company> companies = (List<Company>) this.iCompaniesDao.findAll();
+			List<Company> companies = (List<Company>) this.companiesDao.findAll();
 			return companies;
 		} catch (Exception e) {
 			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get all companies failed");
@@ -101,24 +101,35 @@ public class CompaniesController {
 		return company;
 	}
 
-	// Validations:
+///////////////// Validations:
 
-	// Not private because used in another controllers
+	// Default modifier because used in another controllers
 	boolean isCompanyExist(Long id) throws ApplicationException {
 		if (id == null) {
 			return false;
 		}
 		try {
-			return this.iCompaniesDao.existsById(id);
+			return this.companiesDao.existsById(id);
 		} catch (Exception e) {
 			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Is company exist failed" + id);
 		}
 	}
 
+	private boolean isCompanyExistByName(String name) throws ApplicationException {
+		try {
+			Company company = this.companiesDao.findCompanyByName(name);
+			if (company == null) {
+				return false;
+			}
+			return true;
+		} catch (Exception e) {
+			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Is company exist by name failed " + name);
+		}
+	}
+
 	private void validateUpdateCompany(Company company) throws ApplicationException {
-		// if (iCompaniesDao.isCompanyNameExist(company.getName())) { <->Apply
-		// after third layer
-		// throw new Exception("Company name already exist");
+		// if (iCompaniesDao.isCompanyNameExist(company.getName())) { <->Apply after third layer
+		// 		throw new Exception("Company name already exist");
 		// }
 		if (company.getName() == null) {
 			throw new ApplicationException(ErrorType.MUST_ENTER_NAME);

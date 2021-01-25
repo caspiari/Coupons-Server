@@ -1,5 +1,6 @@
 package com.ariye.coupons.dao;
 
+import java.util.Date;
 import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -24,7 +25,12 @@ public interface CouponsDao extends CrudRepository<Coupon, Long> {
 
 	@Query(value = "select new com.ariye.coupons.dto.CouponDto(c.id, c.name, c.description, c.price, c.startDate, c.endDate, c.category, c.amount, c.company.id) from Coupon c where c.id in (select p.coupon from Purchase p where p.user.id = :userId) and c.price < :maxPrice")
 	public List<CouponDto> getByMaxPrice(@Param("userId") long userId, @Param("maxPrice") float maxPrice);
-	
+
+	@Query("select new com.ariye.coupons.dto.CouponDto(c.id, c.name, c.description, c.price, c.startDate, c.endDate, c.category, c.amount, c.company.id) from Coupon c")
+	public List<CouponDto> getAll();
+
+	@Query("delete from Coupon c where c.endDate < ?1")
+	public void deleteExpiredCoupons(Date now);
 }
 
 

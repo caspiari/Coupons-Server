@@ -1,30 +1,40 @@
-//package com.ariye.coupons.logic;
-//
-//import java.util.Date;
-//import java.util.List;
-//import javax.annotation.PostConstruct;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Controller;
-//import com.ariye.coupons.dao.PurchasesDao;
-//import com.ariye.coupons.dto.PurchaseDto;
-//import com.ariye.coupons.dto.UserLoginData;
-//import com.ariye.coupons.entities.Coupon;
-//import com.ariye.coupons.entities.Purchase;
-//import com.ariye.coupons.entities.User;
-//import com.ariye.coupons.enums.ErrorType;
-//import com.ariye.coupons.enums.UserType;
-//import com.ariye.coupons.exeptions.ApplicationException;
-//
-//
-//@Controller
-//public class PurchasesController {
-//
-//	@Autowired
-//	private PurchasesDao purchasesDao;
-//	@Autowired
-//	private CouponsController couponsController;
-//	@Autowired
-//	private UsersController usersController;
+package com.ariye.coupons.logic;
+
+import java.util.Date;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import com.ariye.coupons.dao.PurchasesDao;
+import com.ariye.coupons.dto.PurchaseDto;
+import com.ariye.coupons.dto.UserLoginData;
+import com.ariye.coupons.entities.Coupon;
+import com.ariye.coupons.entities.Purchase;
+import com.ariye.coupons.entities.User;
+import com.ariye.coupons.enums.ErrorType;
+import com.ariye.coupons.enums.UserType;
+import com.ariye.coupons.exeptions.ApplicationException;
+
+
+@Controller
+public class PurchasesController {
+
+	@Autowired
+	private PurchasesDao purchasesDao;
+	@Autowired
+	private CouponsController couponsController;
+	@Autowired
+	private UsersController usersController;
+
+	public void deleteExpiredPurchases() throws ApplicationException {
+	    Date now = new Date(System.currentTimeMillis());
+	    try {
+            this.purchasesDao.deleteExpiredPurchases(now);
+        } catch (Exception e) {
+	        throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete expired purchases failed");
+        }
+
+    }
 //
 //	public Long createPurchase(PurchaseDto purchaseDto, UserLoginData userLoginData) throws ApplicationException {
 //		if (userLoginData.getUserType() != UserType.ADMIN) {
@@ -147,5 +157,5 @@
 //		}
 //	}
 //
-//
-//}
+
+}

@@ -1,9 +1,8 @@
 package com.ariye.coupons.logic;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.Calendar;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import com.ariye.coupons.dao.CouponsDao;
@@ -16,8 +15,6 @@ import com.ariye.coupons.enums.CouponType;
 import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.annotation.PostConstruct;
 
 @Controller
@@ -29,6 +26,8 @@ public class CouponsController {
     UsersController usersController;
     @Autowired
     private CompaniesController companiesController;
+    @Autowired
+    private  PurchasesController purchasesController;
 
     public long createCoupon(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
         this.validateCreateCoupon(couponDto, userLoginData);
@@ -134,30 +133,29 @@ public class CouponsController {
         }
     }
 
-    @PostConstruct
-    void checkGetByCategoryAndByMaxPrice() throws ApplicationException {
-        System.out.println(this.getCouponsByType(CouponType.KITCHEN));
-        System.out.println(this.getPurchasedCouponsByMaxPrice(1l, 49, new UserLoginData(1l, UserType.ADMIN, null)));
+    public List<CouponDto> getAllCoupons() throws ApplicationException {
+        try {
+            List<CouponDto> coupons = this.couponsDao.getAll();
+            return coupons;
+        } catch (Exception e) {
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get all coupons failed");
+        }
     }
 
-//    @JsonIgnore
-//    public List<CouponDto> getAllCoupons() throws ApplicationException {
-//        try {
-//            List<CouponDto> coupons = (List<Coupon>) this.couponsDao.findAll();
-//            return coupons;
-//        } catch (Exception e) {
-//            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get all coupons failed");
-//        }
-//    }
+	public void deleteExpiredCoupons() throws ApplicationException {
+		try {
+			this.purchasesController.deleteExpiredPurchases();
+            Date now = new Date(System.currentTimeMillis());
+            this.couponsDao.deleteExpiredCoupons(now);
+		} catch (Exception e) {
+			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete expired coupons failed");
+		}
+	}
 
-//	public void deleteExpiredCoupons() throws ApplicationException {
-//		try {
-//			Date now = new Date(System.currentTimeMillis());
-//			this.couponsDao.deleteExpiredCoupons(now);
-//		} catch (Exception e) {
-//			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete expired coupons failed");
-//		}
-//	}
+	@PostConstruct
+    void checkDeleteExpired() throws ApplicationException {
+        this.deleteExpiredCoupons();
+    }
 
     private Coupon createCouponFromDto(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
         Company company = this.companiesController.getCompany(couponDto.getCompanyId(), userLoginData);

@@ -101,29 +101,25 @@ public class CouponsController {
         }
     }
 
-	@JsonIgnore
-	public List<CouponDto> getCouponsByCompanyId(long companyId) throws ApplicationException {
+	public List<CouponDto> getCouponsByCompanyId(long id) throws ApplicationException {
 		try {
-			List<Coupon> coupons = this.couponsDao.findByCompanyId(companyId);
-			return coupons;
+			List<CouponDto> coupons = this.couponsDao.getByCompanyId(id);
+            return coupons;
 		} catch (Exception e) {
-			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupons by company id failed " + companyId);
+			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupons by company id failed " + id);
 		}
 	}
 
-//	@JsonIgnore
-//	public List<Coupon> getCouponsByType(CouponType couponType) throws ApplicationException {
-//		try {
-//			List<Coupon> coupons = this.couponsDao.findByCategory(couponType);
-//			return coupons;
-//		} catch (Exception e) {
-//			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupons by type failed " + couponType);
-//		}
-//	}
+	public List<CouponDto> getCouponsByType(CouponType couponType) throws ApplicationException {
+		try {
+			List<CouponDto> coupons = this.couponsDao.getByCategory(couponType);
+			return coupons;
+		} catch (Exception e) {
+			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupons by type failed " + couponType);
+		}
+	}
 
-    @JsonIgnore
-    public List<Coupon> getPurchasedCouponsByMaxPrice(long userId, float maxPrice, UserLoginData userLoginData)
-            throws ApplicationException {
+    public List<CouponDto> getPurchasedCouponsByMaxPrice(long userId, float maxPrice, UserLoginData userLoginData) throws ApplicationException {
         if (userLoginData.getUserType() != UserType.ADMIN) {
             userId = userLoginData.getId();
         }
@@ -131,23 +127,28 @@ public class CouponsController {
             throw new ApplicationException(ErrorType.INVALID_VALUE, "Max price must be a positive number");
         }
         try {
-            List<Coupon> coupons = couponsDao.getByMaxPrice(userId, maxPrice);
+            List<CouponDto> coupons = couponsDao.getByMaxPrice(userId, maxPrice);
             return coupons;
         } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR,
-                    "Get purchased coupons by max price failed " + userId);
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get purchased coupons by max price failed " + userId);
         }
     }
 
-    @JsonIgnore
-    public List<Coupon> getAllCoupons() throws ApplicationException {
-        try {
-            List<Coupon> coupons = (List<Coupon>) this.couponsDao.findAll();
-            return coupons;
-        } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get all coupons failed");
-        }
+    @PostConstruct
+    void checkGetByCategoryAndByMaxPrice() throws ApplicationException {
+        System.out.println(this.getCouponsByType(CouponType.KITCHEN));
+        System.out.println(this.getPurchasedCouponsByMaxPrice(1l, 49, new UserLoginData(1l, UserType.ADMIN, null)));
     }
+
+//    @JsonIgnore
+//    public List<CouponDto> getAllCoupons() throws ApplicationException {
+//        try {
+//            List<CouponDto> coupons = (List<Coupon>) this.couponsDao.findAll();
+//            return coupons;
+//        } catch (Exception e) {
+//            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get all coupons failed");
+//        }
+//    }
 
 //	public void deleteExpiredCoupons() throws ApplicationException {
 //		try {
@@ -236,6 +237,7 @@ public class CouponsController {
         }
     }
 
+
     private Coupon validateUpdateCoupon(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
         this.validateCreateCoupon(couponDto, userLoginData);
         Coupon coupon;
@@ -249,6 +251,7 @@ public class CouponsController {
                 throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, "This coupon belongs to another company" + userLoginData.toString());
             }
         }
+        return coupon;
     }
 
 }

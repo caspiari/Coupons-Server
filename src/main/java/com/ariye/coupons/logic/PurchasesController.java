@@ -119,17 +119,17 @@ public class PurchasesController {
 	/**
 	 * - This method is used for creation. Return entity with null id
 	 */
-	private Purchase createPurchaseFromDto(PurchaseDto purchaseDto) throws ApplicationException {
-		try {
-			User user = this.usersController.getEntity(purchaseDto.getUserId());
-			CouponDto couponDto = this.couponsController.getCoupon(purchaseDto.getCouponId());
-			Coupon coupon = this.couponsController.createCouponFro
-			Purchase purchase = new Purchase(user, coupon, purchaseDto.getAmount(), purchaseDto.getTimestamp());
-			return purchase;
-		} catch (Exception e) {
-			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create purchase from dto failed " + purchaseDto.toString());
-		}
-	}
+//	private Purchase createPurchaseFromDto(PurchaseDto purchaseDto) throws ApplicationException {
+//		try {
+//			User user = this.usersController.getEntity(purchaseDto.getUserId());
+//			CouponDto couponDto = this.couponsController.getCoupon(purchaseDto.getCouponId());
+//			Coupon coupon = this.couponsController.createCouponFro
+//			Purchase purchase = new Purchase(user, coupon, purchaseDto.getAmount(), purchaseDto.getTimestamp());
+//			return purchase;
+//		} catch (Exception e) {
+//			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create purchase from dto failed " + purchaseDto.toString());
+//		}
+//	}
 
 	public void deleteExpiredPurchases() throws ApplicationException {
 	    Date now = new Date(System.currentTimeMillis());

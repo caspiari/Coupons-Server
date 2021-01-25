@@ -51,9 +51,8 @@ public class Coupon implements Serializable {
 
 	private long amount;
 
-	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
-	@OneToMany(mappedBy = "coupon", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@OneToMany(mappedBy = "coupon", cascade = CascadeType.REMOVE)
 	private List<Purchase> purchases;
 
 	public Coupon() {

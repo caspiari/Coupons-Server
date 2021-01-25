@@ -2,7 +2,6 @@ package com.ariye.coupons;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.ariye.coupons.exeptions.ApplicationException;
-import com.ariye.coupons.logic.CouponsController;
 
 
 @SpringBootApplication

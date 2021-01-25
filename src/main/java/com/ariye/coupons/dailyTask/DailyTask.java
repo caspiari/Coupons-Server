@@ -1,8 +1,8 @@
+//package com.ariye.coupons.dailyTask;
+//
 //import javax.annotation.PostConstruct;
 //
 //import org.springframework.stereotype.Component;
-
-//package com.ariye.coupons.dailyTask;
 //
 //import java.util.TimerTask;
 //import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +11,10 @@
 //
 //  @Component //Or use this: https://www.baeldung.com/spring-scheduled-tasks
 //public class DailyTask extends TimerTask {
-//	
+//
 //	@Autowired
 //	CouponsController couponsController;
-//	
+//
 //	@Override
 //	public void run() {
 //		// TODO Auto-generated method stub
@@ -29,5 +29,5 @@
 //	public void init() {
 //		scheduleTimerTask..()
 //	}
-//	
+//
 //}

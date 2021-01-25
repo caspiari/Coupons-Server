@@ -1,6 +1,7 @@
 package com.ariye.coupons.logic;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,6 +10,8 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+
+import com.ariye.coupons.dao.CouponsDao;
 import com.ariye.coupons.dao.UsersDao;
 import com.ariye.coupons.dto.SuccessfulLoginData;
 import com.ariye.coupons.dto.UserDto;
@@ -29,7 +32,10 @@ public class UsersController {
 	private CompaniesController companiesController;
 	@Autowired
 	private CacheController cacheController;
-
+	
+	@Autowired
+	CouponsDao couponsDao;
+	
 	private static final String ENCRIPTION_TOKEN_SALT = "ASFDSDGFDSFGSSD-54675467#$%^";
 
 	public long createUser(UserDto userDto) throws ApplicationException {

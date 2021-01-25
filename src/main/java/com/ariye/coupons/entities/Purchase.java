@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.ariye.coupons.dto.PurchaseDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -36,12 +37,22 @@ public class Purchase implements Serializable {
 	@Column(name = "time_stamp")
 	private Date timestamp;
 
-	public Purchase(long id, User user, Coupon coupon, long amount, Date timestamp) {
-		this.id = id;
+	/**
+	 *  - Ctor without id
+	 */
+	public Purchase(User user, Coupon coupon, long amount, Date timestamp) {
 		this.user = user;
 		this.coupon = coupon;
 		this.amount = amount;
 		this.timestamp = timestamp;
+	}
+
+	/**
+	 * - Full ctor
+	 */
+	public Purchase(long id, User user, Coupon coupon, long amount, Date timestamp) {
+		this(user, coupon, amount, timestamp);
+		this.id = id;
 	}
 
 	public Purchase() {

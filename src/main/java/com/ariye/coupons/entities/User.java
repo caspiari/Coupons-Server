@@ -54,44 +54,55 @@ public class User implements Serializable {
 	@JsonIgnore
 	List<Purchase> purchases;
 
+//	/**
+//	 * - Ctor for creation - without id and purchases
+//	 * @param username
+//	 * @param firstName
+//	 * @param lastName
+//	 * @param password
+//	 * @param userType
+//	 * @param company
+//	 */
+//	public User(String username, String firstName, String lastName, String password, UserType userType,	Company company) {
+//		this.username = username;
+//		this.firstName = firstName;
+//		this.lastName = lastName;
+//		this.password = password;
+//		this.userType = userType;
+//		this.company = company;
+//	}
+//
+//	/**
+//	 * - Ctor without purchases
+//	 */
+//	public User(long id, String username, String firstName, String lastName, String password, UserType userType, Company company) {
+//		this(username, firstName, lastName, password, userType, company);
+//		this.id = id;
+//	}
+	
 	/**
-	 * - Ctor for creation - without id and purchases
-	 * @param username
-	 * @param firstName
-	 * @param lastName
-	 * @param password
-	 * @param userType
-	 * @param company
+	 * - Ctor for creation, sets the company and purchases null, for full construction use 'createUserFromDto' in UsersController
 	 */
-	public User(String username, String firstName, String lastName, String password, UserType userType,	Company company) {
+	public User(UserDto userDto) {
+		this.id = userDto.getId();
+		this.username = userDto.getUsername();
+		this.firstName = userDto.getFirstName();
+		this.lastName = userDto.getLastName();
+		this.password = userDto.getPassword();
+		this.userType = userDto.getUserType();
+	}
+
+	/**
+	 * - Full ctor
+	 */
+	public User(long id, String username, String firstName, String lastName, String password, UserType userType, Company company, List<Purchase> purchases) {
+		this.id = id;
 		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.password = password;
 		this.userType = userType;
 		this.company = company;
-	}
-
-	/**
-	 * - Ctor without purchases
-	 */
-	public User(long id, String username, String firstName, String lastName, String password, UserType userType, Company company) {
-		this(username, firstName, lastName, password, userType, company);
-		this.id = id;
-	}
-	
-	/**
-	 * - This ctor sets the company and purchases null
-	 */
-	public User(UserDto userDto) {
-		this(userDto.getId(),userDto.getUsername(), userDto.getFirstName(), userDto.getLastName(), userDto.getPassword(), userDto.getUserType(), null);
-	}
-	
-	/**
-	 * - Full ctor
-	 */
-	public User(long id, String username, String firstName, String lastName, String password, UserType userType, Company company, List<Purchase> purchases) {
-		this(id, username, firstName, lastName, password, userType, company);
 		this.purchases = purchases;
 	}
 

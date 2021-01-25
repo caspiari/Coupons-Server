@@ -14,10 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
+import com.ariye.coupons.dto.CouponDto;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
 import com.ariye.coupons.enums.CouponType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -82,16 +81,14 @@ public class Coupon implements Serializable {
 		this.id = id;
 	}
 
-	/*
+	/**
 	 * - Full ctor
 	 */
 	public Coupon(long id, String name, String description, float price, Company company, Date startDate, Date endDate,
 			CouponType category, long amount, List<Purchase> purchases) {
-		this(name, description, price, company, startDate, endDate, category, amount);
-		this.id = id;
+		this(id, name, description, price, company, startDate, endDate, category, amount);
 		this.purchases = purchases;
 	}
-
 
 	@Override
 	public String toString() {

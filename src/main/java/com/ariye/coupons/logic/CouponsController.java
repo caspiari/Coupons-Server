@@ -73,20 +73,6 @@ public class CouponsController {
         }
     }
 
-    private Coupon validateUpdateCoupon(CouponDto couponDto, UserLoginData userLoginData) {
-        this.validateCreateCoupon(couponDto, userLoginData); // <- Same validations
-        Coupon coupon;
-        try {
-            coupon = this.couponsDao.findById(couponDto.getId()).get();
-        } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "update coupon failed " + couponDto.toString());
-        }
-        if (userLoginData.getUserType() == UserType.COMPANY) {
-            if (userLoginData.getCompanyId() != coupon.getCompany().getId()) {
-                throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, "This coupon belongs to another company" + userLoginData.toString());
-            }
-        }
-    }
 
     // Used from purchases controller
     void updateCouponAmount(Coupon coupon, Purchase purchase) throws ApplicationException {
@@ -206,7 +192,7 @@ public class CouponsController {
         }
     }
 
-    // not public because being used by another controller
+    // Default access modifier because being used by another controller
     boolean isCouponAvailable(long id) throws ApplicationException {
         try {
             Coupon coupon = couponsDao.findById(id).get();

@@ -29,7 +29,7 @@ public class User implements Serializable {
 
 	@Id
 	@GeneratedValue
-	private long id;
+	private Long id;
 
 	@Column(unique = true, nullable = false)
 	private String username;
@@ -47,41 +47,16 @@ public class User implements Serializable {
 	@Column(name = "user_type", nullable = false)
 	private UserType userType;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
+	@JsonIgnore
 	private Company company;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	@JsonIgnore
 	List<Purchase> purchases;
 
-//	/**
-//	 * - Ctor for creation - without id and purchases
-//	 * @param username
-//	 * @param firstName
-//	 * @param lastName
-//	 * @param password
-//	 * @param userType
-//	 * @param company
-//	 */
-//	public User(String username, String firstName, String lastName, String password, UserType userType,	Company company) {
-//		this.username = username;
-//		this.firstName = firstName;
-//		this.lastName = lastName;
-//		this.password = password;
-//		this.userType = userType;
-//		this.company = company;
-//	}
-//
-//	/**
-//	 * - Ctor without purchases
-//	 */
-//	public User(long id, String username, String firstName, String lastName, String password, UserType userType, Company company) {
-//		this(username, firstName, lastName, password, userType, company);
-//		this.id = id;
-//	}
-	
 	/**
-	 * - Ctor for creation, sets the company and purchases null, for full construction use 'createUserFromDto' in UsersController
+	 * - Sets the company and purchases null
 	 */
 	public User(UserDto userDto) {
 		this.id = userDto.getId();

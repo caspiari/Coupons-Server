@@ -29,25 +29,25 @@ public class PurchasesController {
 	private UsersController usersController;
 
 
-	public Long createPurchase(PurchaseDto purchaseDto, UserLoginData userLoginData) throws ApplicationException {
-		if (userLoginData.getUserType() != UserType.ADMIN) {
-			purchaseDto.setUserId(userLoginData.getId());
-		}
-		Date now = new Date(System.currentTimeMillis());
-		purchaseDto.setTimestamp(now);
-		Purchase purchase = this.createPurchaseFromDto(purchaseDto);
-		Coupon coupon = purchase.getCoupon();
-		this.validateCreatePurchase(purchase, coupon);
-		this.couponsController.updateCouponAmount(coupon, purchase);
-		try {
-			purchase = this.purchasesDao.save(purchase);
-			long id = purchase.getId();
-			return id;
-		} catch (Exception e) {
-			throw new ApplicationException(e, ErrorType.GENERAL_ERROR,
-					"Create purchase failed " + purchaseDto.toString());
-		}
-	}
+//	public Long createPurchase(PurchaseDto purchaseDto, UserLoginData userLoginData) throws ApplicationException {
+//		if (userLoginData.getUserType() != UserType.ADMIN) {
+//			purchaseDto.setUserId(userLoginData.getId());
+//		}
+//		Date now = new Date(System.currentTimeMillis());
+//		purchaseDto.setTimestamp(now);
+//		Purchase purchase = this.createPurchaseFromDto(purchaseDto);
+//		Coupon coupon = purchase.getCoupon();
+//		this.validateCreatePurchase(purchase, coupon);
+//		this.couponsController.updateCouponAmount(coupon, purchase);
+//		try {
+//			purchase = this.purchasesDao.save(purchase);
+//			long id = purchase.getId();
+//			return id;
+//		} catch (Exception e) {
+//			throw new ApplicationException(e, ErrorType.GENERAL_ERROR,
+//					"Create purchase failed " + purchaseDto.toString());
+//		}
+//	}
 
 	public PurchaseDto getPurchase(long id) throws ApplicationException {
 		if (!(this.isPurchaseExist(id))) {
@@ -138,7 +138,6 @@ public class PurchasesController {
         } catch (Exception e) {
 	        throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete expired purchases failed");
         }
-
     }
 
 	// Validations:

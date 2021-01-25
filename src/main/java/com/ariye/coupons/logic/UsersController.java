@@ -4,10 +4,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import com.ariye.coupons.entities.Company;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
 import com.ariye.coupons.dao.CouponsDao;
 import com.ariye.coupons.dao.UsersDao;
 import com.ariye.coupons.dto.SuccessfulLoginData;
@@ -28,14 +27,13 @@ public class UsersController {
     private CompaniesController companiesController;
     @Autowired
     private CacheController cacheController;
-
     @Autowired
-    CouponsDao couponsDao;
+    private CouponsDao couponsDao;
 
     private static final String ENCRYPTION_TOKEN_SALT = "ASFDSDGFDSFGSSD-54675467#$%^";
 
     public long createUser(UserDto userDto) throws ApplicationException {
-        this.validateCreateUser(userDto);
+        this.validateUpdateUser(userDto); //same validations
         if (this.isUserExistByUsername(userDto.getUsername())) {
             throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS, "User name");
         }
@@ -70,13 +68,17 @@ public class UsersController {
         if (userLoginData.getUserType() != UserType.ADMIN) {
             userDto.setId(userLoginData.getId());
             userDto.setUserType(userLoginData.getUserType());
-            userDto.setCompanyId(userLoginData.getCompanyId());
         }
-        this.validateCreateUser(userDto); //same validations
-        if (userDto.getPassword() != null)
-        String password = String.valueOf(userDto.getPassword().hashCode());
-        userDto.setPassword(password);
+        this.validateUpdateUser(userDto);
         User user = this.getEntity(userDto.getId());
+        Company company = this.companiesController.getCompany(userDto.getCompanyId(), userLoginData);
+        String password = String.valueOf(userDto.getPassword().hashCode());
+        user.setPassword(password);
+        user.setUsername(userDto.getUsername());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setUserType(userDto.getUserType());
+        user.setCompany(company);
         try {
             this.usersDao.save(user);
         } catch (Exception e) {
@@ -100,9 +102,8 @@ public class UsersController {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
         }
         this.validateEmail(username);
-        UserDto userDto;
         try {
-            userDto = usersDao.findByUsername(username);
+            UserDto userDto = usersDao.findByUsername(username);
             return userDto;
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get user by username failed " + username);
@@ -165,7 +166,7 @@ public class UsersController {
 
 /////////////// Validations:
 
-    // not private because being used by another controller
+    // Default access modifier because being used by another controller
     boolean isUserExist(long id) throws ApplicationException {
         try {
             return this.usersDao.existsById(id);
@@ -186,7 +187,7 @@ public class UsersController {
         return true;
     }
 
-    // not private because being used by another controller
+    // Default access modifier because being used by another controller
     void validateEmail(String email) throws ApplicationException {
         if (email.substring(0, email.indexOf("@")).length() < 2) {
             throw new ApplicationException(ErrorType.INVALID_EMAIL);
@@ -205,10 +206,9 @@ public class UsersController {
         }
     }
 
-    private void validateCreateUser(UserDto userDto) throws ApplicationException {
-        // if (this.usersDao.isUsernameExist(user.getUsername())) { <-Apply
-        // after third layer
-        // throw new Exception("Username already exist");
+    private void validateUpdateUser(UserDto userDto) throws ApplicationException {
+        // if (this.usersDao.isUsernameExist(user.getUsername())) { <-Apply after third layer
+        //      throw new Exception("Username already exist");
         // }
         if (userDto.getUsername() == null) {
             throw new ApplicationException(ErrorType.MUST_INSERT_A_VALUE, "User name");
@@ -222,7 +222,9 @@ public class UsersController {
         if (userDto.getPassword() == null) {
             throw new ApplicationException(ErrorType.MUST_INSERT_A_VALUE, "Password");
         }
+
         this.validateEmail(userDto.getUsername());
+
         if (userDto.getFirstName().length() < 2) {
             throw new ApplicationException(ErrorType.NAME_IS_TOO_SHORT, "First name");
         }

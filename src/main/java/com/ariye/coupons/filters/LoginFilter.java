@@ -20,53 +20,53 @@ import com.ariye.coupons.logic.CacheController;
 @Component
 public class LoginFilter implements Filter {
 
-	@Autowired
-	CacheController cacheController;
+    @Autowired
+    CacheController cacheController;
 
-	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-														throws IOException, ServletException {
-		HttpServletRequest req = (HttpServletRequest) request;
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        HttpServletRequest req = (HttpServletRequest) request;
 
-		String pageRequested = req.getRequestURI().toString();
+        String pageRequested = req.getRequestURI().toString();
 
-		if (pageRequested.endsWith("/login")) {
-			chain.doFilter(request, response);
-			return;
-		}
+        if (pageRequested.endsWith("/login")) {
+            chain.doFilter(request, response);
+            return;
+        }
 
-		if (pageRequested.endsWith("/users") && req.getMethod().toString().equals("POST")) {
-			chain.doFilter(request, response);
-			return; 
-		}
-		
-		if (pageRequested.endsWith("/coupons") && req.getMethod().toString().equals("GET")) {
-			chain.doFilter(request, response);
-			return;
-		}
-		
-		String token = req.getHeader("Authorization");
-		UserLoginData userLoginData = (UserLoginData) cacheController.get(token);
-		
-		if (userLoginData != null) {
-			request.setAttribute("userLoginData", userLoginData);
-			chain.doFilter(request, response);
-			return;
-		}
+        if (pageRequested.endsWith("/users") && req.getMethod().toString().equals("POST")) {
+            chain.doFilter(request, response);
+            return;
+        }
 
-		HttpServletResponse res = (HttpServletResponse) response;
-		
-		res.setStatus(401);
+        if (pageRequested.endsWith("/coupons") && req.getMethod().toString().equals("GET")) {
+            chain.doFilter(request, response);
+            return;
+        }
 
-	}
+        String token = req.getHeader("Authorization");
+        UserLoginData userLoginData = (UserLoginData) cacheController.get(token);
 
-	@Override
-	public void init(FilterConfig arg0) throws ServletException {
-	}
+        if (userLoginData != null) {
+            request.setAttribute("userLoginData", userLoginData);
+            chain.doFilter(request, response);
+            return;
+        }
 
-	@Override
-	public void destroy() {
-		// TODO Auto-generated method stub
-	}
+        HttpServletResponse res = (HttpServletResponse) response;
+
+        res.setStatus(401);
+
+    }
+
+    @Override
+    public void init(FilterConfig arg0) throws ServletException {
+    }
+
+    @Override
+    public void destroy() {
+        // TODO Auto-generated method stub
+    }
 
 }

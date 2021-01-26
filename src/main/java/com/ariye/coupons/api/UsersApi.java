@@ -7,6 +7,7 @@ import com.ariye.coupons.dto.UserLoginDetails;
 import com.ariye.coupons.entities.*;
 import com.ariye.coupons.exeptions.ApplicationException;
 import com.ariye.coupons.logic.*;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,54 +29,54 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class UsersApi {
 
-	@Autowired
-	UsersController usersController;
-	@Autowired
-	CacheController cacheController;
+    @Autowired
+    UsersController usersController;
+    @Autowired
+    CacheController cacheController;
 
-	@PostMapping
-	public long createUser(@RequestBody UserDto userDto) throws ApplicationException {
-		long id = this.usersController.createUser(userDto);
-		return id;
-	}
+    @PostMapping
+    public long createUser(@RequestBody UserDto userDto) throws ApplicationException {
+        long id = this.usersController.createUser(userDto);
+        return id;
+    }
 
-	@GetMapping("/{userId}")
-	public UserDto getUser(@PathVariable("userId") long id, HttpServletRequest request) throws ApplicationException {
-		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-		UserDto userDto = this.usersController.getUser(id, userLoginData);
-		return userDto;
-	}
+    @GetMapping("/{userId}")
+    public UserDto getUser(@PathVariable("userId") long id, HttpServletRequest request) throws ApplicationException {
+        UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
+        UserDto userDto = this.usersController.getUser(id, userLoginData);
+        return userDto;
+    }
 
-	@PutMapping
-	public void updateUser(@RequestBody UserDto userDto, HttpServletRequest request) throws ApplicationException {
-		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-		this.usersController.updateUser(userDto, userLoginData);
-	}
+    @PutMapping
+    public void updateUser(@RequestBody UserDto userDto, HttpServletRequest request) throws ApplicationException {
+        UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
+        this.usersController.updateUser(userDto, userLoginData);
+    }
 
-	@DeleteMapping("/{userId}")
-	public void deleteUser(@PathVariable("userId") long id, HttpServletRequest request) throws ApplicationException {
-		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-		this.usersController.deleteUser(id, userLoginData);
-	}
+    @DeleteMapping("/{userId}")
+    public void deleteUser(@PathVariable("userId") long id, HttpServletRequest request) throws ApplicationException {
+        UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
+        this.usersController.deleteUser(id, userLoginData);
+    }
 
-	@GetMapping("/byUsername")
-	public UserDto getUserByUsername(@RequestParam("username") String username, HttpServletRequest request) throws ApplicationException {
-		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-		UserDto userDto = this.usersController.getUserByUsername(username, userLoginData);
-		return userDto;
-	}
+    @GetMapping("/byUsername")
+    public UserDto getUserByUsername(@RequestParam("username") String username, HttpServletRequest request) throws ApplicationException {
+        UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
+        UserDto userDto = this.usersController.getUserByUsername(username, userLoginData);
+        return userDto;
+    }
 
-	@GetMapping
-	public List<UserDto> getAllUsers(HttpServletRequest request) throws ApplicationException {
-		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-		List<UserDto> users = usersController.getAllUsers(userLoginData);
-		return users;
-	}
+    @GetMapping
+    public List<UserDto> getAllUsers(HttpServletRequest request) throws ApplicationException {
+        UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
+        List<UserDto> users = usersController.getAllUsers(userLoginData);
+        return users;
+    }
 
-	@PostMapping("/login")
-	public SuccessfulLoginData login(@RequestBody UserLoginDetails userLoginDetails) throws ApplicationException {
-		SuccessfulLoginData successfulLoginData = this.usersController.login(userLoginDetails);
-		return successfulLoginData;
-	}
+    @PostMapping("/login")
+    public SuccessfulLoginData login(@RequestBody UserLoginDetails userLoginDetails) throws ApplicationException {
+        SuccessfulLoginData successfulLoginData = this.usersController.login(userLoginDetails);
+        return successfulLoginData;
+    }
 
 }

@@ -3,6 +3,7 @@ package com.ariye.coupons.logic;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import com.ariye.coupons.dao.CouponsDao;
@@ -15,6 +16,7 @@ import com.ariye.coupons.enums.CouponType;
 import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
+
 import javax.annotation.PostConstruct;
 
 @Controller
@@ -27,7 +29,7 @@ public class CouponsController {
     @Autowired
     private CompaniesController companiesController;
     @Autowired
-    private  PurchasesController purchasesController;
+    private PurchasesController purchasesController;
 
     public long createCoupon(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
         this.validateCreateCoupon(couponDto, userLoginData);
@@ -53,6 +55,18 @@ public class CouponsController {
             return couponDto;
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupon failed " + id);
+        }
+    }
+
+    public Coupon getEntity(long id) throws ApplicationException {
+        if (!(this.isCouponExist(id))) {
+            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
+        }
+        try {
+            Coupon coupon = this.couponsDao.findById(id).get();
+            return coupon;
+        } catch (Exception e) {
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupon entity failed " + id);
         }
     }
 
@@ -100,23 +114,23 @@ public class CouponsController {
         }
     }
 
-	public List<CouponDto> getCouponsByCompanyId(long id) throws ApplicationException {
-		try {
-			List<CouponDto> coupons = this.couponsDao.getByCompanyId(id);
+    public List<CouponDto> getCouponsByCompanyId(long id) throws ApplicationException {
+        try {
+            List<CouponDto> coupons = this.couponsDao.getByCompanyId(id);
             return coupons;
-		} catch (Exception e) {
-			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupons by company id failed " + id);
-		}
-	}
+        } catch (Exception e) {
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupons by company id failed " + id);
+        }
+    }
 
-	public List<CouponDto> getCouponsByType(CouponType couponType) throws ApplicationException {
-		try {
-			List<CouponDto> coupons = this.couponsDao.getByCategory(couponType);
-			return coupons;
-		} catch (Exception e) {
-			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupons by type failed " + couponType);
-		}
-	}
+    public List<CouponDto> getCouponsByType(CouponType couponType) throws ApplicationException {
+        try {
+            List<CouponDto> coupons = this.couponsDao.getByCategory(couponType);
+            return coupons;
+        } catch (Exception e) {
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupons by type failed " + couponType);
+        }
+    }
 
     public List<CouponDto> getPurchasedCouponsByMaxPrice(long userId, float maxPrice, UserLoginData userLoginData) throws ApplicationException {
         if (userLoginData.getUserType() != UserType.ADMIN) {
@@ -142,18 +156,17 @@ public class CouponsController {
         }
     }
 
-    // I deleted the purchases separately because JPA blocks custom delete queries if there are associated purchases to delete
-	public void deleteExpiredCoupons() throws ApplicationException {
-		try {
-			this.purchasesController.deleteExpiredPurchases();
+    public void deleteExpiredCoupons() throws ApplicationException {
+        try {
+            this.purchasesController.deleteExpiredPurchases();
             Date now = new Date(System.currentTimeMillis());
             this.couponsDao.deleteExpiredCoupons(now);
-		} catch (Exception e) {
-			throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete expired coupons failed");
-		}
-	}
+        } catch (Exception e) {
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete expired coupons failed");
+        }
+    }
 
-	//Default access modifier because being used from purchases controller
+    //Default access modifier because being used from purchases controller
     Coupon createCouponFromDto(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
         Company company = this.companiesController.getCompany(couponDto.getCompanyId(), userLoginData);
         Coupon coupon = new Coupon(couponDto.getName(), couponDto.getDescription(), couponDto.getPrice(), company,

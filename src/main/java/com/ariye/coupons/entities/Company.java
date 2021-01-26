@@ -24,99 +24,100 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @SuppressWarnings("serial")
 public class Company implements Serializable {
 
-	@Id
-	@GeneratedValue
-	private long id;
+    @Id
+    @GeneratedValue
+    private long id;
 
-	@Column(unique = true, nullable = false)
-	private String name;
+    @Column(unique = true, nullable = false)
+    private String name;
 
-	private String address;
+    private String address;
 
-	private String phone;
+    private String phone;
 
-	@OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE)
-	@JsonIgnore
-	private List<User> users;
+    @OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    private List<User> users;
 
-	@OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE)
-	@JsonIgnore
-	private List<Coupon> coupons;
+    @OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    private List<Coupon> coupons;
 
 
-	/**
-	 * - Ctor for creation - without id, users and coupons
-	 */
-	public Company(String name, String address, String phone) {
-		this.name = name;
-		this.address = address;
-		this.phone = phone;
-	}
-	/**
-	 * - Full ctor
-	 */
-	public Company(long id, String name, String address, String phone, List<User> users, List<Coupon> coupons) {
-		this(name, address, phone);
-		this.id = id;
-		this.users = users;
-		this.coupons = coupons;
-	}
+    /**
+     * - Ctor for creation - without id, users and coupons
+     */
+    public Company(String name, String address, String phone) {
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+    }
 
-	public Company() {
-	}
+    /**
+     * - Full ctor
+     */
+    public Company(long id, String name, String address, String phone, List<User> users, List<Coupon> coupons) {
+        this(name, address, phone);
+        this.id = id;
+        this.users = users;
+        this.coupons = coupons;
+    }
 
-	
-	public long getId() {
-		return id;
-	}
+    public Company() {
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
 
-	public String getName() {
-		return name;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getPhone() {
-		return phone;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public List<User> getUsers() {
-		return users;
-	}
+    public String getPhone() {
+        return phone;
+    }
 
-	public void setUsers(List<User> users) {
-		this.users = users;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	public List<Coupon> getCoupons() {
-		return coupons;
-	}
+    public List<User> getUsers() {
+        return users;
+    }
 
-	public void setCoupons(List<Coupon> coupons) {
-		this.coupons = coupons;
-	}
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
 
-	@Override
-	public String toString() {
-		return "\nCompany [id=" + id + ", name=" + name + ", address=" + address + ", phone=" + phone + "]";
-	}
+    public List<Coupon> getCoupons() {
+        return coupons;
+    }
+
+    public void setCoupons(List<Coupon> coupons) {
+        this.coupons = coupons;
+    }
+
+    @Override
+    public String toString() {
+        return "\nCompany [id=" + id + ", name=" + name + ", address=" + address + ", phone=" + phone + "]";
+    }
 
 }

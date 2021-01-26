@@ -6,118 +6,119 @@ import java.sql.Timestamp;
 
 public class PurchaseDto {
 
-	private Long id;
-	private long userId;
-	private long couponId;
-	private long amount;
-	private Date timestamp;
-	private String couponName;
-	private String companyName;
-	private String username;
+    private Long id;
+    private long userId;
+    private long couponId;
+    private long amount;
+    private Date timestamp;
+    private String couponName;
+    private String companyName;
+    private String username;
 
-	public PurchaseDto() {
-	}
-	
-	/**
-	 * - Full ctor
-	 */
-	public PurchaseDto(Long id, long userId, long couponId, long amount, Date timestamp, String couponName,
-			String companyName, String username) {
-		this.id = id;
-		this.userId = userId;
-		this.couponId = couponId;
-		this.amount = amount;
-		this.timestamp = timestamp;
-		this.couponName = couponName;
-		this.companyName = companyName;
-		this.username = username;
-	}
-	
-	/**
-	 * - Ctor for 'get' method
-	 * @param couponName
-	 * @param companyName
-	 * @param username
-	 * @param amount
-	 * @param timestamp
-	 */
-	public PurchaseDto(String couponName, String companyName, String username, long amount, Date timestamp) {
-		this.couponName = couponName;
-		this.companyName = companyName;
-		this.username = username;
-		this.amount = amount;
-		this.timestamp = new Timestamp(timestamp.getTime());
-	}
-	
-	@Override
-	public String toString() {
-		return "PurchaseDto [id=" + id + ", userId=" + userId + ", couponId=" + couponId + ", amount=" + amount
-				+ ", timestamp=" + timestamp + ", couponName=" + couponName + ", companyName=" + companyName
-				+ ", username=" + username + "]";
-	}
+    public PurchaseDto() {
+    }
 
-	public long getId() {
-		return id;
-	}
+    /**
+     * - Full ctor
+     */
+    public PurchaseDto(Long id, long userId, long couponId, long amount, Date timestamp, String couponName,
+                       String companyName, String username) {
+        this.id = id;
+        this.userId = userId;
+        this.couponId = couponId;
+        this.amount = amount;
+        this.timestamp = timestamp;
+        this.couponName = couponName;
+        this.companyName = companyName;
+        this.username = username;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    /**
+     * - Ctor for 'get' method
+     *
+     * @param couponName
+     * @param companyName
+     * @param username
+     * @param amount
+     * @param timestamp
+     */
+    public PurchaseDto(String couponName, String companyName, String username, long amount, Date timestamp) {
+        this.couponName = couponName;
+        this.companyName = companyName;
+        this.username = username;
+        this.amount = amount;
+        this.timestamp = new Timestamp(timestamp.getTime());
+    }
 
-	public Long getUserId() {
-		return userId;
-	}
+    @Override
+    public String toString() {
+        return "PurchaseDto [id=" + id + ", userId=" + userId + ", couponId=" + couponId + ", amount=" + amount
+                + ", timestamp=" + timestamp + ", couponName=" + couponName + ", companyName=" + companyName
+                + ", username=" + username + "]";
+    }
 
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public long getCouponId() {
-		return couponId;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setCouponId(long couponId) {
-		this.couponId = couponId;
-	}
+    public Long getUserId() {
+        return userId;
+    }
 
-	public String getCouponName() {
-		return couponName;
-	}
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
 
-	public void setCouponName(String couponName) {
-		this.couponName = couponName;
-	}
+    public long getCouponId() {
+        return couponId;
+    }
 
-	public String getCompanyName() {
-		return companyName;
-	}
+    public void setCouponId(long couponId) {
+        this.couponId = couponId;
+    }
 
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
-	}
+    public String getCouponName() {
+        return couponName;
+    }
 
-	public long getAmount() {
-		return amount;
-	}
+    public void setCouponName(String couponName) {
+        this.couponName = couponName;
+    }
 
-	public void setAmount(long amount) {
-		this.amount = amount;
-	}
+    public String getCompanyName() {
+        return companyName;
+    }
 
-	public Date getTimestamp() {
-		return timestamp;
-	}
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
 
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
-	}
+    public long getAmount() {
+        return amount;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public void setAmount(long amount) {
+        this.amount = amount;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
 }

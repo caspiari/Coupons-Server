@@ -1,46 +1,43 @@
 package com.ariye.coupons.dto;
 
 public class ErrorBean {
-	
-	private int errorNumber;
-	private String errorName;
-	private String errorMessage;
-	
-	
-	public ErrorBean(int errorNumber, String errorName, String errorMessage) {
-		this.errorNumber = errorNumber;
-		this.errorName = errorName;
-		this.errorMessage = errorMessage;
-	}
+
+    private int errorNumber;
+    private String errorName;
+    private String errorMessage;
 
 
-	public ErrorBean() {
-	}
+    public ErrorBean(int errorNumber, String errorName, String errorMessage) {
+        this.errorNumber = errorNumber;
+        this.errorName = errorName;
+        this.errorMessage = errorMessage;
+    }
 
 
-	public int getErrorNumber() {
-		return errorNumber;
-	}
+    public ErrorBean() {
+    }
 
 
-	public String getErrorNane() {
-		return errorName;
-	}
+    public int getErrorNumber() {
+        return errorNumber;
+    }
 
 
-	public String getErrorMessage() {
-		return errorMessage;
-	}
+    public String getErrorNane() {
+        return errorName;
+    }
 
 
-	@Override
-	public String toString() {
-		return "ErrorBean [errorNumber=" + errorNumber + ", errorNane=" + errorName + ", errorMessage=" + errorMessage
-				+ "]";
-	}
-	
-	
-	
-	
-	
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+
+    @Override
+    public String toString() {
+        return "ErrorBean [errorNumber=" + errorNumber + ", errorNane=" + errorName + ", errorMessage=" + errorMessage
+                + "]";
+    }
+
+
 }

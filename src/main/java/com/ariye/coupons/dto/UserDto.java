@@ -2,91 +2,91 @@ package com.ariye.coupons.dto;
 
 import com.ariye.coupons.enums.UserType;
 
-public class UserDto{
+public class UserDto {
 
-	private Long id;
-	private String username;
-	private String firstName;
-	private String lastName;
-	private String password;
-	private UserType userType;
-	private Long companyId;
+    private Long id;
+    private String username;
+    private String firstName;
+    private String lastName;
+    private String password;
+    private UserType userType;
+    private Long companyId;
 
-	
-	public UserDto(Long id, String username, String firstName, String lastName, String password, UserType userType,
-			Long companyId) {
-		this.id = id;
-		this.username = username;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.password = password;
-		this.userType = userType;
-		this.companyId = companyId;
-	}
 
-	public UserDto() {
-	}
-	
-	@Override
-	public String toString() {
-		return "UserDto [id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", password=" + password + ", userType=" + userType + ", companyId=" + companyId + "]";
-	}
+    public UserDto(Long id, String username, String firstName, String lastName, String password, UserType userType,
+                   Long companyId) {
+        this.id = id;
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.userType = userType;
+        this.companyId = companyId;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public UserDto() {
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @Override
+    public String toString() {
+        return "UserDto [id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastName=" + lastName
+                + ", password=" + password + ", userType=" + userType + ", companyId=" + companyId + "]";
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public UserType getUserType() {
-		return userType;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setUserType(UserType userType) {
-		this.userType = userType;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public Long getCompanyId() {
-		return companyId;
-	}
+    public UserType getUserType() {
+        return userType;
+    }
 
-	public void setCompanyId(Long companyId) {
-		this.companyId = companyId;
-	}
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
 
 }

@@ -2,6 +2,7 @@ package com.ariye.coupons.api;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,43 +22,43 @@ import com.ariye.coupons.logic.CompaniesController;
 @RequestMapping("/companies")
 public class CompaniesApi {
 
-	@Autowired
-	private CompaniesController companiesController;
+    @Autowired
+    private CompaniesController companiesController;
 
-	@PostMapping
-	public long createCompany(@RequestBody CompanyDto companyDto, HttpServletRequest request) throws ApplicationException {
-		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-		long id = this.companiesController.createCompany(companyDto, userLoginData);
-		return id;
-	}
+    @PostMapping
+    public long createCompany(@RequestBody CompanyDto companyDto, HttpServletRequest request) throws ApplicationException {
+        UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
+        long id = this.companiesController.createCompany(companyDto, userLoginData);
+        return id;
+    }
 
-	@GetMapping("/{companyId}")
-	public CompanyDto getCompany(@PathVariable("companyId") long id, HttpServletRequest request)
-			throws ApplicationException {
-		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-		CompanyDto companyDto = this.companiesController.getCompanyDto(id, userLoginData);
-		return companyDto;
-	}
+    @GetMapping("/{companyId}")
+    public CompanyDto getCompany(@PathVariable("companyId") long id, HttpServletRequest request)
+            throws ApplicationException {
+        UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
+        CompanyDto companyDto = this.companiesController.getCompanyDto(id, userLoginData);
+        return companyDto;
+    }
 
-	@PutMapping
-	public void updateCompany(@RequestBody CompanyDto companyDto, HttpServletRequest request)
-			throws ApplicationException {
-		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-		this.companiesController.updateCompany(companyDto, userLoginData);
-	}
+    @PutMapping
+    public void updateCompany(@RequestBody CompanyDto companyDto, HttpServletRequest request)
+            throws ApplicationException {
+        UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
+        this.companiesController.updateCompany(companyDto, userLoginData);
+    }
 
-	@DeleteMapping("/{companyId}")
-	public void deleteCompany(@PathVariable("companyId") long id, HttpServletRequest request)
-			throws ApplicationException {
-		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-		this.companiesController.deleteCompany(id, userLoginData);
-	}
+    @DeleteMapping("/{companyId}")
+    public void deleteCompany(@PathVariable("companyId") long id, HttpServletRequest request)
+            throws ApplicationException {
+        UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
+        this.companiesController.deleteCompany(id, userLoginData);
+    }
 
-	@GetMapping
-	public List<Company> getAllCompanies(HttpServletRequest request) throws ApplicationException {
-		UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-		List<Company> companies = this.companiesController.getAllCompanies(userLoginData);
-		return companies;
-	}
+    @GetMapping
+    public List<Company> getAllCompanies(HttpServletRequest request) throws ApplicationException {
+        UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
+        List<Company> companies = this.companiesController.getAllCompanies(userLoginData);
+        return companies;
+    }
 
 }

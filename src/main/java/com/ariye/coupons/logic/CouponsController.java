@@ -17,6 +17,8 @@ import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
 
+import javax.annotation.PostConstruct;
+
 @Controller
 public class CouponsController {
 
@@ -40,6 +42,9 @@ public class CouponsController {
             long id = coupon.getId();
             return id;
         } catch (Exception e) {
+            if(e instanceof ApplicationException) {
+                throw  e;
+            }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create coupon failed " + couponDto.toString());
         }
     }
@@ -156,9 +161,8 @@ public class CouponsController {
 
     public void deleteExpiredCoupons() throws ApplicationException {
         try {
-            this.purchasesController.deleteExpiredPurchases();
             Date now = new Date(System.currentTimeMillis());
-            this.couponsDao.deleteExpiredCoupons(now);
+            this.couponsDao.deleteAllByEndDateBefore(now);
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete expired coupons failed");
         }

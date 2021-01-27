@@ -20,6 +20,8 @@ public interface CouponsDao extends CrudRepository<Coupon, Long> {
     @Query("select new com.ariye.coupons.dto.CouponDto(c.id, c.name, c.description, c.price, c.startDate, c.endDate, c.category, c.amount, c.company.id) from Coupon c where c.name = ?1")
     public CouponDto getByName(String name) throws Exception;
 
+//    public boolean existByNameAndCompanyId(String name, long companyId);
+
     @Query("select new com.ariye.coupons.dto.CouponDto(c.id, c.name, c.description, c.price, c.startDate, c.endDate, c.category, c.amount, c.company.id) from Coupon c where c.company.id = ?1")
     public List<CouponDto> getByCompanyId(long id) throws Exception;
 
@@ -33,9 +35,8 @@ public interface CouponsDao extends CrudRepository<Coupon, Long> {
     public List<CouponDto> getAll();
 
     @Transactional
-    @Modifying
-    @Query("delete from Coupon c where c.endDate < ?1")
-    public void deleteExpiredCoupons(Date now);
+    public void deleteAllByEndDateBefore(Date now);
+
 }
 
 

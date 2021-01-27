@@ -21,8 +21,6 @@ public class CompaniesController {
     @Autowired
     private CompaniesDao companiesDao;
 
-    @PostConstruct
-    void checkExistsByName()
     public long createCompany(CompanyDto companyDto, UserLoginData userLoginData) throws ApplicationException {
         if (userLoginData.getUserType() != UserType.ADMIN) {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
@@ -30,14 +28,17 @@ public class CompaniesController {
         Company company = this.createCompanyFromDto(companyDto);
         this.validateUpdateCompany(company); // <--Same validations
         String name = company.getName();
-        if (this.companiesDao.existsByName(name)) {
-            throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS);
-        }
         try {
+            if (this.companiesDao.existsByName(name)) {
+                throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS);
+            }
             company = this.companiesDao.save(company);
             long id = company.getId();
             return id;
         } catch (Exception e) {
+            if (e instanceof ApplicationException) {
+                throw e;
+            }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create company failed " + company.toString());
         }
     }
@@ -54,12 +55,7 @@ public class CompaniesController {
     }
 
     public CompanyDto getCompany(Long id, UserLoginData userLoginData) throws ApplicationException {
-        if (userLoginData.getUserType() != UserType.ADMIN) {
-            id = userLoginData.getCompanyId();
-        }
-        if (!(this.isCompanyExist(id))) {
-            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Company id");
-        }
+        id = this.validateGetCompany(id, userLoginData);
         try {
             CompanyDto companyDto = this.companiesDao.getById(id);
             return companyDto;
@@ -69,12 +65,7 @@ public class CompaniesController {
     }
 
     Company getEntity(Long id, UserLoginData userLoginData) throws ApplicationException {
-        if (userLoginData.getUserType() != UserType.ADMIN) {
-            id = userLoginData.getCompanyId();
-        }
-        if (!(this.isCompanyExist(id))) {
-            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Company id");
-        }
+        id = this.validateGetCompany(id, userLoginData);
         try {
             Company company = this.companiesDao.findById(id).get();
             return company;
@@ -85,6 +76,7 @@ public class CompaniesController {
 
     public void updateCompany(CompanyDto companyDto, UserLoginData userLoginData) throws ApplicationException {
         Company company = this.createCompanyFromDto(companyDto);
+        company.setId(companyDto.getId());
         if (userLoginData.getUserType() != UserType.ADMIN) {
             company.setId(userLoginData.getCompanyId());
         }
@@ -92,8 +84,7 @@ public class CompaniesController {
         try {
             this.companiesDao.save(company);
         } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR,
-                    "Update company failed " + companyDto.toString());
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Update company failed " + companyDto.toString());
         }
     }
 
@@ -140,6 +131,16 @@ public class CompaniesController {
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Is company exist failed" + id);
         }
+    }
+
+    private long validateGetCompany(long id, UserLoginData userLoginData) throws ApplicationException {
+        if (userLoginData.getUserType() != UserType.ADMIN) {
+            id = userLoginData.getCompanyId();
+        }
+        if (!(this.isCompanyExist(id))) {
+            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Company id");
+        }
+        return id;
     }
 
     private void validateUpdateCompany(Company company) throws ApplicationException {

@@ -14,7 +14,7 @@ public class DailyTask {
     @Autowired
     CouponsController couponsController;
 
-    @Scheduled(cron = "0 3 15 * * *")
+    @Scheduled(cron = "0 30 1 * * *")
     public void deleteExpiredCoupons() throws ApplicationException {
         couponsController.deleteExpiredCoupons();
     }

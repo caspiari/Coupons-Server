@@ -107,18 +107,13 @@ public class CompaniesController {
     }
 
     public CompanyDto getCompanyByName(String name, UserLoginData userLoginData) throws ApplicationException {
+        if (userLoginData.getUserType() != UserType.ADMIN) {
+            throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
+        }
         try {
             CompanyDto companyDto = this.companiesDao.getByName(name);
-            if (userLoginData.getUserType() != UserType.ADMIN) {
-                if (companyDto.getId() != userLoginData.getCompanyId()) {
-                    throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, "Company belongs to other user " + userLoginData.toString());
-                }
-            }
             return companyDto;
         } catch (Exception e) {
-            if (e instanceof ApplicationException) {
-                throw e;
-            }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get company by name failed " + name);
         }
     }

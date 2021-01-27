@@ -123,6 +123,9 @@ public class CompaniesController {
         }
     }
 
+    /**
+     * - Returns entity with null id
+     */
     private Company createCompanyFromDto(CompanyDto companyDto) {
         Company company = new Company(companyDto.getName(), companyDto.getAddress(), companyDto.getPhone());
         return company;

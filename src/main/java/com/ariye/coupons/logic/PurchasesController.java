@@ -133,7 +133,6 @@ public class PurchasesController {
         }
     }
 
-    @Transactional
     public void deleteExpiredPurchases() throws ApplicationException {
         Date now = new Date(System.currentTimeMillis());
         try {

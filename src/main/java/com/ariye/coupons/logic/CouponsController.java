@@ -157,7 +157,6 @@ public class CouponsController {
     public void deleteExpiredCoupons() throws ApplicationException {
         try {
             this.purchasesController.deleteExpiredPurchases();
-            System.out.println("YALA yala daber elay");
             Date now = new Date(System.currentTimeMillis());
             this.couponsDao.deleteExpiredCoupons(now);
         } catch (Exception e) {

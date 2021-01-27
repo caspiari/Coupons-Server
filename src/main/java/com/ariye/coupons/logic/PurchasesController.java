@@ -2,6 +2,7 @@ package com.ariye.coupons.logic;
 
 import java.sql.Date;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import com.ariye.coupons.dao.PurchasesDao;
@@ -47,7 +48,7 @@ public class PurchasesController {
     }
 
     public PurchaseDto getPurchase(long id, UserLoginData userLoginData) throws ApplicationException {
-        if (!(this.isPurchaseExist(id))) {
+        if (!(this.purchasesDao.existsById(id))) {
             throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Purchase id");
         }
         try {
@@ -68,7 +69,7 @@ public class PurchasesController {
         if (userLoginData.getUserType() != UserType.ADMIN) {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
         }
-        if (!(this.isPurchaseExist(id))) {
+        if (!(this.purchasesDao.existsById(id))) {
             throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Purchase id");
         }
         try {
@@ -143,14 +144,6 @@ public class PurchasesController {
     }
 
     // Validations:
-
-    private boolean isPurchaseExist(long id) throws ApplicationException {
-        try {
-            return this.purchasesDao.existsById(id);
-        } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Is purchase exist failed " + id);
-        }
-    }
 
     private void validateCreatePurchase(Purchase purchase, Coupon coupon) throws ApplicationException {
         if (purchase.getAmount() > coupon.getAmount()) {

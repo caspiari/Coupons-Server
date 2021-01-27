@@ -13,12 +13,16 @@ import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.annotation.PostConstruct;
+
 @Controller
 public class CompaniesController {
 
     @Autowired
     private CompaniesDao companiesDao;
 
+    @PostConstruct
+    void checkExistsByName()
     public long createCompany(CompanyDto companyDto, UserLoginData userLoginData) throws ApplicationException {
         if (userLoginData.getUserType() != UserType.ADMIN) {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
@@ -26,10 +30,10 @@ public class CompaniesController {
         Company company = this.createCompanyFromDto(companyDto);
         this.validateUpdateCompany(company); // <--Same validations
         String name = company.getName();
+        if (this.companiesDao.existsByName(name)) {
+            throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS);
+        }
         try {
-            if (this.companiesDao.getByName(name) != null) {
-                throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS);
-            }
             company = this.companiesDao.save(company);
             long id = company.getId();
             return id;
@@ -64,7 +68,6 @@ public class CompaniesController {
         }
     }
 
-    //Default access modifier because used by other controllers
     Company getEntity(Long id, UserLoginData userLoginData) throws ApplicationException {
         if (userLoginData.getUserType() != UserType.ADMIN) {
             id = userLoginData.getCompanyId();
@@ -128,7 +131,6 @@ public class CompaniesController {
 
 ///////////////// Validations:
 
-    // Default modifier because used in another controllers
     boolean isCompanyExist(Long id) throws ApplicationException {
         if (id == null) {
             return false;
@@ -137,18 +139,6 @@ public class CompaniesController {
             return this.companiesDao.existsById(id);
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Is company exist failed" + id);
-        }
-    }
-
-    private boolean isCompanyExistByName(String name) throws ApplicationException {
-        try {
-            CompanyDto companyDto = this.companiesDao.getByName(name);
-            if (companyDto == null) {
-                return false;
-            }
-            return true;
-        } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Is company exist by name failed " + name);
         }
     }
 

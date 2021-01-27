@@ -33,42 +33,50 @@ public class CouponsController {
 
     public long createCoupon(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
         this.validateCreateCoupon(couponDto, userLoginData);
-        if (this.isCouponExistByName(couponDto.getName())) {
+        Coupon coupon = this.createCouponFromDto(couponDto, userLoginData);
+        Company company = coupon.getCompany();
+        //This validation is here because 'validateUpdateCoupon' uses 'validateCreateCoupon'
+        if (this.couponsDao.existsByNameAndCompanyId(company.getName(), company.getId())) {
             throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS, "Coupon name");
         }
-        Coupon coupon = this.createCouponFromDto(couponDto, userLoginData);
         try {
             coupon = this.couponsDao.save(coupon);
             long id = coupon.getId();
             return id;
         } catch (Exception e) {
-            if(e instanceof ApplicationException) {
-                throw  e;
+            if (e instanceof ApplicationException) {
+                throw e;
             }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create coupon failed " + couponDto.toString());
         }
     }
 
     public CouponDto getCoupon(long id) throws ApplicationException {
-        if (!(this.isCouponExist(id))) {
-            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
-        }
         try {
+            if (!(this.couponsDao.existsById(id))) {
+                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
+            }
             CouponDto couponDto = this.couponsDao.getById(id);
             return couponDto;
         } catch (Exception e) {
+            if (e instanceof ApplicationException) {
+                throw e;
+            }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupon failed " + id);
         }
     }
 
     public Coupon getEntity(long id) throws ApplicationException {
-        if (!(this.isCouponExist(id))) {
-            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
-        }
         try {
+            if (!(this.couponsDao.existsById(id))) {
+                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
+            }
             Coupon coupon = this.couponsDao.findById(id).get();
             return coupon;
         } catch (Exception e) {
+            if (e instanceof ApplicationException) {
+                throw e;
+            }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupon entity failed " + id);
         }
     }
@@ -89,7 +97,6 @@ public class CouponsController {
         }
     }
 
-    // Default access modifier because being used from purchases controller
     void updateCouponAmount(Coupon coupon, Purchase purchase) throws ApplicationException {
         coupon.setAmount(coupon.getAmount() - purchase.getAmount());
         try {
@@ -100,19 +107,21 @@ public class CouponsController {
     }
 
     public void deleteCoupon(long id, UserLoginData userLoginData) throws ApplicationException {
-        if (!(this.isCouponExist(id))) {
-            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
-        }
         try {
+            if (!(this.couponsDao.existsById(id))) {
+                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
+            }
             if (userLoginData.getUserType() != UserType.ADMIN) {
-                Coupon coupon = this.couponsDao.findById(id).get();
-                CouponDto couponDto = new CouponDto(coupon);
+                CouponDto couponDto = this.couponsDao.getById(id);
                 if (couponDto.getCompanyId() != userLoginData.getCompanyId()) {
                     throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
                 }
             }
             this.couponsDao.deleteById(id);
         } catch (Exception e) {
+            if (e instanceof ApplicationException) {
+                throw e;
+            }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete coupon failed " + id);
         }
     }
@@ -168,7 +177,6 @@ public class CouponsController {
         }
     }
 
-    //Default access modifier because being used from purchases controller
     Coupon createCouponFromDto(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
         Company company = this.companiesController.getEntity(couponDto.getCompanyId(), userLoginData);
         Coupon coupon = new Coupon(couponDto.getName(), couponDto.getDescription(), couponDto.getPrice(), company,
@@ -178,27 +186,6 @@ public class CouponsController {
 
 /////////////// Validations:
 
-    private boolean isCouponExistByName(String name) throws ApplicationException {
-        try {
-            CouponDto couponDto = this.couponsDao.getByName(name);
-            if (couponDto != null) {
-                return true;
-            }
-            return false;
-        } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Is coupon exist by name failed" + name);
-        }
-    }
-
-    private boolean isCouponExist(long id) throws ApplicationException {
-        try {
-            return this.couponsDao.existsById(id);
-        } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Is coupon exist failed " + id);
-        }
-    }
-
-    // Default access modifier because being used by another controller
     boolean isCouponAvailable(long id) throws ApplicationException {
         try {
             Coupon coupon = couponsDao.findById(id).get();
@@ -246,7 +233,6 @@ public class CouponsController {
             throw new ApplicationException(ErrorType.INVALID_AMOUNT, "Must be positive");
         }
     }
-
 
     private Coupon validateUpdateCoupon(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
         this.validateCreateCoupon(couponDto, userLoginData);

@@ -30,7 +30,8 @@ public class Coupon implements Serializable {
     @GeneratedValue
     private long id;
 
-    @Column(unique = true, nullable = false)
+    //I allowed double names in the database if it's from another company
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)

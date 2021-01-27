@@ -21,4 +21,5 @@ public interface CompaniesDao extends CrudRepository<Company, Long> {
     @Query("select new com.ariye.coupons.dto.CompanyDto(c.id, c.name, c.address, c.phone) from Company c where c.name = ?1")
     public CompanyDto getByName(String name);
 
+    public boolean existsByName(String name);
 }

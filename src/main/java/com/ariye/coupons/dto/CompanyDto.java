@@ -4,12 +4,12 @@ import com.ariye.coupons.entities.Company;
 
 public class CompanyDto {
 
-    private Long id;
+    private long id;
     private String name;
     private String address;
     private String phone;
 
-    public CompanyDto(Long id, String name, String address, String phone) {
+    public CompanyDto(long id, String name, String address, String phone) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -29,11 +29,11 @@ public class CompanyDto {
         return "CompanyDto [id=" + id + ", name=" + name + ", address=" + address + ", phone=" + phone + "]";
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

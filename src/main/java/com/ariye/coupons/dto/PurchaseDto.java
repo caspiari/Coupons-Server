@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 
 public class PurchaseDto {
 
-    private Long id;
+    private long id;
     private long userId;
     private long couponId;
     private long amount;
@@ -21,7 +21,7 @@ public class PurchaseDto {
     /**
      * - Full ctor
      */
-    public PurchaseDto(Long id, long userId, long couponId, long amount, Date timestamp, String couponName,
+    public PurchaseDto(long id, long userId, long couponId, long amount, Date timestamp, String couponName,
                        String companyName, String username) {
         this.id = id;
         this.userId = userId;
@@ -61,11 +61,11 @@ public class PurchaseDto {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return userId;
     }
 

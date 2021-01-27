@@ -27,7 +27,7 @@ public class CompaniesController {
         this.validateUpdateCompany(company); // <--Same validations
         String name = company.getName();
         try {
-            if (this.companiesDao.findCompanyByName(name) != null) {
+            if (this.companiesDao.getByName(name) != null) {
                 throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS);
             }
             company = this.companiesDao.save(company);
@@ -49,18 +49,34 @@ public class CompaniesController {
         }
     }
 
-    public Company getCompany(Long id, UserLoginData userLoginData) throws ApplicationException {
+    public CompanyDto getCompany(Long id, UserLoginData userLoginData) throws ApplicationException {
         if (userLoginData.getUserType() != UserType.ADMIN) {
             id = userLoginData.getCompanyId();
         }
         if (!(this.isCompanyExist(id))) {
-            return null;
+            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Company id");
+        }
+        try {
+            CompanyDto companyDto = this.companiesDao.getById(id);
+            return companyDto;
+        } catch (Exception e) {
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get company failed " + id);
+        }
+    }
+
+    //Default access modifier because used by other controllers
+    Company getEntity(Long id, UserLoginData userLoginData) throws ApplicationException {
+        if (userLoginData.getUserType() != UserType.ADMIN) {
+            id = userLoginData.getCompanyId();
+        }
+        if (!(this.isCompanyExist(id))) {
+            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Company id");
         }
         try {
             Company company = this.companiesDao.findById(id).get();
             return company;
         } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get company failed " + id);
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get company entity failed " + id);
         }
     }
 
@@ -78,22 +94,32 @@ public class CompaniesController {
         }
     }
 
-    public CompanyDto getCompanyDto(long id, UserLoginData userLoginData) throws ApplicationException {
-        Company company = this.getCompany(id, userLoginData);
-        CompanyDto companyDto = new CompanyDto(company);
-        return companyDto;
-    }
-
-    @JsonIgnore
-    public List<Company> getAllCompanies(UserLoginData userLoginData) throws ApplicationException {
+    public List<CompanyDto> getAllCompanies(UserLoginData userLoginData) throws ApplicationException {
         if (userLoginData.getUserType() != UserType.ADMIN) {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
         }
         try {
-            List<Company> companies = (List<Company>) this.companiesDao.findAll();
+            List<CompanyDto> companies = this.companiesDao.getAll();
             return companies;
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get all companies failed");
+        }
+    }
+
+    public CompanyDto getCompanyByName(String name, UserLoginData userLoginData) throws ApplicationException {
+        try {
+            CompanyDto companyDto = this.companiesDao.getByName(name);
+            if (userLoginData.getUserType() != UserType.ADMIN) {
+                if (companyDto.getId() != userLoginData.getCompanyId()) {
+                    throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, "Company belongs to other user " + userLoginData.toString());
+                }
+            }
+            return companyDto;
+        } catch (Exception e) {
+            if (e instanceof ApplicationException) {
+                throw e;
+            }
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get company by name failed " + name);
         }
     }
 
@@ -118,8 +144,8 @@ public class CompaniesController {
 
     private boolean isCompanyExistByName(String name) throws ApplicationException {
         try {
-            Company company = this.companiesDao.findCompanyByName(name);
-            if (company == null) {
+            CompanyDto companyDto = this.companiesDao.getByName(name);
+            if (companyDto == null) {
                 return false;
             }
             return true;

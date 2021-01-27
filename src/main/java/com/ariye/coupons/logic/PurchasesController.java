@@ -13,6 +13,7 @@ import com.ariye.coupons.entities.User;
 import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Controller
@@ -45,14 +46,20 @@ public class PurchasesController {
         }
     }
 
-    public PurchaseDto getPurchase(long id) throws ApplicationException {
+    public PurchaseDto getPurchase(long id, UserLoginData userLoginData) throws ApplicationException {
         if (!(this.isPurchaseExist(id))) {
             throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Purchase id");
         }
         try {
             PurchaseDto purchaseDto = this.purchasesDao.getById(id);
+            if (userLoginData.getId() != purchaseDto.getUserId()) {
+                throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, "Purchase belongs to someone else " + userLoginData.toString());
+            }
             return purchaseDto;
         } catch (Exception e) {
+            if (e instanceof ApplicationException) {
+                throw e;
+            }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get purchase failed " + id);
         }
     }
@@ -126,6 +133,7 @@ public class PurchasesController {
         }
     }
 
+    @Transactional
     public void deleteExpiredPurchases() throws ApplicationException {
         Date now = new Date(System.currentTimeMillis());
         try {

@@ -7,7 +7,7 @@ import com.ariye.coupons.enums.CouponType;
 
 public class CouponDto {
 
-    private Long id;
+    private long id;
     private String name;
     private String description;
     private float price;
@@ -20,7 +20,7 @@ public class CouponDto {
     public CouponDto() {
     }
 
-    public CouponDto(Long id, String name, String description, float price, Date startDate, Date endDate,
+    public CouponDto(long id, String name, String description, float price, Date startDate, Date endDate,
                      CouponType category, long amount, long companyId) {
         this.id = id;
         this.name = name;
@@ -45,11 +45,11 @@ public class CouponDto {
                 + ", companyId=" + companyId + "]";
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

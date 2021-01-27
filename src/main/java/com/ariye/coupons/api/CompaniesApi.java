@@ -4,14 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.ariye.coupons.dto.CompanyDto;
 import com.ariye.coupons.dto.UserLoginData;
 import com.ariye.coupons.entities.Company;
@@ -36,7 +29,7 @@ public class CompaniesApi {
     public CompanyDto getCompany(@PathVariable("companyId") long id, HttpServletRequest request)
             throws ApplicationException {
         UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-        CompanyDto companyDto = this.companiesController.getCompanyDto(id, userLoginData);
+        CompanyDto companyDto = this.companiesController.getCompany(id, userLoginData);
         return companyDto;
     }
 
@@ -55,10 +48,17 @@ public class CompaniesApi {
     }
 
     @GetMapping
-    public List<Company> getAllCompanies(HttpServletRequest request) throws ApplicationException {
+    public List<CompanyDto> getAllCompanies(HttpServletRequest request) throws ApplicationException {
         UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-        List<Company> companies = this.companiesController.getAllCompanies(userLoginData);
+        List<CompanyDto> companies = this.companiesController.getAllCompanies(userLoginData);
         return companies;
+    }
+
+    @GetMapping("/byName")
+    public CompanyDto getCompanyByName(@RequestParam("name") String name, HttpServletRequest request) throws ApplicationException {
+        UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
+        CompanyDto companyDto = this.companiesController.getCompanyByName(name, userLoginData);
+        return companyDto;
     }
 
 }

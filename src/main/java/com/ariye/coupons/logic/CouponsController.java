@@ -17,8 +17,6 @@ import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
 
-import javax.annotation.PostConstruct;
-
 @Controller
 public class CouponsController {
 
@@ -159,6 +157,7 @@ public class CouponsController {
     public void deleteExpiredCoupons() throws ApplicationException {
         try {
             this.purchasesController.deleteExpiredPurchases();
+            System.out.println("YALA yala daber elay");
             Date now = new Date(System.currentTimeMillis());
             this.couponsDao.deleteExpiredCoupons(now);
         } catch (Exception e) {
@@ -168,7 +167,7 @@ public class CouponsController {
 
     //Default access modifier because being used from purchases controller
     Coupon createCouponFromDto(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
-        Company company = this.companiesController.getCompany(couponDto.getCompanyId(), userLoginData);
+        Company company = this.companiesController.getEntity(couponDto.getCompanyId(), userLoginData);
         Coupon coupon = new Coupon(couponDto.getName(), couponDto.getDescription(), couponDto.getPrice(), company,
                 couponDto.getStartDate(), couponDto.getEndDate(), couponDto.getCategory(), couponDto.getAmount());
         return coupon;

@@ -46,7 +46,7 @@ public class UsersController {
             long id = user.getId();
             return id;
         } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create user failed " + user.toString());
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create user failed " + userDto.toString());
         }
     }
 
@@ -72,7 +72,7 @@ public class UsersController {
         }
         this.validateUpdateUser(userDto);
         User user = this.getEntity(userDto.getId());
-        Company company = this.companiesController.getCompany(userDto.getCompanyId(), userLoginData);
+        Company company = this.companiesController.getEntity(userDto.getCompanyId(), userLoginData);
         String password = String.valueOf(userDto.getPassword().hashCode());
         user.setPassword(password);
         user.setUsername(userDto.getUsername());

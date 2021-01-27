@@ -4,7 +4,7 @@ import com.ariye.coupons.enums.UserType;
 
 public class UserDto {
 
-    private Long id;
+    private long id;
     private String username;
     private String firstName;
     private String lastName;
@@ -12,16 +12,25 @@ public class UserDto {
     private UserType userType;
     private Long companyId;
 
-
-    public UserDto(Long id, String username, String firstName, String lastName, String password, UserType userType,
-                   Long companyId) {
-        this.id = id;
+    /**
+     * - Ctor for creation
+     */
+    public UserDto(String username, String firstName, String lastName, String password, UserType userType, Long companyId) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.userType = userType;
         this.companyId = companyId;
+    }
+
+    /**
+     * - Full ctor
+     */
+    public UserDto(long id, String username, String firstName, String lastName, String password, UserType userType, Long companyId) {
+        this(username, firstName, lastName, password, userType, companyId);
+        this.id = id;
+
     }
 
     public UserDto() {
@@ -33,11 +42,11 @@ public class UserDto {
                 + ", password=" + password + ", userType=" + userType + ", companyId=" + companyId + "]";
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

@@ -26,7 +26,8 @@ public class CompaniesApi {
     }
 
     @GetMapping("/{companyId}")
-    public CompanyDto getCompany(@PathVariable("companyId") long id, HttpServletRequest request) throws ApplicationException {
+    public CompanyDto getCompany(@PathVariable("companyId") long id, HttpServletRequest request) 
+            throws ApplicationException {
         UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
         CompanyDto companyDto = this.companiesController.getCompany(id, userLoginData);
         return companyDto;

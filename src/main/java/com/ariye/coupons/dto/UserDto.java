@@ -30,7 +30,6 @@ public class UserDto {
     public UserDto(long id, String username, String firstName, String lastName, String password, UserType userType, Long companyId) {
         this(username, firstName, lastName, password, userType, companyId);
         this.id = id;
-
     }
 
     public UserDto() {

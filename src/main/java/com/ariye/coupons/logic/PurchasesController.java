@@ -134,15 +134,6 @@ public class PurchasesController {
         }
     }
 
-    public void deleteExpiredPurchases() throws ApplicationException {
-        Date now = new Date(System.currentTimeMillis());
-        try {
-            this.purchasesDao.deleteExpiredPurchases(now);
-        } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete expired purchases failed");
-        }
-    }
-
     // Validations:
 
     private void validateCreatePurchase(Purchase purchase, Coupon coupon) throws ApplicationException {

@@ -9,7 +9,8 @@ import com.ariye.coupons.logic.CouponsController;
 
 @Component
 @EnableScheduling
-public class DailyTask {
+public class DailyTask {    //  לסדר את כל הדאוז לעשות ולידציות על מחיקה
+    //float and shorts
 
     @Autowired
     CouponsController couponsController;

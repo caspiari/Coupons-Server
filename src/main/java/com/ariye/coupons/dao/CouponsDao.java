@@ -17,9 +17,6 @@ public interface CouponsDao extends CrudRepository<Coupon, Long> {
     @Query("select new com.ariye.coupons.dto.CouponDto(c.id, c.name, c.description, c.price, c.startDate, c.endDate, c.category, c.amount, c.company.id) from Coupon c where c.id = ?1")
     public CouponDto getById(long id);
 
-    @Query("select new com.ariye.coupons.dto.CouponDto(c.id, c.name, c.description, c.price, c.startDate, c.endDate, c.category, c.amount, c.company.id) from Coupon c where c.name = ?1")
-    public CouponDto getByName(String name) throws Exception;
-
     public boolean existsByNameAndCompanyId(String name, long companyId);
 
     @Query("select new com.ariye.coupons.dto.CouponDto(c.id, c.name, c.description, c.price, c.startDate, c.endDate, c.category, c.amount, c.company.id) from Coupon c where c.company.id = ?1")

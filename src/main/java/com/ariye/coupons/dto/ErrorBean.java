@@ -13,7 +13,6 @@ public class ErrorBean {
         this.errorMessage = errorMessage;
     }
 
-
     public ErrorBean() {
     }
 

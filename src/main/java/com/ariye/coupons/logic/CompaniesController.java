@@ -54,6 +54,11 @@ public class CompaniesController {
         }
     }
 
+    @PostConstruct
+    void delete() {
+        companiesDao.deleteById(159l);
+    }
+
     public CompanyDto getCompany(Long id, UserLoginData userLoginData) throws ApplicationException {
         id = this.validateGetCompany(id, userLoginData);
         try {

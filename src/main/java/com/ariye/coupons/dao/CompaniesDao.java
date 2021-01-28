@@ -9,7 +9,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.ariye.coupons.entities.Company;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface CompaniesDao extends CrudRepository<Company, Long> {
 
     @Query("select new com.ariye.coupons.dto.CompanyDto(c.id, c.name, c.address, c.phone) from Company c where c.id = ?1")

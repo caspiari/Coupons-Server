@@ -154,8 +154,8 @@ public class UsersController {
             throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
         }
         String token = generateToken(username);
-        long now = System.currentTimeMillis());
-        userLoginData.setLoginTimeInMillis(now);
+        long now = System.currentTimeMillis();
+        userLoginData.setLoginTime(now);
         this.cacheController.put(token, userLoginData);
         SuccessfulLoginData successfulLoginData = new SuccessfulLoginData(token, userLoginData.getUserType());
         return successfulLoginData;

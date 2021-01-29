@@ -7,13 +7,17 @@ public class UserLoginData {
     private long id;
     private UserType userType;
     private Long companyId;
-    private long loginTimeInMillis;
+    private long loginTime;
 
-    public UserLoginData(long id, UserType userType, Long companyId, long loginTimeInMillis) {
+    public UserLoginData(long id, UserType userType, Long companyId) {
         this.id = id;
         this.userType = userType;
         this.companyId = companyId;
-        this.loginTimeInMillis = loginTimeInMillis;
+    }
+
+    public UserLoginData(long id, UserType userType, Long companyId, long loginTime) {
+        this(id, userType, companyId);
+        this.loginTime = loginTime;
     }
 
     public long getId() {
@@ -28,12 +32,12 @@ public class UserLoginData {
         return companyId;
     }
 
-    public long getLoginTimeInMillis() {
-        return loginTimeInMillis;
+    public long getLoginTime() {
+        return loginTime;
     }
 
-    public void setLoginTimeInMillis(long loginTimeInMillis) {
-        this.loginTimeInMillis = loginTimeInMillis;
+    public void setLoginTime(long loginTime) {
+        this.loginTime = loginTime;
     }
 
     @Override

@@ -9,7 +9,7 @@ public class PurchaseDto {
     private long id;
     private long userId;
     private long couponId;
-    private long amount;
+    private short amount;
     private Date timestamp;
     private String couponName;
     private String companyName;
@@ -21,7 +21,7 @@ public class PurchaseDto {
     /**
      * - Full ctor
      */
-    public PurchaseDto(long id, long userId, long couponId, long amount, Date timestamp, String couponName,
+    public PurchaseDto(long id, long userId, long couponId, short amount, Date timestamp, String couponName,
                        String companyName, String username) {
         this.id = id;
         this.userId = userId;
@@ -42,7 +42,7 @@ public class PurchaseDto {
      * @param amount
      * @param timestamp
      */
-    public PurchaseDto(String couponName, String companyName, String username, long amount, Date timestamp) {
+    public PurchaseDto(String couponName, String companyName, String username, short amount, Date timestamp) {
         this.couponName = couponName;
         this.companyName = companyName;
         this.username = username;
@@ -97,11 +97,11 @@ public class PurchaseDto {
         this.companyName = companyName;
     }
 
-    public long getAmount() {
+    public short getAmount() {
         return amount;
     }
 
-    public void setAmount(long amount) {
+    public void setAmount(short amount) {
         this.amount = amount;
     }
 

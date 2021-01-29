@@ -32,7 +32,7 @@ public class Purchase implements Serializable {
     @ManyToOne
     private Coupon coupon;
 
-    private long amount;
+    private short amount;
 
     @Column(name = "time_stamp")
     private Date timestamp;
@@ -40,7 +40,7 @@ public class Purchase implements Serializable {
     /**
      * - Ctor without id
      */
-    public Purchase(User user, Coupon coupon, long amount, Date timestamp) {
+    public Purchase(User user, Coupon coupon, short amount, Date timestamp) {
         this.user = user;
         this.coupon = coupon;
         this.amount = amount;
@@ -50,7 +50,7 @@ public class Purchase implements Serializable {
     /**
      * - Full ctor
      */
-    public Purchase(long id, User user, Coupon coupon, long amount, Date timestamp) {
+    public Purchase(long id, User user, Coupon coupon, short amount, Date timestamp) {
         this(user, coupon, amount, timestamp);
         this.id = id;
     }
@@ -89,11 +89,11 @@ public class Purchase implements Serializable {
         this.coupon = coupon;
     }
 
-    public long getAmount() {
+    public short getAmount() {
         return amount;
     }
 
-    public void setAmount(long amount) {
+    public void setAmount(short amount) {
         this.amount = amount;
     }
 

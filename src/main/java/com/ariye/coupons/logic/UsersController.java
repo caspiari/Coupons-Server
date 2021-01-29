@@ -43,8 +43,7 @@ public class UsersController {
         user.setPassword(password);
         try {
             user = this.usersDao.save(user);
-            long id = user.getId();
-            return id;
+            return user.getId();
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create user failed " + userDto.toString());
         }
@@ -90,6 +89,9 @@ public class UsersController {
     public void deleteUser(long id, UserLoginData userLoginData) throws ApplicationException {
         if (userLoginData.getUserType() != UserType.ADMIN) {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
+        }
+        if (!(this.isUserExist(id))) {
+            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
         }
         try {
             this.usersDao.deleteById(id);
@@ -167,7 +169,6 @@ public class UsersController {
 
 /////////////// Validations:
 
-    // Default access modifier because being used by another controller
     boolean isUserExist(long id) throws ApplicationException {
         try {
             return this.usersDao.existsById(id);

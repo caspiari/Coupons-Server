@@ -6,7 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="ab78ec3b-c2bc-4ed3-a29d-f433dcf2431f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/ariye/coupons/logic/CompaniesController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ariye/coupons/logic/CompaniesController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dailyTask/DailyTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dto/PurchaseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dto/PurchaseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/entities/Purchase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/entities/Purchase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CacheController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CacheController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CompaniesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CompaniesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CouponsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CouponsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/PurchasesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/PurchasesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/UsersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/UsersController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,6 +40,9 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CouponsController.java" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="ProjectId" id="1nEom4JomrljOVUBhV9wB6KCQ02" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -52,7 +62,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -219,7 +229,13 @@
       <option name="presentableId" value="LOCAL‎00021" />
       <updated>1611894391811</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL‎00022" summary="v">
+      <created>1611895060309</created>
+      <option name="number" value="LOCAL‎00022" />
+      <option name="presentableId" value="LOCAL‎00022" />
+      <updated>1611895060309</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

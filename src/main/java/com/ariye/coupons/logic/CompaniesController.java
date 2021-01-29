@@ -33,8 +33,7 @@ public class CompaniesController {
                 throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS);
             }
             company = this.companiesDao.save(company);
-            long id = company.getId();
-            return id;
+            return company.getId();
         } catch (Exception e) {
             if (e instanceof ApplicationException) {
                 throw e;
@@ -46,6 +45,9 @@ public class CompaniesController {
     public void deleteCompany(long id, UserLoginData userLoginData) throws ApplicationException {
         if (userLoginData.getUserType() != UserType.ADMIN) {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
+        }
+        if (!(this.isCompanyExist(id))) {
+            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Company id");
         }
         try {
             this.companiesDao.deleteById(id);

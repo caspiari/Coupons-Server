@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import com.ariye.coupons.dao.CouponsDao;
 import com.ariye.coupons.dto.CouponDto;
@@ -20,6 +22,7 @@ import com.ariye.coupons.exeptions.ApplicationException;
 import javax.annotation.PostConstruct;
 
 @Controller
+@EnableScheduling
 public class CouponsController {
 
     @Autowired
@@ -36,13 +39,12 @@ public class CouponsController {
         Coupon coupon = this.createCouponFromDto(couponDto, userLoginData);
         Company company = coupon.getCompany();
         //This validation is here because 'validateUpdateCoupon' uses 'validateCreateCoupon'
-        if (this.couponsDao.existsByNameAndCompanyId(company.getName(), company.getId())) {
-            throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS, "Coupon name");
-        }
         try {
+            if (this.couponsDao.existsByNameAndCompanyId(company.getName(), company.getId())) {
+                throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS, "Coupon name");
+            }
             coupon = this.couponsDao.save(coupon);
-            long id = coupon.getId();
-            return id;
+            return coupon.getId();
         } catch (Exception e) {
             if (e instanceof ApplicationException) {
                 throw e;
@@ -168,6 +170,7 @@ public class CouponsController {
         }
     }
 
+    @Scheduled(cron = "0 30 1 * * *")
     public void deleteExpiredCoupons() throws ApplicationException {
         try {
             Date now = new Date(System.currentTimeMillis());
@@ -187,12 +190,12 @@ public class CouponsController {
 /////////////// Validations:
 
     boolean isCouponAvailable(long id) throws ApplicationException {
+        if (!(this.couponsDao.existsById(id))) {
+            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
+        }
         try {
             Coupon coupon = couponsDao.findById(id).get();
-            if (coupon.getAmount() > 0) {
-                return true;
-            }
-            return false;
+            return coupon.getAmount() > 0;
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Is coupon available failed");
         }

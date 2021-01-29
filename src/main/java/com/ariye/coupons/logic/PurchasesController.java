@@ -42,8 +42,7 @@ public class PurchasesController {
         this.couponsController.updateCouponAmount(coupon, purchase);
         try {
             purchase = this.purchasesDao.save(purchase);
-            long id = purchase.getId();
-            return id;
+            return purchase.getId();
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create purchase failed " + purchaseDto.toString());
         }
@@ -87,7 +86,7 @@ public class PurchasesController {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
         }
         try {
-            List<PurchaseDto> purchases = (List<PurchaseDto>) this.purchasesDao.getAll();
+            List<PurchaseDto> purchases = this.purchasesDao.getAll();
             return purchases;
         } catch (Exception e) {
             throw new ApplicationException(ErrorType.GENERAL_ERROR, "Get all purchases failed");

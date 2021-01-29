@@ -16,6 +16,8 @@ import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
+
 
 @Controller
 public class PurchasesController {
@@ -63,6 +65,11 @@ public class PurchasesController {
             }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get purchase failed " + id);
         }
+    }
+
+    @PostConstruct
+    void checkGet() {
+        System.out.println(purchasesDao.getById(2));
     }
 
     public void deletePurchase(long id, UserLoginData userLoginData) throws ApplicationException {

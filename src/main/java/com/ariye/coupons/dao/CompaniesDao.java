@@ -15,13 +15,13 @@ import org.springframework.stereotype.Repository;
 public interface CompaniesDao extends CrudRepository<Company, Long> {
 
     @Query("select new com.ariye.coupons.dto.CompanyDto(c.id, c.name, c.address, c.phone) from Company c where c.id = ?1")
-    public CompanyDto getById(long id);
+    CompanyDto getById(long id);
 
     @Query("select new com.ariye.coupons.dto.CompanyDto(c.id, c.name, c.address, c.phone) from Company c")
-    public List<CompanyDto> getAll();
+    List<CompanyDto> getAll();
 
     @Query("select new com.ariye.coupons.dto.CompanyDto(c.id, c.name, c.address, c.phone) from Company c where c.name = ?1")
-    public CompanyDto getByName(String name);
+    CompanyDto getByName(String name);
 
-    public boolean existsByName(String name);
+    boolean existsByName(String name);
 }

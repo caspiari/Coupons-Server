@@ -67,11 +67,6 @@ public class PurchasesController {
         }
     }
 
-    @PostConstruct
-    void checkGet() {
-        System.out.println(purchasesDao.getById(2));
-    }
-
     public void deletePurchase(long id, UserLoginData userLoginData) throws ApplicationException {
         if (userLoginData.getUserType() != UserType.ADMIN) {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());

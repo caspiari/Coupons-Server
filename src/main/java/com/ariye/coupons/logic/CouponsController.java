@@ -68,7 +68,7 @@ public class CouponsController {
         }
     }
 
-    public Coupon getEntity(long id) throws ApplicationException {
+    Coupon getEntity(long id) throws ApplicationException {
         try {
             if (!(this.couponsDao.existsById(id))) {
                 throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");

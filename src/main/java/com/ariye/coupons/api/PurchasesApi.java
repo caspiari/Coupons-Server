@@ -33,7 +33,7 @@ public class PurchasesApi {
 
     @GetMapping("/{purchaseId}")
     public PurchaseDto getPurchase(@PathVariable("purchaseId") long id, HttpServletRequest request) throws ApplicationException {
-        UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData"); // Will be used for the UI
+        UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
         PurchaseDto purchaseDto = purchasesController.getPurchase(id, userLoginData);
         return purchaseDto;
     }

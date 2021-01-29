@@ -148,13 +148,14 @@ public class UsersController {
         try {
             userLoginData = usersDao.login(username, password);
         } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR,
-                    "Login failed for " + userLoginDetails.getUsername());
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Login failed for " + userLoginDetails.getUsername());
         }
         if (userLoginData == null) {
             throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
         }
         String token = generateToken(username);
+        long now = System.currentTimeMillis());
+        userLoginData.setLoginTimeInMillis(now);
         this.cacheController.put(token, userLoginData);
         SuccessfulLoginData successfulLoginData = new SuccessfulLoginData(token, userLoginData.getUserType());
         return successfulLoginData;

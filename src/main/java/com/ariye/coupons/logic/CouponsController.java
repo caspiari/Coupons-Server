@@ -110,9 +110,15 @@ public class CouponsController {
 
     public void deleteCoupon(long id, UserLoginData userLoginData) throws ApplicationException {
         try {
-            if (!(this.couponsDao.existsById(id))) {
-                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
-            }
+//            if (!(this.couponsDao.existsById(id))) {
+//                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
+//            }
+
+//            @PostConstruct
+//            void checkDelete() throws ApplicationException {
+//                deleteCoupon(99, new UserLoginData(1, UserType.ADMIN, null));
+//            }
+
             if (userLoginData.getUserType() != UserType.ADMIN) {
                 CouponDto couponDto = this.couponsDao.getById(id);
                 if (couponDto.getCompanyId() != userLoginData.getCompanyId()) {
@@ -124,9 +130,13 @@ public class CouponsController {
             if (e instanceof ApplicationException) {
                 throw e;
             }
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete coupon failed " + id);
+//            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete coupon failed " + id);
+            if (e.getMessage().contains("No class com.ariye.coupons.entities.Coupon entity")) {
+                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
+            }
         }
     }
+
 
     public List<CouponDto> getCouponsByCompanyId(long id) throws ApplicationException {
         try {
@@ -190,13 +200,16 @@ public class CouponsController {
 /////////////// Validations:
 
     boolean isCouponAvailable(long id) throws ApplicationException {
-        if (!(this.couponsDao.existsById(id))) {
-            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
-        }
         try {
-            Coupon coupon = couponsDao.findById(id).get();
-            return coupon.getAmount() > 0;
+            Long amount = couponsDao.getAmount(id);
+            if (amount == null) {
+                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
+            }
+            return amount > 0;
         } catch (Exception e) {
+            if (e instanceof ApplicationException) {
+                throw e;
+            }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Is coupon available failed");
         }
     }

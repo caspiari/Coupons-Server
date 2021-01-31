@@ -36,6 +36,9 @@ public interface CouponsDao extends CrudRepository<Coupon, Long> {
     @Transactional
     void deleteAllByEndDateBefore(Date now);
 
+    @Query("select amount from Coupon where id = ?1")
+    Long getAmount(long id);
+
 }
 
 

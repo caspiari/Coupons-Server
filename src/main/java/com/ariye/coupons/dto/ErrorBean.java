@@ -22,7 +22,7 @@ public class ErrorBean {
     }
 
 
-    public String getErrorNane() {
+    public String getErrorName() {
         return errorName;
     }
 
@@ -34,7 +34,7 @@ public class ErrorBean {
 
     @Override
     public String toString() {
-        return "ErrorBean [errorNumber=" + errorNumber + ", errorNane=" + errorName + ", errorMessage=" + errorMessage
+        return "ErrorBean [errorNumber=" + errorNumber + ", errorName=" + errorName + ", errorMessage=" + errorMessage
                 + "]";
     }
 

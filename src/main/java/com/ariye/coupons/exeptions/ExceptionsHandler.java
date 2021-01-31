@@ -24,7 +24,7 @@ public class ExceptionsHandler {
 
             ErrorType errorType = applicationException.getErrorType();
             int errorNumber = errorType.getErrorNumber();
-            String errorMessage = errorType.getErrorMessage();
+            String errorMessage = throwable.getMessage();
             String errorName = errorType.name();
             response.setStatus(errorNumber);
 
@@ -38,7 +38,7 @@ public class ExceptionsHandler {
 
         response.setStatus(600);
 
-        String errorMessage = throwable.getMessage();
+        String errorMessage = throwable.getMessage() + throwable.getCause();
         ErrorBean errorBean = new ErrorBean(601, "General error", errorMessage);
         throwable.printStackTrace();
 

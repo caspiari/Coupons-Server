@@ -11,9 +11,6 @@ import com.ariye.coupons.entities.Company;
 import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.annotation.PostConstruct;
 
 @Controller
 public class CompaniesController {
@@ -26,7 +23,7 @@ public class CompaniesController {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
         }
         Company company = this.createCompanyFromDto(companyDto);
-        this.validateUpdateCompany(company); // <--Same validations
+        this.validateCreateCompany(company);
         String name = company.getName();
         try {
             if (this.companiesDao.existsByName(name)) {
@@ -142,10 +139,7 @@ public class CompaniesController {
         }
     }
 
-    private void validateUpdateCompany(Company company) throws ApplicationException {
-        // if (iCompaniesDao.isCompanyNameExist(company.getName())) { <->Apply after third layer
-        // 		throw new Exception("Company name already exist");
-        // }
+    private void validateCreateCompany(Company company) throws ApplicationException {
         if (company.getName() == null) {
             throw new ApplicationException(ErrorType.MUST_ENTER_NAME);
         }
@@ -164,6 +158,16 @@ public class CompaniesController {
         if (company.getPhone().length() < 9) {
             throw new ApplicationException(ErrorType.INVALID_VALUE, "Phone number");
         }
+    }
+
+    private void validateUpdateCompany(Company company) throws ApplicationException {
+        // if (iCompaniesDao.isCompanyNameExist(company.getName())) { <->Apply after third layer
+        // 		throw new Exception("Company name already exist");
+        // }
+        if (company.getId() == 0) {
+            throw new ApplicationException(ErrorType.MUST_INSERT_A_VALUE, " Id");
+        }
+        this.validateCreateCompany(company);
     }
 
 }

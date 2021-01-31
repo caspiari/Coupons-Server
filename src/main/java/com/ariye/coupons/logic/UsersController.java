@@ -73,13 +73,16 @@ public class UsersController {
     }
 
     public void updateUser(UserDto userDto, UserLoginData userLoginData) throws ApplicationException {
+        Company company = null;
         if (userLoginData.getUserType() != UserType.ADMIN) {
             userDto.setId(userLoginData.getId());
             userDto.setUserType(userLoginData.getUserType());
         }
+        if (userDto.getUserType() == UserType.COMPANY) {
+            company = this.companiesController.getEntity(userDto.getCompanyId(), userLoginData);
+        }
         this.validateUpdateUser(userDto);
         User user = this.getEntity(userDto.getId());
-        Company company = this.companiesController.getEntity(userDto.getCompanyId(), userLoginData);
         String password = String.valueOf(userDto.getPassword().hashCode());
         user.setPassword(password);
         user.setUsername(userDto.getUsername());

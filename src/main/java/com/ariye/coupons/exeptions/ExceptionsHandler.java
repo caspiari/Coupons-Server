@@ -47,6 +47,7 @@ public class ExceptionsHandler {
 
 }
 
+// I left this part for optional future use/learning
 
 //	@ExceptionHandler(ApplicationException.class)
 //	public ErrorBean applicationExceptionHandler(HttpServletResponse response, ApplicationException applicationExction) {

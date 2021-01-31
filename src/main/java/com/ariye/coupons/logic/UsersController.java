@@ -146,11 +146,6 @@ public class UsersController {
         }
     }
 
-    @PostConstruct
-    void checkGetEntity() throws ApplicationException {
-        System.out.println(getEntity(1));
-    }
-
     public SuccessfulLoginData login(UserLoginDetails userLoginDetails) throws ApplicationException {
         String username = userLoginDetails.getUsername();
         this.validateEmail(username);

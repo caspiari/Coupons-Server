@@ -55,10 +55,10 @@ public class CouponsController {
 
     public CouponDto getCoupon(long id) throws ApplicationException {
         try {
-            if (!(this.couponsDao.existsById(id))) {
+            CouponDto couponDto = this.couponsDao.getById(id);
+            if (couponDto == null) {
                 throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
             }
-            CouponDto couponDto = this.couponsDao.getById(id);
             return couponDto;
         } catch (Exception e) {
             if (e instanceof ApplicationException) {
@@ -70,10 +70,10 @@ public class CouponsController {
 
     Coupon getEntity(long id) throws ApplicationException {
         try {
-            if (!(this.couponsDao.existsById(id))) {
+            Coupon coupon = this.couponsDao.getEntityById(id);
+            if (coupon == null) {
                 throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
             }
-            Coupon coupon = this.couponsDao.findById(id).get();
             return coupon;
         } catch (Exception e) {
             if (e instanceof ApplicationException) {

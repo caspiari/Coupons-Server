@@ -87,7 +87,7 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "\nUser [id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastName=" + lastName
-                + ", password=" + password + ", userType=" + userType + ", company=" + company.getName() + "]";
+                + ", password=" + password + ", userType=" + userType + ", company=" + (company == null? null : company.getName()) + "]";
     }
 
     public long getId() {

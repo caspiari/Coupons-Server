@@ -49,11 +49,11 @@ public class PurchasesController {
     }
 
     public PurchaseDto getPurchase(long id, UserLoginData userLoginData) throws ApplicationException {
-        if (!(this.purchasesDao.existsById(id))) {
-            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Purchase id");
-        }
         try {
             PurchaseDto purchaseDto = this.purchasesDao.getById(id);
+            if (purchaseDto == null) {
+                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Purchase id");
+            }
             if (userLoginData.getId() != purchaseDto.getUserId()) {
                 throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, "Purchase belongs to someone else " + userLoginData.toString());
             }

@@ -19,6 +19,8 @@ import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
 
+import javax.annotation.PostConstruct;
+
 @Controller
 public class UsersController {
 
@@ -53,13 +55,16 @@ public class UsersController {
         if (userLoginData.getUserType() != UserType.ADMIN) {
             id = userLoginData.getId();
         }
-        if (!(this.isUserExist(id))) {
-            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
-        }
         try {
             UserDto userDto = this.usersDao.getById(id);
+            if (userDto == null) {
+                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
+            }
             return userDto;
         } catch (Exception e) {
+            if (e instanceof ApplicationException) {
+                throw e;
+            }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get user failed. Id: " + id);
         }
     }
@@ -126,16 +131,24 @@ public class UsersController {
     }
 
     User getEntity(long id) throws ApplicationException {
-        if (!(this.isUserExist(id))) {
-            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
-        }
         try {
-            User user = this.usersDao.findById(id).get();
+            User user = this.usersDao.getEntityById(id);
+            if (user == null) {
+                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
+            }
             return user;
         } catch (Exception e) {
             // TODO: handle exception
+            if (e instanceof ApplicationException) {
+                throw e;
+            }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get user entity failed. Id: " + id);
         }
+    }
+
+    @PostConstruct
+    void checkGetEntity() throws ApplicationException {
+        System.out.println(getEntity(1));
     }
 
     public SuccessfulLoginData login(UserLoginDetails userLoginDetails) throws ApplicationException {

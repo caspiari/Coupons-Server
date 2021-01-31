@@ -38,7 +38,7 @@ public class UserDto {
     @Override
     public String toString() {
         return "UserDto [id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastName=" + lastName
-                + ", password=" + password + ", userType=" + userType + ", companyId=" + companyId + "]";
+                + ", password=" + password + ", userType=" + userType + ", companyId=" + (companyId == null? null : companyId) + "]";
     }
 
     public long getId() {

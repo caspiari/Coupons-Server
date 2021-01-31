@@ -25,9 +25,8 @@ public class CompaniesApi {
     }
 
     @GetMapping("/{companyId}")
-    public CompanyDto getCompany(@PathVariable("companyId") long id, HttpServletRequest request) throws ApplicationException {
-        UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-        CompanyDto companyDto = this.companiesController.getCompanyById(id, userLoginData);
+    public CompanyDto getCompany(@PathVariable("companyId") long id) throws ApplicationException {
+        CompanyDto companyDto = this.companiesController.getCompanyById(id);
         return companyDto;
     }
 
@@ -44,16 +43,14 @@ public class CompaniesApi {
     }
 
     @GetMapping
-    public List<CompanyDto> getAllCompanies(HttpServletRequest request) throws ApplicationException {
-        UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-        List<CompanyDto> companies = this.companiesController.getAllCompanies(userLoginData);
+    public List<CompanyDto> getAllCompanies() throws ApplicationException {
+        List<CompanyDto> companies = this.companiesController.getAllCompanies();
         return companies;
     }
 
     @GetMapping("/byName")
-    public CompanyDto getCompanyByName(@RequestParam("name") String name, HttpServletRequest request) throws ApplicationException {
-        UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-        CompanyDto companyDto = this.companiesController.getCompanyByName(name, userLoginData);
+    public CompanyDto getCompanyByName(@RequestParam("name") String name) throws ApplicationException {
+        CompanyDto companyDto = this.companiesController.getCompanyByName(name);
         return companyDto;
     }
 

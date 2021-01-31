@@ -56,22 +56,32 @@ public class CompaniesController {
         }
     }
 
-    public CompanyDto getCompanyById(Long id, UserLoginData userLoginData) throws ApplicationException {
-        id = this.validateGetCompany(id, userLoginData);
+    public CompanyDto getCompanyById(Long id) throws ApplicationException {
         try {
             CompanyDto companyDto = this.companiesDao.getById(id);
+            if (companyDto == null) {
+                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Company id");
+            }
             return companyDto;
         } catch (Exception e) {
+            if (e instanceof ApplicationException) {
+                throw e;
+            }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get company failed " + id);
         }
     }
 
     Company getEntity(Long id, UserLoginData userLoginData) throws ApplicationException {
-        id = this.validateGetCompany(id, userLoginData);
         try {
-            Company company = this.companiesDao.findById(id).get();
+            Company company = this.companiesDao.getEntityById(id);
+            if (company == null) {
+                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Company id");
+            }
             return company;
         } catch (Exception e) {
+            if (e instanceof ApplicationException) {
+                throw e;
+            }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get company entity failed " + id);
         }
     }
@@ -90,10 +100,7 @@ public class CompaniesController {
         }
     }
 
-    public List<CompanyDto> getAllCompanies(UserLoginData userLoginData) throws ApplicationException {
-        if (userLoginData.getUserType() != UserType.ADMIN) {
-            throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
-        }
+    public List<CompanyDto> getAllCompanies() throws ApplicationException {
         try {
             List<CompanyDto> companies = this.companiesDao.getAll();
             return companies;
@@ -122,7 +129,7 @@ public class CompaniesController {
 ///////////////// Validations:
 
     boolean isCompanyExist(Long id) throws ApplicationException {
-        if (id == null) {
+        if (id == null) { //For inner flow
             return false;
         }
         try {

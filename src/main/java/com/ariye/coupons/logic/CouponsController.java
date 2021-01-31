@@ -110,37 +110,30 @@ public class CouponsController {
 
     public void deleteCoupon(long id, UserLoginData userLoginData) throws ApplicationException {
         try {
-//            if (!(this.couponsDao.existsById(id))) {
-//                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
-//            }
-
-//            @PostConstruct
-//            void checkDelete() throws ApplicationException {
-//                deleteCoupon(99, new UserLoginData(1, UserType.ADMIN, null));
-//            }
-
             if (userLoginData.getUserType() != UserType.ADMIN) {
                 CouponDto couponDto = this.couponsDao.getById(id);
-                if (couponDto.getCompanyId() != userLoginData.getCompanyId()) {
-                    throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
+                if (couponDto == null) {
+                    throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
                 }
+                if (couponDto.getCompanyId() != userLoginData.getCompanyId()) {
+                    throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, "This coupon belongs to another company " + userLoginData.toString());
+                }
+            } else if (!(this.couponsDao.existsById(id))) {
+                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
             }
             this.couponsDao.deleteById(id);
         } catch (Exception e) {
             if (e instanceof ApplicationException) {
                 throw e;
             }
-//            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete coupon failed " + id);
-            if (e.getMessage().contains("No class com.ariye.coupons.entities.Coupon entity")) {
-                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
-            }
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete coupon failed " + id);
         }
     }
 
     public List<CouponDto> getCouponsByCompanyId(long id) throws ApplicationException {
         try {
-            List<CouponDto> coupons = this.couponsDao.getByCompanyId(id);
-            return coupons;
+            List<CouponDto> couponsDtos = this.couponsDao.getByCompanyId(id);
+            return couponsDtos;
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupons by company id failed " + id);
         }
@@ -148,8 +141,8 @@ public class CouponsController {
 
     public List<CouponDto> getCouponsByType(CouponType couponType) throws ApplicationException {
         try {
-            List<CouponDto> coupons = this.couponsDao.getByCategory(couponType);
-            return coupons;
+            List<CouponDto> couponsDtos = this.couponsDao.getByCategory(couponType);
+            return couponsDtos;
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupons by type failed " + couponType);
         }
@@ -163,8 +156,8 @@ public class CouponsController {
             throw new ApplicationException(ErrorType.INVALID_VALUE, "Max price must be a positive number");
         }
         try {
-            List<CouponDto> couponDtos = couponsDao.getByMaxPrice(userId, maxPrice);
-            return couponDtos;
+            List<CouponDto> couponsDtos = couponsDao.getByMaxPrice(userId, maxPrice);
+            return couponsDtos;
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get purchased coupons by max price failed " + userId);
         }
@@ -172,8 +165,8 @@ public class CouponsController {
 
     public List<CouponDto> getAllCoupons() throws ApplicationException {
         try {
-            List<CouponDto> coupons = this.couponsDao.getAll();
-            return coupons;
+            List<CouponDto> couponsDtos = this.couponsDao.getAll();
+            return couponsDtos;
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get all coupons failed");
         }

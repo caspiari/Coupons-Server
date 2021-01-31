@@ -36,17 +36,20 @@ public class UsersController {
     private static final String ENCRYPTION_TOKEN_SALT = "ASFDSDGFDSFGSSD-54675467#$%^";
 
     public long createUser(UserDto userDto) throws ApplicationException {
-        this.validateUpdateUser(userDto); //same validations
-        if (this.isUserExistByUsername(userDto.getUsername())) {
-            throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS, "User name");
-        }
-        User user = new User(userDto);
-        String password = String.valueOf(user.getPassword().hashCode());
-        user.setPassword(password);
         try {
+            this.validateUpdateUser(userDto); //same validations
+            if (this.usersDao.existsByUsername(userDto.getUsername())) {
+                throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS, "User name");
+            }
+            User user = new User(userDto);
+            String password = String.valueOf(user.getPassword().hashCode());
+            user.setPassword(password);
             user = this.usersDao.save(user);
             return user.getId();
         } catch (Exception e) {
+            if (e instanceof ApplicationException) {
+                throw e;
+            }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create user failed " + userDto.toString());
         }
     }
@@ -95,12 +98,15 @@ public class UsersController {
         if (userLoginData.getUserType() != UserType.ADMIN) {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
         }
-        if (!(this.isUserExist(id))) {
-            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
-        }
         try {
+            if (!(this.usersDao.existsById(id))) {
+                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
+            }
             this.usersDao.deleteById(id);
         } catch (Exception e) {
+            if (e instanceof ApplicationException) {
+                throw e;
+            }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete user failed. Id: " + id);
         }
     }
@@ -123,8 +129,8 @@ public class UsersController {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
         }
         try {
-            List<UserDto> users = (List<UserDto>) this.usersDao.getAll();
-            return users;
+            List<UserDto> usersDtos = (List<UserDto>) this.usersDao.getAll();
+            return usersDtos;
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get all users failed");
         }
@@ -176,26 +182,6 @@ public class UsersController {
 
 
 /////////////// Validations:
-
-    boolean isUserExist(long id) throws ApplicationException {
-        try {
-            return this.usersDao.existsById(id);
-        } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Is user exist failed " + id);
-        }
-    }
-
-    private boolean isUserExistByUsername(String username) throws ApplicationException {
-        try {
-            UserDto userDto = this.usersDao.findByUsername(username);
-            if (userDto == null) {
-                return false;
-            }
-        } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Is user exist by username failed " + username);
-        }
-        return true;
-    }
 
     void validateEmail(String email) throws ApplicationException {
         if (email.substring(0, email.indexOf("@")).length() < 2) {

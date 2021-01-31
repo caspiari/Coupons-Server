@@ -56,7 +56,7 @@ public class CompaniesController {
         }
     }
 
-    public CompanyDto getCompanyById(Long id) throws ApplicationException {
+    public CompanyDto getCompany(Long id) throws ApplicationException {
         try {
             CompanyDto companyDto = this.companiesDao.getById(id);
             if (companyDto == null) {
@@ -73,6 +73,9 @@ public class CompaniesController {
 
     Company getEntity(Long id, UserLoginData userLoginData) throws ApplicationException {
         try {
+            if (userLoginData.getUserType() != UserType.ADMIN) {
+                id = userLoginData.getCompanyId();
+            }
             Company company = this.companiesDao.getEntityById(id);
             if (company == null) {
                 throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Company id");
@@ -102,8 +105,8 @@ public class CompaniesController {
 
     public List<CompanyDto> getAllCompanies() throws ApplicationException {
         try {
-            List<CompanyDto> companies = this.companiesDao.getAll();
-            return companies;
+            List<CompanyDto> companiesDtos = this.companiesDao.getAll();
+            return companiesDtos;
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get all companies failed");
         }

@@ -70,12 +70,15 @@ public class PurchasesController {
         if (userLoginData.getUserType() != UserType.ADMIN) {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
         }
-        if (!(this.purchasesDao.existsById(id))) {
-            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Purchase id");
-        }
         try {
+            if (!(this.purchasesDao.existsById(id))) {
+                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Purchase id");
+            }
             this.purchasesDao.deleteById(id);
         } catch (Exception e) {
+            if (e instanceof ApplicationException) {
+                throw e;
+            }
             throw new ApplicationException(ErrorType.GENERAL_ERROR, "Delete purchase failed " + id);
         }
 
@@ -86,8 +89,8 @@ public class PurchasesController {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
         }
         try {
-            List<PurchaseDto> purchases = this.purchasesDao.getAll();
-            return purchases;
+            List<PurchaseDto> purchasesDtos = this.purchasesDao.getAll();
+            return purchasesDtos;
         } catch (Exception e) {
             throw new ApplicationException(ErrorType.GENERAL_ERROR, "Get all purchases failed");
         }
@@ -98,8 +101,8 @@ public class PurchasesController {
             userId = userLoginData.getId();
         }
         try {
-            List<PurchaseDto> purchases = this.purchasesDao.findAllByUserId(userId);
-            return purchases;
+            List<PurchaseDto> purchasesDtos = this.purchasesDao.findAllByUserId(userId);
+            return purchasesDtos;
         } catch (Exception e) {
             throw new ApplicationException(ErrorType.GENERAL_ERROR, "Get all purchases by user id failed " + userId);
         }
@@ -114,8 +117,8 @@ public class PurchasesController {
             }
         }
         try {
-            List<PurchaseDto> purchases = this.purchasesDao.findAllByCompanyID(companyId);
-            return purchases;
+            List<PurchaseDto> purchasesDtos = this.purchasesDao.findAllByCompanyID(companyId);
+            return purchasesDtos;
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get all purchases by company id failed " + companyId);
         }

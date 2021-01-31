@@ -56,7 +56,7 @@ public class CompaniesController {
         }
     }
 
-    public CompanyDto getCompany(Long id, UserLoginData userLoginData) throws ApplicationException {
+    public CompanyDto getCompanyById(Long id, UserLoginData userLoginData) throws ApplicationException {
         id = this.validateGetCompany(id, userLoginData);
         try {
             CompanyDto companyDto = this.companiesDao.getById(id);
@@ -102,10 +102,7 @@ public class CompaniesController {
         }
     }
 
-    public CompanyDto getCompanyByName(String name, UserLoginData userLoginData) throws ApplicationException {
-        if (userLoginData.getUserType() != UserType.ADMIN) {
-            throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
-        }
+    public CompanyDto getCompanyByName(String name) throws ApplicationException {
         try {
             CompanyDto companyDto = this.companiesDao.getByName(name);
             return companyDto;
@@ -133,16 +130,6 @@ public class CompaniesController {
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Is company exist failed" + id);
         }
-    }
-
-    private long validateGetCompany(long id, UserLoginData userLoginData) throws ApplicationException {
-        if (userLoginData.getUserType() != UserType.ADMIN) {
-            id = userLoginData.getCompanyId();
-        }
-        if (!(this.isCompanyExist(id))) {
-            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Company id");
-        }
-        return id;
     }
 
     private void validateUpdateCompany(Company company) throws ApplicationException {

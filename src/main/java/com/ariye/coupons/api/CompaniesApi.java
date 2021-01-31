@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.ariye.coupons.dto.CompanyDto;
 import com.ariye.coupons.dto.UserLoginData;
-import com.ariye.coupons.entities.Company;
 import com.ariye.coupons.exeptions.ApplicationException;
 import com.ariye.coupons.logic.CompaniesController;
 
@@ -26,23 +25,20 @@ public class CompaniesApi {
     }
 
     @GetMapping("/{companyId}")
-    public CompanyDto getCompany(@PathVariable("companyId") long id, HttpServletRequest request) 
-            throws ApplicationException {
+    public CompanyDto getCompany(@PathVariable("companyId") long id, HttpServletRequest request) throws ApplicationException {
         UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-        CompanyDto companyDto = this.companiesController.getCompany(id, userLoginData);
+        CompanyDto companyDto = this.companiesController.getCompanyById(id, userLoginData);
         return companyDto;
     }
 
     @PutMapping
-    public void updateCompany(@RequestBody CompanyDto companyDto, HttpServletRequest request)
-            throws ApplicationException {
+    public void updateCompany(@RequestBody CompanyDto companyDto, HttpServletRequest request) throws ApplicationException {
         UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
         this.companiesController.updateCompany(companyDto, userLoginData);
     }
 
     @DeleteMapping("/{companyId}")
-    public void deleteCompany(@PathVariable("companyId") long id, HttpServletRequest request)
-            throws ApplicationException {
+    public void deleteCompany(@PathVariable("companyId") long id, HttpServletRequest request) throws ApplicationException {
         UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
         this.companiesController.deleteCompany(id, userLoginData);
     }

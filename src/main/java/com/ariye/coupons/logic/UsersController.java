@@ -125,7 +125,6 @@ public class UsersController {
         }
     }
 
-    // For inner use
     User getEntity(long id) throws ApplicationException {
         if (!(this.isUserExist(id))) {
             throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
@@ -190,7 +189,6 @@ public class UsersController {
         return true;
     }
 
-    // Default access modifier because being used by another controller
     void validateEmail(String email) throws ApplicationException {
         if (email.substring(0, email.indexOf("@")).length() < 2) {
             throw new ApplicationException(ErrorType.INVALID_EMAIL);

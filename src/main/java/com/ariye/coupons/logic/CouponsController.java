@@ -137,7 +137,6 @@ public class CouponsController {
         }
     }
 
-
     public List<CouponDto> getCouponsByCompanyId(long id) throws ApplicationException {
         try {
             List<CouponDto> coupons = this.couponsDao.getByCompanyId(id);
@@ -160,12 +159,12 @@ public class CouponsController {
         if (userLoginData.getUserType() != UserType.ADMIN) {
             userId = userLoginData.getId();
         }
-        if (maxPrice < 1) {
+        if (maxPrice < 0) {
             throw new ApplicationException(ErrorType.INVALID_VALUE, "Max price must be a positive number");
         }
         try {
-            List<CouponDto> coupons = couponsDao.getByMaxPrice(userId, maxPrice);
-            return coupons;
+            List<CouponDto> couponDtos = couponsDao.getByMaxPrice(userId, maxPrice);
+            return couponDtos;
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get purchased coupons by max price failed " + userId);
         }

@@ -47,8 +47,7 @@ public class CouponsApi {
     }
 
     @DeleteMapping("/{couponId}")
-    public void deleteCoupon(@PathVariable("couponId") long id, HttpServletRequest request)
-            throws ApplicationException {
+    public void deleteCoupon(@PathVariable("couponId") long id, HttpServletRequest request) throws ApplicationException {
         UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
         this.couponsController.deleteCoupon(id, userLoginData);
     }

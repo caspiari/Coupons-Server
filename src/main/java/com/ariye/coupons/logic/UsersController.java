@@ -187,6 +187,9 @@ public class UsersController {
 /////////////// Validations:
 
     void validateEmail(String email) throws ApplicationException {
+        if (email.length() < 8) {
+            throw new ApplicationException(ErrorType.MUST_INSERT_A_VALUE, "User name");
+        }
         if (email.substring(0, email.indexOf("@")).length() < 2) {
             throw new ApplicationException(ErrorType.INVALID_EMAIL);
         }

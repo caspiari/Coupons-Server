@@ -1,9 +1,12 @@
 package com.ariye.coupons.logic;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
+import java.util.NoSuchElementException;
 
+import com.ariye.coupons.dto.UserLoginDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,8 +21,6 @@ import com.ariye.coupons.enums.CouponType;
 import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
-
-import javax.annotation.PostConstruct;
 
 @Controller
 @EnableScheduling
@@ -70,14 +71,11 @@ public class CouponsController {
 
     Coupon getEntity(long id) throws ApplicationException {
         try {
-            Coupon coupon = this.couponsDao.getEntityById(id);
-            if (coupon == null) {
-                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
-            }
+            Coupon coupon = this.couponsDao.findById(id).get();
             return coupon;
         } catch (Exception e) {
-            if (e instanceof ApplicationException) {
-                throw e;
+            if (e instanceof NoSuchElementException) {
+                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST);
             }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupon entity failed " + id);
         }
@@ -110,21 +108,11 @@ public class CouponsController {
 
     public void deleteCoupon(long id, UserLoginData userLoginData) throws ApplicationException {
         try {
-            if (userLoginData.getUserType() != UserType.ADMIN) {
-                CouponDto couponDto = this.couponsDao.getById(id);
-                if (couponDto == null) {
-                    throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
-                }
-                if (couponDto.getCompanyId() != userLoginData.getCompanyId()) {
-                    throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, "This coupon belongs to another company " + userLoginData.toString());
-                }
-            } else if (!(this.couponsDao.existsById(id))) {
-                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
-            }
+            this.validateDeleteCoupon(id, userLoginData);
             this.couponsDao.deleteById(id);
         } catch (Exception e) {
             if (e instanceof ApplicationException) {
-                throw e;
+                throw (ApplicationException) e;
             }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete coupon failed " + id);
         }
@@ -183,7 +171,7 @@ public class CouponsController {
     }
 
     Coupon createCouponFromDto(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
-        Company company = this.companiesController.getEntity(couponDto.getCompanyId(), userLoginData);
+        Company company = this.companiesController.getCompany(couponDto.getCompanyId(), userLoginData);
         Coupon coupon = new Coupon(couponDto.getName(), couponDto.getDescription(), couponDto.getPrice(), company,
                 couponDto.getStartDate(), couponDto.getEndDate(), couponDto.getCategory(), couponDto.getAmount());
         return coupon;
@@ -256,6 +244,21 @@ public class CouponsController {
             }
         }
         return coupon;
+    }
+
+    private void validateDeleteCoupon(long id, UserLoginData userLoginData) throws Exception {
+            if (userLoginData.getUserType() == UserType.CUSTOMER) {
+                throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
+            }
+            CouponDto couponDto = this.couponsDao.getById(id);
+            if (couponDto == null) {
+                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
+            }
+            if (userLoginData.getUserType() == UserType.COMPANY) {
+                if (couponDto.getCompanyId() != userLoginData.getCompanyId()) {
+                    throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, "This coupon belongs to another company " + userLoginData.toString());
+                }
+            }
     }
 
 }

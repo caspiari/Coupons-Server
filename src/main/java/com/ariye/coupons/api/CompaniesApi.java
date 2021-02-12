@@ -26,7 +26,7 @@ public class CompaniesApi {
 
     @GetMapping("/{companyId}")
     public CompanyDto getCompany(@PathVariable("companyId") long id) throws ApplicationException {
-        CompanyDto companyDto = this.companiesController.getCompany(id);
+        CompanyDto companyDto = this.companiesController.getCompanyDto(id);
         return companyDto;
     }
 

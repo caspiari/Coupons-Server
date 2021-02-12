@@ -52,7 +52,7 @@ public class PurchasesApi {
     }
 
     @GetMapping("/byUserId/{id}")
-    public List<PurchaseDto> getAllPurchasesByUserId(@PathVariable("id") long userId, HttpServletRequest request)
+    public List<PurchaseDto> getAllPurchasesByUserId(@ReVariable("id") long userId, HttpServletRequest request)
             throws ApplicationException {
         UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
         List<PurchaseDto> purchases = purchasesController.getAllPurchasesByUserId(userId, userLoginData);

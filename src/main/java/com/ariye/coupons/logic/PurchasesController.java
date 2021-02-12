@@ -14,9 +14,6 @@ import com.ariye.coupons.entities.User;
 import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.PostConstruct;
 
 
 @Controller
@@ -128,14 +125,10 @@ public class PurchasesController {
      * - This method is used for creation. Return entity with null id
      */
     private Purchase createPurchaseFromDto(PurchaseDto purchaseDto) throws ApplicationException {
-        try {
-            User user = this.usersController.getEntity(purchaseDto.getUserId());
-            Coupon coupon = this.couponsController.getEntity(purchaseDto.getCouponId());
-            Purchase purchase = new Purchase(user, coupon, purchaseDto.getAmount(), purchaseDto.getTimestamp());
-            return purchase;
-        } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create purchase from dto failed " + purchaseDto.toString());
-        }
+        User user = this.usersController.getUser(purchaseDto.getUserId());
+        Coupon coupon = this.couponsController.getEntity(purchaseDto.getCouponId());
+        Purchase purchase = new Purchase(user, coupon, purchaseDto.getAmount(), purchaseDto.getTimestamp());
+        return purchase;
     }
 
     // Validations:

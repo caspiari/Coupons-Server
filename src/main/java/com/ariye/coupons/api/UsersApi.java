@@ -4,7 +4,6 @@ import com.ariye.coupons.dto.SuccessfulLoginData;
 import com.ariye.coupons.dto.UserDto;
 import com.ariye.coupons.dto.UserLoginData;
 import com.ariye.coupons.dto.UserLoginDetails;
-import com.ariye.coupons.entities.*;
 import com.ariye.coupons.exeptions.ApplicationException;
 import com.ariye.coupons.logic.*;
 
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,7 +41,7 @@ public class UsersApi {
     @GetMapping("/{userId}")
     public UserDto getUser(@PathVariable("userId") long id, HttpServletRequest request) throws ApplicationException {
         UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-        UserDto userDto = this.usersController.getUser(id, userLoginData);
+        UserDto userDto = this.usersController.getUserDto(id, userLoginData);
         return userDto;
     }
 

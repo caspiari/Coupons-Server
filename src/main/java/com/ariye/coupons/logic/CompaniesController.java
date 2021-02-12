@@ -1,6 +1,7 @@
 package com.ariye.coupons.logic;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -53,7 +54,7 @@ public class CompaniesController {
         }
     }
 
-    public CompanyDto getCompany(Long id) throws ApplicationException {
+    public CompanyDto getCompanyDto(Long id) throws ApplicationException {
         try {
             CompanyDto companyDto = this.companiesDao.getById(id);
             if (companyDto == null) {
@@ -68,19 +69,19 @@ public class CompaniesController {
         }
     }
 
-    Company getEntity(Long id, UserLoginData userLoginData) throws ApplicationException {
+    Company getCompany(Long id, UserLoginData userLoginData) throws ApplicationException {
         try {
             if (userLoginData.getUserType() != UserType.ADMIN) {
                 id = userLoginData.getCompanyId();
             }
-            Company company = this.companiesDao.getEntityById(id);
-            if (company == null) {
-                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Company id");
-            }
+            Company company = this.companiesDao.findById(id).get();
             return company;
         } catch (Exception e) {
             if (e instanceof ApplicationException) {
                 throw e;
+            }
+            if (e instanceof NoSuchElementException) {
+                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Company id");
             }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get company entity failed " + id);
         }

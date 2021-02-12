@@ -16,8 +16,6 @@ public interface UsersDao extends CrudRepository<User, Long> {
     @Query("select new com.ariye.coupons.dto.UserDto(u.id, u.username, u.firstName, u.lastName, u.password, u.userType, u.company.id) from User u where u.id = ?1")
     UserDto getById(long id);
 
-    User getEntityById(long id);
-
     boolean existsByUsername (String username);
 
     @Query("select new com.ariye.coupons.dto.UserDto(u.id, u.username, u.firstName, u.lastName, u.password, u.userType, u.company.id) from User u where u.username = ?1")

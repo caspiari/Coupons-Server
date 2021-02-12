@@ -2,11 +2,13 @@ package com.ariye.coupons.logic;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.ariye.coupons.entities.Company;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import com.ariye.coupons.dao.CouponsDao;
 import com.ariye.coupons.dao.UsersDao;
@@ -54,7 +56,7 @@ public class UsersController {
         }
     }
 
-    public UserDto getUser(long id, UserLoginData userLoginData) throws ApplicationException {
+    public UserDto getUserDto(long id, UserLoginData userLoginData) throws ApplicationException {
         if (userLoginData.getUserType() != UserType.ADMIN) {
             id = userLoginData.getId();
         }
@@ -72,6 +74,18 @@ public class UsersController {
         }
     }
 
+    User getUser(long id) throws ApplicationException {
+        try {
+            User user = this.usersDao.findById(id).get();
+            return user;
+        } catch (Exception e) {
+            if (e instanceof NoSuchElementException) {
+                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
+            }
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get user entity failed. Id: " + id);
+        }
+    }
+
     public void updateUser(UserDto userDto, UserLoginData userLoginData) throws ApplicationException {
         Company company = null;
         if (userLoginData.getUserType() != UserType.ADMIN) {
@@ -79,10 +93,10 @@ public class UsersController {
             userDto.setUserType(userLoginData.getUserType());
         }
         if (userDto.getUserType() == UserType.COMPANY) {
-            company = this.companiesController.getEntity(userDto.getCompanyId(), userLoginData);
+            company = this.companiesController.getCompany(userDto.getCompanyId(), userLoginData);
         }
         this.validateUpdateUser(userDto);
-        User user = this.getEntity(userDto.getId());
+        User user = this.getUser(userDto.getId());
         String password = String.valueOf(userDto.getPassword().hashCode());
         user.setPassword(password);
         user.setUsername(userDto.getUsername());
@@ -102,13 +116,13 @@ public class UsersController {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
         }
         try {
-            if (!(this.usersDao.existsById(id))) {
-                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
-            }
             this.usersDao.deleteById(id);
         } catch (Exception e) {
             if (e instanceof ApplicationException) {
                 throw e;
+            }
+            if (e instanceof EmptyResultDataAccessException) {
+                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
             }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete user failed. Id: " + id);
         }
@@ -136,22 +150,6 @@ public class UsersController {
             return usersDtos;
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get all users failed");
-        }
-    }
-
-    User getEntity(long id) throws ApplicationException {
-        try {
-            User user = this.usersDao.getEntityById(id);
-            if (user == null) {
-                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
-            }
-            return user;
-        } catch (Exception e) {
-            // TODO: handle exception
-            if (e instanceof ApplicationException) {
-                throw e;
-            }
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get user entity failed. Id: " + id);
         }
     }
 

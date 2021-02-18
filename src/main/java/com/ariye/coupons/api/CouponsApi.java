@@ -52,8 +52,8 @@ public class CouponsApi {
         this.couponsController.deleteCoupon(id, userLoginData);
     }
 
-    @GetMapping("/byCompanyId/{companyId}")
-    public List<CouponDto> getCouponsByCompanyId(@PathVariable("companyId") long companyId) throws ApplicationException {
+    @GetMapping("/byCompanyId")
+    public List<CouponDto> getCouponsByCompanyId(@RequestParam("companyId") long companyId) throws ApplicationException {
         List<CouponDto> coupons = this.couponsController.getCouponsByCompanyId(companyId);
         return coupons;
     }

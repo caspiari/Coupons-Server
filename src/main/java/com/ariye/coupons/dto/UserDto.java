@@ -2,6 +2,8 @@ package com.ariye.coupons.dto;
 
 import com.ariye.coupons.enums.UserType;
 
+import java.util.Locale;
+
 public class UserDto {
 
     private long id;
@@ -15,12 +17,12 @@ public class UserDto {
     /**
      * - Ctor for creation
      */
-    public UserDto(String username, String firstName, String lastName, String password, UserType userType, Long companyId) {
+    public UserDto(String username, String firstName, String lastName, String password, String userType, Long companyId) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
-        this.userType = userType;
+        this.userType = UserType.valueOf(userType);
         this.companyId = companyId;
     }
 
@@ -28,8 +30,13 @@ public class UserDto {
      * - Full ctor
      */
     public UserDto(long id, String username, String firstName, String lastName, String password, UserType userType, Long companyId) {
-        this(username, firstName, lastName, password, userType, companyId);
         this.id = id;
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.userType = userType;
+        this.companyId = companyId;
     }
 
     public UserDto() {

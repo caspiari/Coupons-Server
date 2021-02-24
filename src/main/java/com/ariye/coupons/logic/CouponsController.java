@@ -22,6 +22,8 @@ import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
 
+import javax.annotation.PostConstruct;
+
 @Controller
 @EnableScheduling
 public class CouponsController {
@@ -133,6 +135,18 @@ public class CouponsController {
             return couponsDtos;
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupons by type failed " + couponType);
+        }
+    }
+
+    public List<CouponDto> getPurchasedCouponsByUserId(long userId, UserLoginData userLoginData) throws ApplicationException {
+        if (userLoginData.getUserType() != UserType.ADMIN) {
+            userId = userLoginData.getId();
+        }
+        try {
+            List<CouponDto> couponsDtos = couponsDao.getByUserId(userId);
+            return couponsDtos;
+        } catch (Exception e) {
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get purchased coupons by user id failed " + userId);
         }
     }
 
@@ -260,5 +274,4 @@ public class CouponsController {
                 }
             }
     }
-
 }

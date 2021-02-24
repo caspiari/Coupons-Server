@@ -6,10 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="ab78ec3b-c2bc-4ed3-a29d-f433dcf2431f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dto/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dto/UserDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/filters/LoginFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/filters/LoginFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/ariye/coupons/dto/UserDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ariye/coupons/dto/UserDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/ariye/coupons/filters/LoginFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ariye/coupons/filters/LoginFilter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/api/CouponsApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/api/CouponsApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dao/CouponsDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dao/CouponsDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CouponsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CouponsController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +57,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -333,7 +332,13 @@
       <option name="presentableId" value="LOCAL‎00039" />
       <updated>1613655399978</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL‎00040" summary="gj">
+      <created>1614091463632</created>
+      <option name="number" value="LOCAL‎00040" />
+      <option name="presentableId" value="LOCAL‎00040" />
+      <updated>1614091463632</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -366,7 +371,8 @@
     <MESSAGE value="ף" />
     <MESSAGE value="g" />
     <MESSAGE value="gh" />
-    <option name="LAST_COMMIT_MESSAGE" value="gh" />
+    <MESSAGE value="gj" />
+    <option name="LAST_COMMIT_MESSAGE" value="gj" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

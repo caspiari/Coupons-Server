@@ -2,6 +2,7 @@ package com.ariye.coupons.api;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -75,6 +76,13 @@ public class CouponsApi {
                                                          @RequestParam("maxPrice") float maxPrice, HttpServletRequest request) throws ApplicationException {
         UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
         List<CouponDto> coupons = this.couponsController.getPurchasedCouponsByMaxPrice(userId, maxPrice, userLoginData);
+        return coupons;
+    }
+
+    @GetMapping("/byUserId/{id}")
+    public List<CouponDto> getPurchasedCouponsByUserId(@PathParam("id") long userId, HttpServletRequest request) throws ApplicationException {
+        UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
+        List<CouponDto> coupons = this.couponsController.getPurchasedCouponsByUserId(userId, userLoginData);
         return coupons;
     }
 

@@ -4,16 +4,26 @@ import com.ariye.coupons.enums.UserType;
 
 public class SuccessfulLoginData {
 
+    private long id;
     private String token;
     private UserType userType;
 
-    public SuccessfulLoginData(String token, UserType userType) {
+    public SuccessfulLoginData(long id, String token, UserType userType) {
         super();
+        this.id = id;
         this.token = token;
         this.userType = userType;
     }
 
     public SuccessfulLoginData() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getToken() {
@@ -34,7 +44,7 @@ public class SuccessfulLoginData {
 
     @Override
     public String toString() {
-        return "\nSuccessfulLoginData [token=" + token + ", userType=" + userType + "]";
+        return "\nSuccessfulLoginData [id=" + id + ", token=" + token + ", userType=" + userType + "]";
     }
 
 

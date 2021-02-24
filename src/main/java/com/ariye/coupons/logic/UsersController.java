@@ -171,7 +171,7 @@ public class UsersController {
         long now = System.currentTimeMillis();
         userLoginData.setLoginTime(now);
         this.cacheController.put(token, userLoginData);
-        SuccessfulLoginData successfulLoginData = new SuccessfulLoginData(token, userLoginData.getUserType());
+        SuccessfulLoginData successfulLoginData = new SuccessfulLoginData(userLoginData.getId(), token, userLoginData.getUserType());
         return successfulLoginData;
     }
 

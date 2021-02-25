@@ -185,7 +185,7 @@ public class CouponsController {
     }
 
     Coupon createCouponFromDto(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
-        Company company = this.companiesController.getCompany(couponDto.getCompanyId(), userLoginData);
+        Company company = this.companiesController.getCompanyByName(couponDto.getCompanyName(), userLoginData);
         Coupon coupon = new Coupon(couponDto.getName(), couponDto.getDescription(), couponDto.getPrice(), company,
                 couponDto.getStartDate(), couponDto.getEndDate(), couponDto.getCategory(), couponDto.getAmount());
         return coupon;

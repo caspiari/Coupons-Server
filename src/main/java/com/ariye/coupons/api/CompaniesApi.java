@@ -48,10 +48,4 @@ public class CompaniesApi {
         return companies;
     }
 
-    @GetMapping("/byName")
-    public CompanyDto getCompanyByName(@RequestParam("name") String name) throws ApplicationException {
-        CompanyDto companyDto = this.companiesController.getCompanyByName(name);
-        return companyDto;
-    }
-
 }

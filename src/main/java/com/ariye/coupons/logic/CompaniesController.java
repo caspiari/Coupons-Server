@@ -110,10 +110,17 @@ public class CompaniesController {
         }
     }
 
-    public CompanyDto getCompanyByName(String name) throws ApplicationException {
+    Company getCompanyByName(String name, UserLoginData userLoginData) throws ApplicationException {
         try {
-            CompanyDto companyDto = this.companiesDao.getByName(name);
-            return companyDto;
+            Company company = this.companiesDao.getByName(name);
+            if (userLoginData.getUserType() == UserType.CUSTOMER) {
+                throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
+            } else if (userLoginData.getUserType() == UserType.COMPANY) {
+                if (userLoginData.getCompanyId() != company.getId()) {
+                    throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
+                }
+            }
+            return company;
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get company by name failed " + name);
         }

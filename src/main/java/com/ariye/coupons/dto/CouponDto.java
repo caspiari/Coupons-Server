@@ -8,6 +8,8 @@ import com.ariye.coupons.enums.CouponType;
 public class CouponDto {
 
     private long id;
+    private long companyId;
+    private String companyName;
     private String name;
     private String description;
     private float price;
@@ -15,14 +17,15 @@ public class CouponDto {
     private Date endDate;
     private CouponType category;
     private long amount;
-    private long companyId;
 
     public CouponDto() {
     }
 
-    public CouponDto(long id, String name, String description, float price, Date startDate, Date endDate,
-                     CouponType category, long amount, long companyId) {
+    public CouponDto(long id, long companyId, String companyName, String name, String description, float price, Date startDate, Date endDate,
+                     CouponType category, long amount) {
         this.id = id;
+        this.companyId = companyId;
+        this.companyName = companyName;
         this.name = name;
         this.description = description;
         this.price = price;
@@ -30,19 +33,35 @@ public class CouponDto {
         this.endDate = endDate;
         this.category = category;
         this.amount = amount;
-        this.companyId = companyId;
     }
 
     public CouponDto(Coupon coupon) {
-        this(coupon.getId(), coupon.getName(), coupon.getDescription(), coupon.getPrice(), coupon.getStartDate(),
-                coupon.getEndDate(), coupon.getCategory(), coupon.getAmount(), coupon.getCompany().getId());
+        this.id = coupon.getId();
+        this.companyId = coupon.getCompany().getId();
+        this.companyName = coupon.getCompany().getName();
+        this.name = coupon.getName();
+        this.description = coupon.getDescription();
+        this.price = coupon.getPrice();
+        this.startDate = coupon.getStartDate();
+        this.endDate = coupon.getEndDate();
+        this.category = coupon.getCategory();
+        this.amount = coupon.getAmount();
     }
 
     @Override
     public String toString() {
-        return "CouponDto [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
-                + ", startDate=" + startDate + ", endDate=" + endDate + ", category=" + category + ", amount=" + amount
-                + ", companyId=" + companyId + "]";
+        return "CouponDto{" +
+                "id=" + id +
+                ", companyId=" + companyId +
+                ", companyName='" + companyName + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", category=" + category +
+                ", amount=" + amount +
+                '}';
     }
 
     public long getId() {
@@ -51,6 +70,22 @@ public class CouponDto {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(long companyId) {
+        this.companyId = companyId;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getName() {
@@ -109,12 +144,5 @@ public class CouponDto {
         this.amount = amount;
     }
 
-    public long getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(long companyId) {
-        this.companyId = companyId;
-    }
 
 }

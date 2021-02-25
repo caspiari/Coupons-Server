@@ -10,7 +10,6 @@ import com.ariye.coupons.entities.Company;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
-import com.ariye.coupons.dao.CouponsDao;
 import com.ariye.coupons.dao.UsersDao;
 import com.ariye.coupons.dto.SuccessfulLoginData;
 import com.ariye.coupons.dto.UserDto;
@@ -21,8 +20,6 @@ import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
 
-import javax.annotation.PostConstruct;
-
 @Controller
 public class UsersController {
 
@@ -32,8 +29,6 @@ public class UsersController {
     private CompaniesController companiesController;
     @Autowired
     private CacheController cacheController;
-    @Autowired
-    private CouponsDao couponsDao;
 
     private static final String ENCRYPTION_TOKEN_SALT = "ASFDSDGFDSFGSSD-54675467#$%^";
 
@@ -42,6 +37,9 @@ public class UsersController {
             this.validateUpdateUser(userDto); //same validations
             if (this.usersDao.existsByUsername(userDto.getUsername())) {
                 throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS, "User name");
+            }
+            if (userDto.getUserType() == null) {
+                userDto.setUserType(UserType.CUSTOMER);
             }
             User user = new User(userDto);
             String password = String.valueOf(user.getPassword().hashCode());
@@ -76,8 +74,7 @@ public class UsersController {
 
     User getUser(long id) throws ApplicationException {
         try {
-            User user = this.usersDao.findById(id).get();
-            return user;
+            return this.usersDao.findById(id).get();
         } catch (Exception e) {
             if (e instanceof NoSuchElementException) {
                 throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");

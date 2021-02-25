@@ -122,6 +122,9 @@ public class CompaniesController {
             }
             return company;
         } catch (Exception e) {
+            if (e instanceof ApplicationException) {
+                throw e;
+            }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get company by name failed " + name);
         }
     }

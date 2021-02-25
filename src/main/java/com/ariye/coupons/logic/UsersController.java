@@ -131,8 +131,7 @@ public class UsersController {
         }
         this.validateEmail(username);
         try {
-            UserDto userDto = usersDao.findByUsername(username);
-            return userDto;
+            return usersDao.findByUsername(username);
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get user by username failed " + username);
         }

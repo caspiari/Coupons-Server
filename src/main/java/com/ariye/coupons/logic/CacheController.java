@@ -1,9 +1,7 @@
 package com.ariye.coupons.logic;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-import com.ariye.coupons.enums.UserType;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -14,10 +12,10 @@ import com.ariye.coupons.dto.UserLoginData;
 @EnableScheduling
 public class CacheController {
 
-    private Map<String, UserLoginData> dataMap;
+    private ConcurrentHashMap<String, UserLoginData> dataMap;
 
     public CacheController() {
-        this.dataMap = new HashMap<>();
+        this.dataMap = new ConcurrentHashMap<>();
     }
 
     public void put(String token, UserLoginData userLoginData) {

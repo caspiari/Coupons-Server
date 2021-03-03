@@ -12,7 +12,7 @@ import com.ariye.coupons.dto.UserLoginData;
 @EnableScheduling
 public class CacheController {
 
-    private ConcurrentHashMap<String, UserLoginData> dataMap;
+    private final ConcurrentHashMap<String, UserLoginData> dataMap;
 
     public CacheController() {
         this.dataMap = new ConcurrentHashMap<>();

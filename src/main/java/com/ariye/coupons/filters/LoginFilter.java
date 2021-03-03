@@ -47,9 +47,9 @@ public class LoginFilter implements Filter {
         }
 
         String token = req.getHeader("Authorization");
-        UserLoginData userLoginData = (UserLoginData) cacheController.get(token);
 
-        if (userLoginData != null) {
+        if (token != null) {
+            UserLoginData userLoginData = (UserLoginData) cacheController.get(token);
             request.setAttribute("userLoginData", userLoginData);
             chain.doFilter(request, response);
             return;

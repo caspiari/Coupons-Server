@@ -7,12 +7,13 @@ public class SuccessfulLoginData {
     private long id;
     private String token;
     private UserType userType;
+    private Long companyId;
 
-    public SuccessfulLoginData(long id, String token, UserType userType) {
-        super();
+    public SuccessfulLoginData(long id, String token, UserType userType, Long companyId) {
         this.id = id;
         this.token = token;
         this.userType = userType;
+        this.companyId = companyId;
     }
 
     public SuccessfulLoginData() {
@@ -42,10 +43,21 @@ public class SuccessfulLoginData {
         this.userType = userType;
     }
 
-    @Override
-    public String toString() {
-        return "\nSuccessfulLoginData [id=" + id + ", token=" + token + ", userType=" + userType + "]";
+    public Long getCompanyId() {
+        return companyId;
     }
 
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
 
+    @Override
+    public String toString() {
+        return "SuccessfulLoginData{" +
+                "id=" + id +
+                ", token='" + token + '\'' +
+                ", userType=" + userType +
+                ", companyId=" + companyId +
+                '}';
+    }
 }

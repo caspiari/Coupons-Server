@@ -115,9 +115,6 @@ public class UsersController {
         try {
             this.usersDao.deleteById(id);
         } catch (Exception e) {
-            if (e instanceof ApplicationException) {
-                throw e;
-            }
             if (e instanceof EmptyResultDataAccessException) {
                 throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
             }
@@ -142,7 +139,7 @@ public class UsersController {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
         }
         try {
-            List<UserDto> usersDtos = (List<UserDto>) this.usersDao.getAll();
+            List<UserDto> usersDtos = this.usersDao.getAll();
             return usersDtos;
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get all users failed");
@@ -167,7 +164,7 @@ public class UsersController {
         long now = System.currentTimeMillis();
         userLoginData.setLoginTime(now);
         this.cacheController.put(token, userLoginData);
-        SuccessfulLoginData successfulLoginData = new SuccessfulLoginData(userLoginData.getId(), token, userLoginData.getUserType());
+        SuccessfulLoginData successfulLoginData = new SuccessfulLoginData(userLoginData.getId(), token, userLoginData.getUserType(), userLoginData.getCompanyId());
         return successfulLoginData;
     }
 
@@ -181,24 +178,26 @@ public class UsersController {
 /////////////// Validations:
 
     void validateEmail(String email) throws ApplicationException {
-        if (email.length() < 8) {
-            throw new ApplicationException(ErrorType.MUST_INSERT_A_VALUE, "User name");
-        }
-        if (email.substring(0, email.indexOf("@")).length() < 2) {
-            throw new ApplicationException(ErrorType.INVALID_EMAIL);
-        }
-        if (email.substring(email.indexOf('@'), email.indexOf('.')).length() < 3) {
-            throw new ApplicationException(ErrorType.INVALID_EMAIL);
-        }
-        if (email.substring(email.indexOf('.')).length() < 3) {
-            throw new ApplicationException(ErrorType.INVALID_EMAIL);
-        }
         String email_pattern = "^[a-zA-Z0-9_#$%&�*+/=?^.-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{1,7}$";
         Pattern pat = Pattern.compile(email_pattern);
         Matcher mat = pat.matcher(email);
         if (!(mat.matches())) {
             throw new ApplicationException(ErrorType.INVALID_EMAIL);
         }
+        if (email.length() < 8) {
+            throw new ApplicationException(ErrorType.INVALID_EMAIL);
+        }
+        if (email.contains("@") && email.contains(".")) {
+            if (email.substring(0, email.indexOf("@")).length() < 2) {
+                throw new ApplicationException(ErrorType.INVALID_EMAIL);
+            }
+            if (email.substring(email.indexOf('@'), email.indexOf('.')).length() < 3) {
+                throw new ApplicationException(ErrorType.INVALID_EMAIL);
+            }
+            if (email.substring(email.indexOf('.')).length() < 3) {
+                throw new ApplicationException(ErrorType.INVALID_EMAIL);
+            }
+        } else { throw new ApplicationException(ErrorType.INVALID_EMAIL); }
     }
 
     private void validateUpdateUser(UserDto userDto) throws ApplicationException {

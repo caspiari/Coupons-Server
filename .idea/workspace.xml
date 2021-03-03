@@ -6,7 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="ab78ec3b-c2bc-4ed3-a29d-f433dcf2431f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CacheController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CacheController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dto/CompanyDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dto/CompanyDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dto/SuccessfulLoginData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dto/SuccessfulLoginData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/UsersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/UsersController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ariye/coupons/dto/CompanyDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ariye/coupons/dto/CompanyDto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ariye/coupons/dto/SuccessfulLoginData.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ariye/coupons/dto/SuccessfulLoginData.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ariye/coupons/logic/CacheController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ariye/coupons/logic/CacheController.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +60,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -372,7 +377,13 @@
       <option name="presentableId" value="LOCAL‎00046" />
       <updated>1614559174781</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL‎00047" summary="bh">
+      <created>1614697109461</created>
+      <option name="number" value="LOCAL‎00047" />
+      <option name="presentableId" value="LOCAL‎00047" />
+      <updated>1614697109461</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -410,7 +421,8 @@
     <MESSAGE value="jhbk" />
     <MESSAGE value="z" />
     <MESSAGE value="fh" />
-    <option name="LAST_COMMIT_MESSAGE" value="fh" />
+    <MESSAGE value="bh" />
+    <option name="LAST_COMMIT_MESSAGE" value="bh" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

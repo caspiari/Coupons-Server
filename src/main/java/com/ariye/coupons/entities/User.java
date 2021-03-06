@@ -15,12 +15,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.ariye.coupons.dto.UserLoginData;
+import com.ariye.coupons.exeptions.ApplicationException;
+import com.ariye.coupons.logic.CompaniesController;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import com.ariye.coupons.dto.UserDto;
 import com.ariye.coupons.enums.UserType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 @Table(name = "users")
@@ -53,10 +57,10 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     @JsonIgnore
-    List<Purchase> purchases;
+    private List<Purchase> purchases;
 
     /**
-     * - Sets the company and purchases null
+     * - Sets the purchases null
      */
     public User(UserDto userDto) {
         this.id = userDto.getId();
@@ -87,7 +91,7 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "\nUser [id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastName=" + lastName
-                + ", password=" + password + ", userType=" + userType + ", company=" + (company == null? null : company.getName()) + "]";
+                + ", password=" + password + ", userType=" + userType + ", company=" + (company == null ? null : company.getName()) + "]";
     }
 
     public long getId() {

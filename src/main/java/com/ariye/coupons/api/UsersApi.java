@@ -33,8 +33,9 @@ public class UsersApi {
     CacheController cacheController;
 
     @PostMapping
-    public long createUser(@RequestBody UserDto userDto) throws ApplicationException {
-        long id = this.usersController.createUser(userDto);
+    public long createUser(@RequestBody UserDto userDto, HttpServletRequest request) throws ApplicationException {
+        UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
+        long id = this.usersController.createUser(userDto, userLoginData);
         return id;
     }
 

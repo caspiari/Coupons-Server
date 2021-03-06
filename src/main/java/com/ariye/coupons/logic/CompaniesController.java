@@ -69,7 +69,7 @@ public class CompaniesController {
         }
     }
 
-    Company getCompany(Long id, UserLoginData userLoginData) throws ApplicationException {
+    public Company getCompany(Long id, UserLoginData userLoginData) throws ApplicationException {
         try {
             if (userLoginData.getUserType() != UserType.ADMIN) {
                 id = userLoginData.getCompanyId();

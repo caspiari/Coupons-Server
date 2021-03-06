@@ -32,16 +32,17 @@ public class UsersController {
 
     private static final String ENCRYPTION_TOKEN_SALT = "ASFDSDGFDSFGSSD-54675467#$%^";
 
-    public long createUser(UserDto userDto) throws ApplicationException {
+    public long createUser(UserDto userDto, UserLoginData userLoginData) throws ApplicationException {
         try {
             this.validateUpdateUser(userDto); //same validations
             if (this.usersDao.existsByUsername(userDto.getUsername())) {
                 throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS, "User name");
             }
-            if (userDto.getUserType() == null) {
-                userDto.setUserType(UserType.CUSTOMER);
-            }
             User user = new User(userDto);
+            if (userDto.getUserType() == UserType.COMPANY) {
+                Company company = companiesController.getCompany(userDto.getCompanyId(), userLoginData);
+                user.setCompany(company);
+            }
             String password = String.valueOf(user.getPassword().hashCode());
             user.setPassword(password);
             user = this.usersDao.save(user);

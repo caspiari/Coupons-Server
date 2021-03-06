@@ -37,6 +37,11 @@ public class LoginFilter implements Filter {
         }
 
         if (pageRequested.endsWith("/users") && req.getMethod().toString().equals("POST")) {
+            String token = req.getHeader("Authorization");
+            if (token != null) {
+                UserLoginData userLoginData = (UserLoginData) cacheController.get(token);
+                request.setAttribute("userLoginData", userLoginData);
+            }
             chain.doFilter(request, response);
             return;
         }

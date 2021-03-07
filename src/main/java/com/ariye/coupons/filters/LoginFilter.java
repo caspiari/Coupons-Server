@@ -31,7 +31,6 @@ public class LoginFilter implements Filter {
         String pageRequested = req.getRequestURI().toString();
 
         if (pageRequested.endsWith("/login")) {
-
             chain.doFilter(request, response);
             return;
         }

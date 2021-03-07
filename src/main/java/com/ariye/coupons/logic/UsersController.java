@@ -35,9 +35,6 @@ public class UsersController {
     public long createUser(UserDto userDto, UserLoginData userLoginData) throws ApplicationException {
         try {
             this.validateUpdateUser(userDto); //same validations
-            if (this.usersDao.existsByUsername(userDto.getUsername())) {
-                throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS, "User name");
-            }
             User user = new User(userDto);
             if (userDto.getUserType() == UserType.COMPANY) {
                 Company company = companiesController.getCompany(userDto.getCompanyId(), userLoginData);
@@ -90,10 +87,10 @@ public class UsersController {
             userDto.setId(userLoginData.getId());
             userDto.setUserType(userLoginData.getUserType());
         }
+        this.validateUpdateUser(userDto);
         if (userDto.getUserType() == UserType.COMPANY) {
             company = this.companiesController.getCompany(userDto.getCompanyId(), userLoginData);
         }
-        this.validateUpdateUser(userDto);
         User user = this.getUser(userDto.getId());
         String password = String.valueOf(userDto.getPassword().hashCode());
         user.setPassword(password);
@@ -198,36 +195,55 @@ public class UsersController {
             if (email.substring(email.indexOf('.')).length() < 3) {
                 throw new ApplicationException(ErrorType.INVALID_EMAIL);
             }
-        } else { throw new ApplicationException(ErrorType.INVALID_EMAIL); }
+        } else {
+            throw new ApplicationException(ErrorType.INVALID_EMAIL);
+        }
     }
 
     private void validateUpdateUser(UserDto userDto) throws ApplicationException {
-        // if (this.usersDao.isUsernameExist(user.getUsername())) { <-Apply after third layer
-        //      throw new Exception("Username already exist");
-        // }
-        if (userDto.getUsername() == null) {
-            throw new ApplicationException(ErrorType.MUST_INSERT_A_VALUE, "User name");
-        }
-        if (userDto.getFirstName() == null) {
-            throw new ApplicationException(ErrorType.MUST_ENTER_NAME, "First name");
-        }
-        if (userDto.getLastName() == null) {
-            throw new ApplicationException(ErrorType.MUST_ENTER_NAME, "Last name");
-        }
-        if (userDto.getPassword() == null) {
-            throw new ApplicationException(ErrorType.MUST_INSERT_A_VALUE, "Password");
-        }
+        try {
+            Long id = this.usersDao.getIdByUsernameAndId(userDto.getUsername(), userDto.getId());
+            if (id != null) {
+                throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS, "Username");
+            }
+            if (userDto.getUsername() == null) {
+                throw new ApplicationException(ErrorType.MUST_INSERT_A_VALUE, "User name");
+            }
+            if (userDto.getFirstName() == null) {
+                throw new ApplicationException(ErrorType.MUST_ENTER_NAME, "First name");
+            }
+            if (userDto.getLastName() == null) {
+                throw new ApplicationException(ErrorType.MUST_ENTER_NAME, "Last name");
+            }
+            if (userDto.getPassword() == null) {
+                throw new ApplicationException(ErrorType.MUST_INSERT_A_VALUE, "Password");
+            }
 
-        this.validateEmail(userDto.getUsername());
+            this.validateEmail(userDto.getUsername());
 
-        if (userDto.getFirstName().length() < 2) {
-            throw new ApplicationException(ErrorType.NAME_IS_TOO_SHORT, "First name");
-        }
-        if (userDto.getLastName().length() < 2) {
-            throw new ApplicationException(ErrorType.NAME_IS_TOO_SHORT, "Last name");
-        }
-        if (userDto.getPassword().length() < 6) {
-            throw new ApplicationException(ErrorType.INVALID_PASSWORD);
+            if (userDto.getFirstName().length() < 2) {
+                throw new ApplicationException(ErrorType.NAME_IS_TOO_SHORT, "First name");
+            }
+            if (userDto.getLastName().length() < 2) {
+                throw new ApplicationException(ErrorType.NAME_IS_TOO_SHORT, "Last name");
+            }
+            if (userDto.getPassword().length() < 6) {
+                throw new ApplicationException(ErrorType.INVALID_PASSWORD);
+            }
+            if (userDto.getUserType() == UserType.COMPANY) {
+                if (userDto.getCompanyId() != null) {
+                    if (!companiesController.isCompanyExist(userDto.getCompanyId())) {
+                        throw new ApplicationException(ErrorType.GENERAL_ERROR, "Validate update user failed: Company id doesn't exist");
+                    }
+                } else {
+                    throw new ApplicationException(ErrorType.MUST_INSERT_A_VALUE, "Company name");
+                }
+            }
+        } catch (Exception e) {
+            if (e instanceof ApplicationException) {
+                throw (ApplicationException) e;
+            }
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Validate update user failed " + userDto.toString());
         }
     }
 

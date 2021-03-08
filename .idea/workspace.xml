@@ -6,10 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="ab78ec3b-c2bc-4ed3-a29d-f433dcf2431f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dao/UsersDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dao/UsersDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/filters/LoginFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/filters/LoginFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/UsersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/UsersController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/ariye/coupons/filters/LoginFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ariye/coupons/filters/LoginFilter.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,12 +94,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1610964771882</updated>
-    </task>
-    <task id="LOCAL‎00004" summary="n">
-      <created>1611579310537</created>
-      <option name="number" value="LOCAL‎00004" />
-      <option name="presentableId" value="LOCAL‎00004" />
-      <updated>1611579310537</updated>
     </task>
     <task id="LOCAL‎00005" summary="n">
       <created>1611580620904</created>
@@ -393,7 +383,13 @@
       <option name="presentableId" value="LOCAL‎00052" />
       <updated>1615069329327</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL‎00053" summary="j">
+      <created>1615125021337</created>
+      <option name="number" value="LOCAL‎00053" />
+      <option name="presentableId" value="LOCAL‎00053" />
+      <updated>1615125021337</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -410,7 +406,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="." />
     <MESSAGE value="ץ" />
     <MESSAGE value="..." />
     <MESSAGE value="b" />
@@ -435,7 +430,8 @@
     <MESSAGE value="bj" />
     <MESSAGE value="l" />
     <MESSAGE value="hj" />
-    <option name="LAST_COMMIT_MESSAGE" value="hj" />
+    <MESSAGE value="j" />
+    <option name="LAST_COMMIT_MESSAGE" value="j" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

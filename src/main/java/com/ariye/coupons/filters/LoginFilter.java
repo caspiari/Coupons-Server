@@ -65,9 +65,9 @@ public class LoginFilter implements Filter {
 
     }
 
-    @Override
-    public void init(FilterConfig arg0) throws ServletException {
-    }
+//    @Override
+//    public void init(FilterConfig arg0) throws ServletException {
+//    }
 
     @Override
     public void destroy() {

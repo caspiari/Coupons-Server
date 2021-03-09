@@ -78,4 +78,10 @@ public class UsersApi {
         return successfulLoginData;
     }
 
+    @PostMapping("/logout")
+    public void logout(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        this.usersController.logout(token);
+    }
+
 }

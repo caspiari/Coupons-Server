@@ -2,6 +2,7 @@ package com.ariye.coupons.logic;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.ariye.coupons.entities.User;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,11 @@ public class CacheController {
     public UserLoginData get(String token) {
         UserLoginData userLoginData = this.dataMap.get(token);
         return userLoginData;
+    }
+
+    public void delete(String token) {
+        this.dataMap.remove(token);
+        System.out.println("\nRemoved from cache\n: " + token);
     }
 
     @Scheduled(cron = "0 0 * * * *")

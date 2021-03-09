@@ -166,7 +166,11 @@ public class UsersController {
         return successfulLoginData;
     }
 
-    public String generateToken(String username) {
+    public void logout(String token) {
+        this.cacheController.delete(token);
+    }
+
+    private String generateToken(String username) {
         String text = username + Calendar.getInstance().getTime().toString() + ENCRYPTION_TOKEN_SALT;
         int token = text.hashCode();
         return String.valueOf(token);

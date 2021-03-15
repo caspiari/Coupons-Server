@@ -38,6 +38,7 @@ public class CouponsApi {
     @GetMapping("/{couponId}")
     public CouponDto getCoupon(@PathVariable("couponId") long id) throws ApplicationException {
         CouponDto couponDto = this.couponsController.getCoupon(id);
+        System.out.println("Returnin coupon: " + couponDto.getId());
         return couponDto;
     }
 

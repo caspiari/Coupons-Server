@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public interface CouponsDao extends CrudRepository<Coupon, Long> {
+public interface ICouponsDao extends CrudRepository<Coupon, Long> {
 
     @Query("select new com.ariye.coupons.dto.CouponDto(c.id, c.company.id, c.company.name, c.name, c.description, c.price, c.startDate, c.endDate, c.category, c.amount) from Coupon c where c.id = ?1")
     CouponDto getById(long id);

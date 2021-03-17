@@ -1,17 +1,15 @@
 package com.ariye.coupons.logic;
 
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import com.ariye.coupons.dto.UserLoginDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
-import com.ariye.coupons.dao.CouponsDao;
+import com.ariye.coupons.dao.ICouponsDao;
 import com.ariye.coupons.dto.CouponDto;
 import com.ariye.coupons.dto.UserLoginData;
 import com.ariye.coupons.entities.Company;
@@ -22,14 +20,12 @@ import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
 
-import javax.annotation.PostConstruct;
-
 @Controller
 @EnableScheduling
 public class CouponsController {
 
     @Autowired
-    private CouponsDao couponsDao;
+    private ICouponsDao couponsDao;
     @Autowired
     UsersController usersController;
     @Autowired

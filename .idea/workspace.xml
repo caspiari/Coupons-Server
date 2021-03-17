@@ -5,14 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab78ec3b-c2bc-4ed3-a29d-f433dcf2431f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/api/CompaniesApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/api/CompaniesApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/api/CouponsApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/api/CouponsApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/filters/CORSFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/filters/CORSFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dao/CompaniesDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dao/ICompaniesDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dao/CouponsDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dao/ICouponsDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dao/PurchasesDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dao/IPurchasesDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dao/UsersDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dao/IUsersDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dto/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dto/UserDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CompaniesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CompaniesController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/ariye/coupons/api/CompaniesApi.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ariye/coupons/api/CompaniesApi.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/ariye/coupons/api/UsersApi.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ariye/coupons/api/UsersApi.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/ariye/coupons/filters/LoginFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ariye/coupons/filters/LoginFilter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CouponsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CouponsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/PurchasesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/PurchasesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/UsersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/UsersController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ariye/coupons/dao/CompaniesDao.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ariye/coupons/dto/UserDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ariye/coupons/dto/UserDto.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/ariye/coupons/logic/CompaniesController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ariye/coupons/logic/CompaniesController.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -102,12 +107,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1610964771882</updated>
-    </task>
-    <task id="LOCAL‎00007" summary="n">
-      <created>1611596277091</created>
-      <option name="number" value="LOCAL‎00007" />
-      <option name="presentableId" value="LOCAL‎00007" />
-      <updated>1611596277093</updated>
     </task>
     <task id="LOCAL‎00008" summary=".">
       <created>1611609904269</created>
@@ -397,7 +396,13 @@
       <option name="presentableId" value="LOCAL‎00055" />
       <updated>1615311171539</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL‎00056" summary="hgj">
+      <created>1615820749760</created>
+      <option name="number" value="LOCAL‎00056" />
+      <option name="presentableId" value="LOCAL‎00056" />
+      <updated>1615820749760</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -414,7 +419,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="b" />
     <MESSAGE value="h" />
     <MESSAGE value="v" />
     <MESSAGE value="t" />
@@ -439,7 +443,8 @@
     <MESSAGE value="j" />
     <MESSAGE value="cvcvb" />
     <MESSAGE value="גדע" />
-    <option name="LAST_COMMIT_MESSAGE" value="גדע" />
+    <MESSAGE value="hgj" />
+    <option name="LAST_COMMIT_MESSAGE" value="hgj" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -449,14 +454,9 @@
           <option name="timeStamp" value="5" />
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CouponsController.java</url>
-          <line>40</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/ariye/coupons/api/CouponsApi.java</url>
-          <line>32</line>
-          <option name="timeStamp" value="24" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/ariye/coupons/filters/LoginFilter.java</url>
+          <line>28</line>
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

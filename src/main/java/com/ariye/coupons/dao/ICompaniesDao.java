@@ -12,7 +12,7 @@ import com.ariye.coupons.entities.Company;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CompaniesDao extends CrudRepository<Company, Long> {
+public interface ICompaniesDao extends CrudRepository<Company, Long> {
 
     @Query("select new com.ariye.coupons.dto.CompanyDto(c.id, c.name, c.address, c.phone) from Company c where c.id = ?1")
     CompanyDto getById(long id);

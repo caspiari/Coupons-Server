@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import com.ariye.coupons.dao.CompaniesDao;
+import com.ariye.coupons.dao.ICompaniesDao;
 import com.ariye.coupons.dto.CompanyDto;
 import com.ariye.coupons.dto.UserLoginData;
 import com.ariye.coupons.entities.Company;
@@ -13,13 +13,11 @@ import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
 
-import javax.annotation.PostConstruct;
-
 @Controller
 public class CompaniesController {
 
     @Autowired
-    private CompaniesDao companiesDao;
+    private ICompaniesDao companiesDao;
 
     public long createCompany(CompanyDto companyDto, UserLoginData userLoginData) throws ApplicationException {
         if (userLoginData.getUserType() != UserType.ADMIN) {

@@ -1,10 +1,17 @@
 package com.ariye.coupons.dto;
 
+import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
+import com.ariye.coupons.exeptions.ApplicationException;
+import com.ariye.coupons.logic.CompaniesController;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Locale;
 
 public class UserDto {
+
+    @Autowired
+    CompaniesController companiesController;
 
     private long id;
     private String username;
@@ -13,6 +20,7 @@ public class UserDto {
     private String password;
     private UserType userType;
     private Long companyId;
+    private String companyName;
 
     /**
      * - Ctor for creation
@@ -104,4 +112,11 @@ public class UserDto {
         this.companyId = companyId;
     }
 
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
 }

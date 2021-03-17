@@ -10,7 +10,7 @@ import com.ariye.coupons.entities.Company;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
-import com.ariye.coupons.dao.UsersDao;
+import com.ariye.coupons.dao.IUsersDao;
 import com.ariye.coupons.dto.SuccessfulLoginData;
 import com.ariye.coupons.dto.UserDto;
 import com.ariye.coupons.dto.UserLoginData;
@@ -20,11 +20,13 @@ import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
 
+import javax.annotation.PostConstruct;
+
 @Controller
 public class UsersController {
 
     @Autowired
-    private UsersDao usersDao;
+    private IUsersDao usersDao;
     @Autowired
     private CompaniesController companiesController;
     @Autowired

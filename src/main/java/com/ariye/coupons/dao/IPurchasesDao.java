@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public interface PurchasesDao extends CrudRepository<Purchase, Long> {
+public interface IPurchasesDao extends CrudRepository<Purchase, Long> {
 
     @Query("select new com.ariye.coupons.dto.PurchaseDto(p.id, p.user.id, p.coupon.id, p.amount, p.timestamp, p.coupon.name, p.coupon.company.name,"
             + "p.user.username) from Purchase p where p.id = ?1")

@@ -37,7 +37,7 @@ public class UserDto {
     /**
      * - Full ctor
      */
-    public UserDto(long id, String username, String firstName, String lastName, String password, UserType userType, Long companyId) {
+    public UserDto(long id, String username, String firstName, String lastName, String password, UserType userType, Long companyId, String companyName) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
@@ -45,6 +45,7 @@ public class UserDto {
         this.password = password;
         this.userType = userType;
         this.companyId = companyId;
+        this.companyName = companyName;
     }
 
     public UserDto() {
@@ -53,7 +54,7 @@ public class UserDto {
     @Override
     public String toString() {
         return "UserDto [id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastName=" + lastName
-                + ", password=" + password + ", userType=" + userType + ", companyId=" + (companyId == null? null : companyId) + "]";
+                + ", password=" + password + ", userType=" + userType + ", companyId=" + (companyId == null? null : companyId + ", companyName=" + companyName) + "]";
     }
 
     public long getId() {

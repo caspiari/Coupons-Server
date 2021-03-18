@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import com.ariye.coupons.dto.UserDto;
 import com.ariye.coupons.dto.UserLoginData;
 import com.ariye.coupons.entities.User;
+import com.ariye.coupons.entities.Company;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
@@ -15,16 +16,16 @@ import javax.annotation.PostConstruct;
 @Repository
 public interface IUsersDao extends CrudRepository<User, Long> {
 
-    @Query("select new com.ariye.coupons.dto.UserDto(u.id, u.username, u.firstName, u.lastName, u.password, u.userType, u.company.id) from User u where u.id = ?1")
+    @Query("select new com.ariye.coupons.dto.UserDto(u.id, u.username, u.firstName, u.lastName, u.password, u.userType, u.company.id, c.name) from User u left join Company c on u.company.id = c.id where u.id = ?1")
     UserDto getById(long id);
 
     @Query("select id from User u where u.username = ?1 and u.id != ?2")
     Long getIdByUsernameAndId(String username, long id);//Used for validation
 
-    @Query("select new com.ariye.coupons.dto.UserDto(u.id, u.username, u.firstName, u.lastName, u.password, u.userType, u.company.id) from User u where u.username = ?1")
+    @Query("select new com.ariye.coupons.dto.UserDto(u.id, u.username, u.firstName, u.lastName, u.password, u.userType, u.company.id, c.name) from User u left join Company c on u.company.id = c.id where u.username = ?1")
     UserDto findByUsername(String username);
 
-    @Query("select new com.ariye.coupons.dto.UserDto(u.id, u.username, u.firstName, u.lastName, u.password, u.userType, u.company.id) from User u")
+    @Query("select new com.ariye.coupons.dto.UserDto(u.id, u.username, u.firstName, u.lastName, u.password, u.userType, u.company.id, c.name) from User u left join Company c on u.company.id = c.id")
     List<UserDto> getAll();
 
     @Query("select new com.ariye.coupons.dto.UserLoginData(u.id, u.userType, u.company.id) from User u where u.username= :username and u.password= :password")

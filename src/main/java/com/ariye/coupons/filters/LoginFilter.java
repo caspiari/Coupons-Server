@@ -50,6 +50,11 @@ public class LoginFilter implements Filter {
             return;
         }
 
+        if (pageRequested.endsWith("/companies") && req.getMethod().toString().equals("GET")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         String token = req.getHeader("Authorization");
 
         if (token != null) {

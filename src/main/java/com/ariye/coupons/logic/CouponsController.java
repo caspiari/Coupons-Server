@@ -20,6 +20,8 @@ import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
 
+import javax.annotation.PostConstruct;
+
 @Controller
 @EnableScheduling
 public class CouponsController {
@@ -27,21 +29,13 @@ public class CouponsController {
     @Autowired
     private ICouponsDao couponsDao;
     @Autowired
-    UsersController usersController;
-    @Autowired
     private CompaniesController companiesController;
-    @Autowired
-    private PurchasesController purchasesController;
 
     public long createCoupon(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
         this.validateCreateCoupon(couponDto, userLoginData);
         Coupon coupon = this.createCouponFromDto(couponDto, userLoginData);
         Company company = coupon.getCompany();
-        //This validation is here because 'validateUpdateCoupon' uses 'validateCreateCoupon'
         try {
-            if (this.couponsDao.existsByNameAndCompanyId(company.getName(), company.getId())) {
-                throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS, "Coupon name");
-            }
             coupon = this.couponsDao.save(coupon);
             return coupon.getId();
         } catch (Exception e) {
@@ -205,9 +199,10 @@ public class CouponsController {
     }
 
     private void validateCreateCoupon(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
-        // if (couponsDao.isCouponNameExist(coupon.getName())) { -Apply after third layer
-        //      throw new Exception("Coupon name already exist");
-        // }
+        Long id = this.couponsDao.getIdByNameCompanyIdAndId(couponDto.getName(), couponDto.getCompanyId(), couponDto.getId());
+        if (id != null) {
+            throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS);
+        }
         if (userLoginData.getUserType() == UserType.CUSTOMER) {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
         }
@@ -226,7 +221,7 @@ public class CouponsController {
         if (couponDto.getName().length() < 2) {
             throw new ApplicationException(ErrorType.NAME_IS_TOO_SHORT);
         }
-        if (couponDto.getPrice() < 0) {
+        if (couponDto.getPrice() < 1) {
             throw new ApplicationException(ErrorType.INVALID_VALUE, "Price must be positive");
         }
         if (couponDto.getEndDate().before(Calendar.getInstance().getTime())) {
@@ -235,7 +230,7 @@ public class CouponsController {
         if (couponDto.getEndDate().before(couponDto.getStartDate())) {
             throw new ApplicationException(ErrorType.INVALID_DATES);
         }
-        if (couponDto.getAmount() < 0) {
+        if (couponDto.getAmount() < 1) {
             throw new ApplicationException(ErrorType.INVALID_AMOUNT, "Must be positive");
         }
     }

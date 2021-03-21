@@ -15,6 +15,8 @@ import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
 
+import javax.annotation.PostConstruct;
+
 
 @Controller
 public class PurchasesController {

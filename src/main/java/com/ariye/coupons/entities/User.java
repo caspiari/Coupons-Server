@@ -60,7 +60,7 @@ public class User implements Serializable {
     private List<Purchase> purchases;
 
     /**
-     * - Sets the purchases null
+     * - Sets the company and purchases null
      */
     public User(UserDto userDto) {
         this.id = userDto.getId();

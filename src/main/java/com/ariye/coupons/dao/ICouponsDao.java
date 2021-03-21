@@ -2,8 +2,6 @@ package com.ariye.coupons.dao;
 
 import java.sql.Date;
 import java.util.List;
-
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -20,6 +18,9 @@ public interface ICouponsDao extends CrudRepository<Coupon, Long> {
     CouponDto getById(long id);
 
     boolean existsByNameAndCompanyId(String name, long companyId);
+
+    @Query("select id from Coupon c where c.name = ?1 and c.company.id = ?2 and c.id != ?3")
+    Long getIdByNameCompanyIdAndId(String name, long companyId, long id);//Used for validation
 
     @Query("select new com.ariye.coupons.dto.CouponDto(c.id, c.company.id, c.company.name, c.name, c.description, c.price, c.startDate, c.endDate, c.category, c.amount) from Coupon c where c.company.id = ?1")
     List<CouponDto> getByCompanyId(long id) throws Exception;

@@ -1,7 +1,6 @@
 package com.ariye.coupons.dao;
 
 import java.util.List;
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -10,8 +9,6 @@ import com.ariye.coupons.dto.UserLoginData;
 import com.ariye.coupons.entities.User;
 import com.ariye.coupons.entities.Company;
 import org.springframework.stereotype.Repository;
-
-import javax.annotation.PostConstruct;
 
 @Repository
 public interface IUsersDao extends CrudRepository<User, Long> {

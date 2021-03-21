@@ -17,6 +17,9 @@ public interface ICompaniesDao extends CrudRepository<Company, Long> {
     @Query("select new com.ariye.coupons.dto.CompanyDto(c.id, c.name, c.address, c.phone) from Company c where c.id = ?1")
     CompanyDto getById(long id);
 
+    @Query("select id from Company c where c.name = ?1 and c.id != ?2")
+    Long getIdByNameAndId(String name, long id);//Used for validation
+
     @Query("select new com.ariye.coupons.dto.CompanyDto(c.id, c.name, c.address, c.phone) from Company c")
     List<CompanyDto> getAll();
 

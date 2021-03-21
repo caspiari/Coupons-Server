@@ -36,14 +36,11 @@ public class UsersController {
 
     public long createUser(UserDto userDto, UserLoginData userLoginData) throws ApplicationException {
         try {
-            this.validateUpdateUser(userDto); //same validations
+            Company company = this.validateUpdateUser(userDto, userLoginData); //same validations
             User user = new User(userDto);
-            if (userDto.getUserType() == UserType.COMPANY) {
-                Company company = companiesController.getCompany(userDto.getCompanyId(), userLoginData);
-                user.setCompany(company);
-            }
             String password = String.valueOf(user.getPassword().hashCode());
             user.setPassword(password);
+            user.setCompany(company);
             user = this.usersDao.save(user);
             return user.getId();
         } catch (Exception e) {
@@ -84,15 +81,11 @@ public class UsersController {
     }
 
     public void updateUser(UserDto userDto, UserLoginData userLoginData) throws ApplicationException {
-        Company company = null;
         if (userLoginData.getUserType() != UserType.ADMIN) {
             userDto.setId(userLoginData.getId());
             userDto.setUserType(userLoginData.getUserType());
         }
-        this.validateUpdateUser(userDto);
-        if (userDto.getUserType() == UserType.COMPANY) {
-            company = this.companiesController.getCompany(userDto.getCompanyId(), userLoginData);
-        }
+        Company company = this.validateUpdateUser(userDto, userLoginData);
         User user = this.getUser(userDto.getId());
         String password = String.valueOf(userDto.getPassword().hashCode());
         user.setPassword(password);
@@ -206,7 +199,7 @@ public class UsersController {
         }
     }
 
-    private void validateUpdateUser(UserDto userDto) throws ApplicationException {
+    private Company validateUpdateUser(UserDto userDto, UserLoginData userLoginData) throws ApplicationException {
         try {
             Long id = this.usersDao.getIdByUsernameAndId(userDto.getUsername(), userDto.getId());
             if (id != null) {
@@ -224,7 +217,6 @@ public class UsersController {
             if (userDto.getPassword() == null) {
                 throw new ApplicationException(ErrorType.MUST_INSERT_A_VALUE, "Password");
             }
-
             this.validateEmail(userDto.getUsername());
 
             if (userDto.getFirstName().length() < 2) {
@@ -245,6 +237,11 @@ public class UsersController {
                     throw new ApplicationException(ErrorType.MUST_INSERT_A_VALUE, "Company name");
                 }
             }
+            if (userDto.getUserType() == UserType.COMPANY) {
+                Company company = companiesController.getCompany(userDto.getCompanyId(), userLoginData);
+                return company;
+            }
+            return null;
         } catch (Exception e) {
             if (e instanceof ApplicationException) {
                 throw (ApplicationException) e;
@@ -252,6 +249,5 @@ public class UsersController {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Validate update user failed " + userDto.toString());
         }
     }
-
 
 }

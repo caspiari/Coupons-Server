@@ -13,6 +13,8 @@ import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
 
+import javax.annotation.PostConstruct;
+
 @Controller
 public class CompaniesController {
 
@@ -27,9 +29,6 @@ public class CompaniesController {
         this.validateCreateCompany(company);
         String name = company.getName();
         try {
-            if (this.companiesDao.existsByName(name)) {
-                throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS);
-            }
             company = this.companiesDao.save(company);
             return company.getId();
         } catch (Exception e) {
@@ -151,6 +150,10 @@ public class CompaniesController {
     }
 
     private void validateCreateCompany(Company company) throws ApplicationException {
+        Long id = this.companiesDao.getIdByNameAndId(company.getName(), company.getId());
+        if (id != null) {
+            throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS);
+        }
         if (company.getName() == null) {
             throw new ApplicationException(ErrorType.MUST_ENTER_NAME);
         }
@@ -172,13 +175,11 @@ public class CompaniesController {
     }
 
     private void validateUpdateCompany(Company company) throws ApplicationException {
-        // if (iCompaniesDao.isCompanyNameExist(company.getName())) { <->Apply after third layer
-        // 		throw new Exception("Company name already exist");
-        // }
-        if (company.getId() == 0) {
+        if (company.getId() < 1) {
             throw new ApplicationException(ErrorType.MUST_INSERT_A_VALUE, " Id");
         }
         this.validateCreateCompany(company);
     }
+
 
 }

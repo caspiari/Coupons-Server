@@ -50,7 +50,7 @@ public class LoginFilter implements Filter {
             return;
         }
 
-        if (pageRequested.endsWith("/companies") && req.getMethod().toString().equals("GET")) {
+        if (pageRequested.endsWith("/companies") && req.getMethod().toString().equals("GET")) { //I consider it as public information
             chain.doFilter(request, response);
             return;
         }
@@ -59,9 +59,11 @@ public class LoginFilter implements Filter {
 
         if (token != null) {
             UserLoginData userLoginData = (UserLoginData) cacheController.get(token);
-            request.setAttribute("userLoginData", userLoginData);
-            chain.doFilter(request, response);
-            return;
+            if (userLoginData != null) {
+                request.setAttribute("userLoginData", userLoginData);
+                chain.doFilter(request, response);
+                return;
+            }
         }
 
         HttpServletResponse res = (HttpServletResponse) response;
@@ -69,10 +71,6 @@ public class LoginFilter implements Filter {
         res.setStatus(401);
 
     }
-
-//    @Override
-//    public void init(FilterConfig arg0) throws ServletException {
-//    }
 
     @Override
     public void destroy() {

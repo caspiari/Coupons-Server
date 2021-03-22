@@ -3,6 +3,7 @@ package com.ariye.coupons.logic;
 import java.sql.Date;
 import java.util.List;
 
+import com.ariye.coupons.dto.CouponDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import com.ariye.coupons.dao.IPurchasesDao;
@@ -50,12 +51,7 @@ public class PurchasesController {
     public PurchaseDto getPurchase(long id, UserLoginData userLoginData) throws ApplicationException {
         try {
             PurchaseDto purchaseDto = this.purchasesDao.getById(id);
-            if (purchaseDto == null) {
-                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Purchase id");
-            }
-            if (userLoginData.getId() != purchaseDto.getUserId()) {
-                throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, "Purchase belongs to someone else " + userLoginData.toString());
-            }
+            validateGetPurchase(purchaseDto, userLoginData);
             return purchaseDto;
         } catch (Exception e) {
             if (e instanceof ApplicationException) {
@@ -141,6 +137,25 @@ public class PurchasesController {
         }
         if (coupon.getEndDate().before(purchase.getTimestamp())) {
             throw new ApplicationException(ErrorType.COUPON_EXPIERED);
+        }
+        if (purchase.getUser().getUserType() != UserType.CUSTOMER) {
+            throw new ApplicationException(ErrorType.INVALID_VALUE, "Only customers can purchase coupons");
+        }
+    }
+
+    private void validateGetPurchase(PurchaseDto purchaseDto, UserLoginData userLoginData) throws ApplicationException {
+        if (purchaseDto == null) {
+            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Purchase id");
+        }
+        if (userLoginData.getUserType() == UserType.CUSTOMER) {
+            if (userLoginData.getId() != purchaseDto.getUserId()) {
+                throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, "Purchase belongs to someone else " + userLoginData.toString());
+            }
+        } else if (userLoginData.getUserType() == UserType.COMPANY) {
+            CouponDto couponDto = this.couponsController.getCoupon(purchaseDto.getCouponId());
+            if (couponDto.getCompanyId() != userLoginData.getCompanyId()) {
+                throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, "Purchase belongs to someone else " + userLoginData.toString());
+            }
         }
     }
 

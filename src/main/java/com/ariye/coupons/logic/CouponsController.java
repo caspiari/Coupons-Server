@@ -67,7 +67,7 @@ public class CouponsController {
             return coupon;
         } catch (Exception e) {
             if (e instanceof NoSuchElementException) {
-                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST);
+                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
             }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupon entity failed " + id);
         }

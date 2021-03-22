@@ -87,8 +87,10 @@ public class UsersController {
         }
         Company company = this.validateUpdateUser(userDto, userLoginData);
         User user = this.getUser(userDto.getId());
-        String password = String.valueOf(userDto.getPassword().hashCode());
-        user.setPassword(password);
+        if(!userDto.getPassword().equals(user.getPassword())) {
+            String password = String.valueOf(userDto.getPassword().hashCode());
+            user.setPassword(password);
+        }
         user.setUsername(userDto.getUsername());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());

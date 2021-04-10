@@ -27,27 +27,10 @@ public class PurchaseDto {
         this.userId = userId;
         this.couponId = couponId;
         this.amount = amount;
-        this.timestamp = timestamp;
+        this.timestamp = timestamp; // If it does problem, change to: = new Timestamp(timestamp.getTime());
         this.couponName = couponName;
         this.companyName = companyName;
         this.username = username;
-    }
-
-    /**
-     * - Ctor for 'get' method
-     *
-     * @param couponName
-     * @param companyName
-     * @param username
-     * @param amount
-     * @param timestamp
-     */
-    public PurchaseDto(String couponName, String companyName, String username, short amount, Date timestamp) {
-        this.couponName = couponName;
-        this.companyName = companyName;
-        this.username = username;
-        this.amount = amount;
-        this.timestamp = new Timestamp(timestamp.getTime());
     }
 
     @Override

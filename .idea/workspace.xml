@@ -5,12 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab78ec3b-c2bc-4ed3-a29d-f433dcf2431f" name="Default Changelist" comment="gjgh">
-      <change afterPath="$PROJECT_DIR$/client.zip" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server(client zipped inside).zip" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/filters/CORSFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/filters/CORSFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CompaniesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CompaniesController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,12 +97,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1610964771882</updated>
-    </task>
-    <task id="LOCAL‎00014" summary="z">
-      <created>1611769021983</created>
-      <option name="number" value="LOCAL‎00014" />
-      <option name="presentableId" value="LOCAL‎00014" />
-      <updated>1611769021983</updated>
     </task>
     <task id="LOCAL‎00015" summary="h">
       <created>1611776130891</created>
@@ -395,7 +386,13 @@
       <option name="presentableId" value="LOCAL‎00062" />
       <updated>1618095099708</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL‎00063" summary="gjgh">
+      <created>1620631217761</created>
+      <option name="number" value="LOCAL‎00063" />
+      <option name="presentableId" value="LOCAL‎00063" />
+      <updated>1620631217761</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

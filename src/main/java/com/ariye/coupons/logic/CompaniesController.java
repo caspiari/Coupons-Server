@@ -86,6 +86,8 @@ public class CompaniesController {
         }
     }
 
+//    public String getCompanyName
+
     public void updateCompany(CompanyDto companyDto, UserLoginData userLoginData) throws ApplicationException {
         Company company = this.createCompanyFromDto(companyDto);
         company.setId(companyDto.getId());

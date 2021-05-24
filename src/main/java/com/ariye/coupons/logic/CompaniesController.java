@@ -47,7 +47,7 @@ public class CompaniesController {
         }
     }
 
-    public CompanyDto getCompanyDto(Long id) throws ApplicationException {
+    public CompanyDto getCompany(Long id) throws ApplicationException {
         try {
             CompanyDto companyDto = this.iCompaniesDao.getById(id);
             if (companyDto == null) {
@@ -61,17 +61,17 @@ public class CompaniesController {
         }
     }
 
-    public Company getCompany(Long id, UserLoginData userLoginData) throws ApplicationException {
+    public Company getEntity(Long id, UserLoginData userLoginData) throws ApplicationException {
+        if (userLoginData.getUserType() != UserType.ADMIN) {
+            id = userLoginData.getCompanyId();
+        }
         try {
-            if (userLoginData.getUserType() != UserType.ADMIN) {
-                id = userLoginData.getCompanyId();
-            }
             Company company = this.iCompaniesDao.findById(id).get();
             return company;
         } catch (NoSuchElementException e) {
             throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Company id");
         } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get company entity failed " + id);
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get company failed for: " + id);
         }
     }
 
@@ -94,40 +94,21 @@ public class CompaniesController {
         try {
             this.iCompaniesDao.save(company);
         } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Update company failed " + companyDto.toString());
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Update company failed for: " + companyDto.toString());
         }
     }
 
     public List<CompanyDto> getAllCompanies() throws ApplicationException {
         try {
-            List<CompanyDto> companiesDtos = this.iCompaniesDao.getAll();
-            return companiesDtos;
+            List<CompanyDto> companies = this.iCompaniesDao.getAll();
+            return companies;
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get all companies failed");
         }
     }
 
-    Company getCompanyByName(String name, UserLoginData userLoginData) throws ApplicationException {
-        try {
-            Company company = this.iCompaniesDao.getByName(name);
-            if (userLoginData.getUserType() == UserType.CUSTOMER) {
-                throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
-            } else if (userLoginData.getUserType() == UserType.COMPANY) {
-                if (userLoginData.getCompanyId() != company.getId()) {
-                    throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
-                }
-            }
-            return company;
-        } catch (Exception e) {
-            if (e instanceof ApplicationException) {
-                throw e;
-            }
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get company by name failed " + name);
-        }
-    }
-
     /**
-     * - Returns entity with null id
+     * - Returns entity with null id (Used for create company)
      */
     private Company createCompanyFromDto(CompanyDto companyDto) {
         Company company = new Company(companyDto.getName(), companyDto.getAddress(), companyDto.getPhone());
@@ -137,13 +118,13 @@ public class CompaniesController {
 ///////////////// Validations:
 
     private boolean isCompanyExist(Long id) throws ApplicationException {
-        if (id == null) { //For inner flow
-            return false;
+        if (id == null) {
+            return false; //For inner flow
         }
         try {
             return this.iCompaniesDao.existsById(id);
         } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Is company exist failed" + id);
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Is company exist failed for: " + id);
         }
     }
 

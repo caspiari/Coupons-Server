@@ -20,8 +20,6 @@ import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
 
-import javax.annotation.PostConstruct;
-
 @Controller
 public class UsersController {
 
@@ -230,7 +228,7 @@ public class UsersController {
                 throw new ApplicationException(ErrorType.INVALID_PASSWORD);
             }
             if (userDto.getUserType() == UserType.COMPANY) {
-                Company company = companiesController.getCompany(userDto.getCompanyId(), userLoginData);
+                Company company = companiesController.getEntity(userDto.getCompanyId(), userLoginData);
                 return company;
             }
             return null;

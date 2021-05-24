@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ab78ec3b-c2bc-4ed3-a29d-f433dcf2431f" name="Default Changelist" comment="In the middle of setting get companies names ...">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/filters/LoginFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/filters/LoginFilter.java" afterDir="false" />
+    <list default="true" id="ab78ec3b-c2bc-4ed3-a29d-f433dcf2431f" name="Default Changelist" comment=".">
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CompaniesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CompaniesController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/ariye/coupons/filters/LoginFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ariye/coupons/filters/LoginFilter.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,12 +95,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1610964771882</updated>
-    </task>
-    <task id="LOCAL‎00017" summary="b">
-      <created>1611781219684</created>
-      <option name="number" value="LOCAL‎00017" />
-      <option name="presentableId" value="LOCAL‎00017" />
-      <updated>1611781219684</updated>
     </task>
     <task id="LOCAL‎00018" summary="h">
       <created>1611844466591</created>
@@ -393,7 +384,13 @@
       <option name="presentableId" value="LOCAL‎00065" />
       <updated>1621856807654</updated>
     </task>
-    <option name="localTasksCounter" value="66" />
+    <task id="LOCAL‎00066" summary=".">
+      <created>1621881244088</created>
+      <option name="number" value="LOCAL‎00066" />
+      <option name="presentableId" value="LOCAL‎00066" />
+      <updated>1621881244088</updated>
+    </task>
+    <option name="localTasksCounter" value="67" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -433,9 +430,9 @@
     <MESSAGE value="hjk" />
     <MESSAGE value="ghj" />
     <MESSAGE value="gjgh" />
-    <MESSAGE value="." />
     <MESSAGE value="In the middle of setting get companies names ..." />
-    <option name="LAST_COMMIT_MESSAGE" value="In the middle of setting get companies names ..." />
+    <MESSAGE value="." />
+    <option name="LAST_COMMIT_MESSAGE" value="." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

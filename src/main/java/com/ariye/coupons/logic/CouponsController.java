@@ -20,8 +20,6 @@ import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
 
-import javax.annotation.PostConstruct;
-
 @Controller
 @EnableScheduling
 public class CouponsController {
@@ -34,15 +32,11 @@ public class CouponsController {
     public long createCoupon(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
         this.validateCreateCoupon(couponDto, userLoginData);
         Coupon coupon = this.createCouponFromDto(couponDto, userLoginData);
-        Company company = coupon.getCompany();
         try {
             coupon = this.couponsDao.save(coupon);
             return coupon.getId();
         } catch (Exception e) {
-            if (e instanceof ApplicationException) {
-                throw e;
-            }
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create coupon failed " + couponDto.toString());
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create coupon failed for: " + couponDto.toString());
         }
     }
 
@@ -53,11 +47,10 @@ public class CouponsController {
                 throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
             }
             return couponDto;
+        } catch (ApplicationException e) {
+            throw e;
         } catch (Exception e) {
-            if (e instanceof ApplicationException) {
-                throw e;
-            }
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupon failed " + id);
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupon failed for: " + id);
         }
     }
 
@@ -65,11 +58,10 @@ public class CouponsController {
         try {
             Coupon coupon = this.couponsDao.findById(id).get();
             return coupon;
+        } catch (NoSuchElementException e) {
+            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
         } catch (Exception e) {
-            if (e instanceof NoSuchElementException) {
-                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
-            }
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupon entity failed " + id);
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupon entity failed for: " + id);
         }
     }
 
@@ -174,8 +166,8 @@ public class CouponsController {
         }
     }
 
-    Coupon createCouponFromDto(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
-        Company company = this.companiesController.getCompany(couponDto.getCompanyId(), userLoginData);
+    private Coupon createCouponFromDto(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
+        Company company = this.companiesController.getEntity(couponDto.getCompanyId(), userLoginData);
         Coupon coupon = new Coupon(couponDto.getName(), couponDto.getDescription(), couponDto.getPrice(), company,
                 couponDto.getStartDate(), couponDto.getEndDate(), couponDto.getCategory(), couponDto.getAmount());
         return coupon;

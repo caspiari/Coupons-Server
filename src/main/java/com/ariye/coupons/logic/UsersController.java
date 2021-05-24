@@ -43,10 +43,9 @@ public class UsersController {
             user.setCompany(company);
             user = this.usersDao.save(user);
             return user.getId();
+        } catch (ApplicationException e) {
+            throw e;
         } catch (Exception e) {
-            if (e instanceof ApplicationException) {
-                throw e;
-            }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create user failed " + userDto.toString());
         }
     }
@@ -56,15 +55,14 @@ public class UsersController {
             id = userLoginData.getId();
         }
         try {
-            UserDto userDto = this.usersDao.getById(id);
+            UserDto userDto = this.usersDao.getUserDtoById(id);
             if (userDto == null) {
                 throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
             }
             return userDto;
-        } catch (Exception e) {
-            if (e instanceof ApplicationException) {
-                throw e;
-            }
+        } catch (ApplicationException e) {
+            throw e;
+        }  catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get user failed. Id: " + id);
         }
     }
@@ -72,11 +70,10 @@ public class UsersController {
     User getUser(long id) throws ApplicationException {
         try {
             return this.usersDao.findById(id).get();
+        } catch (NoSuchElementException e) {
+            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
         } catch (Exception e) {
-            if (e instanceof NoSuchElementException) {
-                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
-            }
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get user entity failed. Id: " + id);
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get user entity failed for: " + id);
         }
     }
 
@@ -109,21 +106,23 @@ public class UsersController {
         }
         try {
             this.usersDao.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST);
         } catch (Exception e) {
-            if (e instanceof EmptyResultDataAccessException) {
-                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
-            }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete user failed. Id: " + id);
         }
     }
 
-    public UserDto getUserByUsername(String username, UserLoginData userLoginData) throws ApplicationException {
-        if (userLoginData.getUserType() != UserType.ADMIN) {
-            throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
-        }
+    private UserDto getUserDtoByUsername(String username) throws ApplicationException {
         this.validateEmail(username);
         try {
-            return usersDao.findByUsername(username);
+            UserDto userDto = usersDao.findByUsername(username);
+            if (userDto == null) {
+                throw new ApplicationException(ErrorType.USERNAME_DOES_NOT_EXIST);
+            }
+            return userDto;
+        } catch (ApplicationException e) {
+            throw e;
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get user by username failed " + username);
         }
@@ -153,7 +152,8 @@ public class UsersController {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Login failed for " + userLoginDetails.getUsername());
         }
         if (userLoginData == null) {
-            throw new ApplicationException(ErrorType.INVALID_LOGIN_DETAILS);
+            getUserDtoByUsername(userLoginDetails.getUsername()); // If the user name is wrong it will throw 'User doesn't exist' exception.
+            throw new ApplicationException(ErrorType.WRONG_PASSWORD);
         }
         String token = generateToken(username);
         long now = System.currentTimeMillis();
@@ -186,17 +186,16 @@ public class UsersController {
         if (email.length() < 8) {
             throw new ApplicationException(ErrorType.INVALID_EMAIL);
         }
-        if (email.contains("@") && email.contains(".")) {
-            if (email.substring(0, email.indexOf("@")).length() < 2) {
-                throw new ApplicationException(ErrorType.INVALID_EMAIL);
-            }
-            if (email.substring(email.indexOf('@'), email.indexOf('.')).length() < 3) {
-                throw new ApplicationException(ErrorType.INVALID_EMAIL);
-            }
-            if (email.substring(email.indexOf('.')).length() < 3) {
-                throw new ApplicationException(ErrorType.INVALID_EMAIL);
-            }
-        } else {
+        if (!email.contains("@") || !email.contains(".")) {
+            throw new ApplicationException(ErrorType.INVALID_EMAIL);
+        }
+        if (email.substring(0, email.indexOf("@")).length() < 2) {
+            throw new ApplicationException(ErrorType.INVALID_EMAIL);
+        }
+        if (email.substring(email.indexOf('@'), email.indexOf('.')).length() < 3) {
+            throw new ApplicationException(ErrorType.INVALID_EMAIL);
+        }
+        if (email.substring(email.indexOf('.')).length() < 3) {
             throw new ApplicationException(ErrorType.INVALID_EMAIL);
         }
     }
@@ -231,23 +230,13 @@ public class UsersController {
                 throw new ApplicationException(ErrorType.INVALID_PASSWORD);
             }
             if (userDto.getUserType() == UserType.COMPANY) {
-                if (userDto.getCompanyId() != null) {
-                    if (!companiesController.isCompanyExist(userDto.getCompanyId())) {
-                        throw new ApplicationException(ErrorType.GENERAL_ERROR, "Validate update user failed: Company id doesn't exist");
-                    }
-                } else {
-                    throw new ApplicationException(ErrorType.MUST_INSERT_A_VALUE, "Company name");
-                }
-            }
-            if (userDto.getUserType() == UserType.COMPANY) {
                 Company company = companiesController.getCompany(userDto.getCompanyId(), userLoginData);
                 return company;
             }
             return null;
+        } catch (ApplicationException e) {
+            throw e;
         } catch (Exception e) {
-            if (e instanceof ApplicationException) {
-                throw (ApplicationException) e;
-            }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Validate update user failed " + userDto.toString());
         }
     }

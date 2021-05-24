@@ -13,13 +13,11 @@ import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
 
-import javax.annotation.PostConstruct;
-
 @Controller
 public class CompaniesController {
 
     @Autowired
-    private ICompaniesDao companiesDao;
+    private ICompaniesDao iCompaniesDao;
 
     public long createCompany(CompanyDto companyDto, UserLoginData userLoginData) throws ApplicationException {
         if (userLoginData.getUserType() != UserType.ADMIN) {
@@ -27,14 +25,10 @@ public class CompaniesController {
         }
         Company company = this.createCompanyFromDto(companyDto);
         this.validateCreateCompany(company);
-        String name = company.getName();
         try {
-            company = this.companiesDao.save(company);
+            company = this.iCompaniesDao.save(company);
             return company.getId();
         } catch (Exception e) {
-            if (e instanceof ApplicationException) {
-                throw e;
-            }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create company failed " + company.toString());
         }
     }
@@ -47,7 +41,7 @@ public class CompaniesController {
             throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Company id");
         }
         try {
-            this.companiesDao.deleteById(id);
+            this.iCompaniesDao.deleteById(id);
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete company failed " + id);
         }
@@ -55,7 +49,7 @@ public class CompaniesController {
 
     public CompanyDto getCompanyDto(Long id) throws ApplicationException {
         try {
-            CompanyDto companyDto = this.companiesDao.getById(id);
+            CompanyDto companyDto = this.iCompaniesDao.getById(id);
             if (companyDto == null) {
                 throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Company id");
             }
@@ -73,7 +67,7 @@ public class CompaniesController {
             if (userLoginData.getUserType() != UserType.ADMIN) {
                 id = userLoginData.getCompanyId();
             }
-            Company company = this.companiesDao.findById(id).get();
+            Company company = this.iCompaniesDao.findById(id).get();
             return company;
         } catch (Exception e) {
             if (e instanceof ApplicationException) {
@@ -86,7 +80,14 @@ public class CompaniesController {
         }
     }
 
-//    public String getCompanyName
+    public List<String> getCompaniesNames() throws ApplicationException {
+        try {
+            List<String> companiesNames = iCompaniesDao.getCompaniesNames();
+            return companiesNames;
+        } catch (Exception e) {
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get companies names failed");
+        }
+    }
 
     public void updateCompany(CompanyDto companyDto, UserLoginData userLoginData) throws ApplicationException {
         Company company = this.createCompanyFromDto(companyDto);
@@ -94,9 +95,9 @@ public class CompaniesController {
         if (userLoginData.getUserType() != UserType.ADMIN) {
             company.setId(userLoginData.getCompanyId());
         }
-        validateUpdateCompany(company);
+        validateCreateCompany(company); // Same validations
         try {
-            this.companiesDao.save(company);
+            this.iCompaniesDao.save(company);
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Update company failed " + companyDto.toString());
         }
@@ -104,7 +105,7 @@ public class CompaniesController {
 
     public List<CompanyDto> getAllCompanies() throws ApplicationException {
         try {
-            List<CompanyDto> companiesDtos = this.companiesDao.getAll();
+            List<CompanyDto> companiesDtos = this.iCompaniesDao.getAll();
             return companiesDtos;
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get all companies failed");
@@ -113,7 +114,7 @@ public class CompaniesController {
 
     Company getCompanyByName(String name, UserLoginData userLoginData) throws ApplicationException {
         try {
-            Company company = this.companiesDao.getByName(name);
+            Company company = this.iCompaniesDao.getByName(name);
             if (userLoginData.getUserType() == UserType.CUSTOMER) {
                 throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
             } else if (userLoginData.getUserType() == UserType.COMPANY) {
@@ -140,19 +141,19 @@ public class CompaniesController {
 
 ///////////////// Validations:
 
-    boolean isCompanyExist(Long id) throws ApplicationException {
+    private boolean isCompanyExist(Long id) throws ApplicationException {
         if (id == null) { //For inner flow
             return false;
         }
         try {
-            return this.companiesDao.existsById(id);
+            return this.iCompaniesDao.existsById(id);
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Is company exist failed" + id);
         }
     }
 
     private void validateCreateCompany(Company company) throws ApplicationException {
-        Long id = this.companiesDao.getIdByNameAndId(company.getName(), company.getId());
+        Long id = this.iCompaniesDao.getIdByNameAndId(company.getName(), company.getId());
         if (id != null) {
             throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS);
         }
@@ -175,13 +176,5 @@ public class CompaniesController {
             throw new ApplicationException(ErrorType.INVALID_VALUE, "Phone number");
         }
     }
-
-    private void validateUpdateCompany(Company company) throws ApplicationException {
-        if (company.getId() < 1) {
-            throw new ApplicationException(ErrorType.MUST_INSERT_A_VALUE, " Id");
-        }
-        this.validateCreateCompany(company);
-    }
-
 
 }

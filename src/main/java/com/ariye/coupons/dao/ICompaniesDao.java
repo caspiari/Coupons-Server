@@ -26,4 +26,8 @@ public interface ICompaniesDao extends CrudRepository<Company, Long> {
     Company getByName(String name);
 
     boolean existsByName(String name);
+
+    @Query("select c.name from Company c")
+    List<String> getCompaniesNames();
+
 }

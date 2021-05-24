@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ariye.coupons.dto.CouponDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import com.ariye.coupons.dao.IPurchasesDao;
 import com.ariye.coupons.dto.PurchaseDto;
@@ -53,11 +54,10 @@ public class PurchasesController {
             PurchaseDto purchaseDto = this.purchasesDao.getById(id);
             validateGetPurchase(purchaseDto, userLoginData);
             return purchaseDto;
+        } catch (ApplicationException e) {
+            throw e;
         } catch (Exception e) {
-            if (e instanceof ApplicationException) {
-                throw e;
-            }
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get purchase failed " + id);
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get purchase failed for: " + id);
         }
     }
 
@@ -66,17 +66,12 @@ public class PurchasesController {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
         }
         try {
-            if (!(this.purchasesDao.existsById(id))) {
-                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Purchase id");
-            }
             this.purchasesDao.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Purchase id");
         } catch (Exception e) {
-            if (e instanceof ApplicationException) {
-                throw e;
-            }
-            throw new ApplicationException(ErrorType.GENERAL_ERROR, "Delete purchase failed " + id);
+            throw new ApplicationException(ErrorType.GENERAL_ERROR, "Delete purchase failed for: " + id);
         }
-
     }
 
     public List<PurchaseDto> getAllPurchases(UserLoginData userLoginData) throws ApplicationException {

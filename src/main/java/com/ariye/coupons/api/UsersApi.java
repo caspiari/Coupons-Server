@@ -58,13 +58,6 @@ public class UsersApi {
         this.usersController.deleteUser(id, userLoginData);
     }
 
-    @GetMapping("/byUsername")
-    public UserDto getUserByUsername(@RequestParam("username") String username, HttpServletRequest request) throws ApplicationException {
-        UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-        UserDto userDto = this.usersController.getUserByUsername(username, userLoginData);
-        return userDto;
-    }
-
     @GetMapping
     public List<UserDto> getAllUsers(HttpServletRequest request) throws ApplicationException {
         UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");

@@ -49,4 +49,10 @@ public class CompaniesApi {
         return companies;
     }
 
+    @GetMapping("/names")
+    public List<String> getCompaniesNames() throws ApplicationException {
+        List<String> companies = this.companiesController.getCompaniesNames();
+        return companies;
+    }
+
 }

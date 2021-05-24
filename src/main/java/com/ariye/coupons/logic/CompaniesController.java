@@ -54,10 +54,9 @@ public class CompaniesController {
                 throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Company id");
             }
             return companyDto;
+        } catch (ApplicationException e) {
+            throw e;
         } catch (Exception e) {
-            if (e instanceof ApplicationException) {
-                throw e;
-            }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get company failed " + id);
         }
     }
@@ -69,13 +68,9 @@ public class CompaniesController {
             }
             Company company = this.iCompaniesDao.findById(id).get();
             return company;
+        } catch (NoSuchElementException e) {
+            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Company id");
         } catch (Exception e) {
-            if (e instanceof ApplicationException) {
-                throw e;
-            }
-            if (e instanceof NoSuchElementException) {
-                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Company id");
-            }
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get company entity failed " + id);
         }
     }

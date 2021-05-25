@@ -24,6 +24,6 @@ public interface ICompaniesDao extends CrudRepository<Company, Long> {
     Long getIdByNameAndId(String name, long id);//Used for validation
 
     @Query("select c.name from Company c")
-    List<String> getCompaniesNames();
+    List<String> getNames();
 
 }

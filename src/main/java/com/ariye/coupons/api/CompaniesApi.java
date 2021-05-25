@@ -50,8 +50,8 @@ public class CompaniesApi {
     }
 
     @GetMapping("/names")
-    public List<String> getCompaniesNames() throws ApplicationException {
-        List<String> companies = this.companiesController.getCompaniesNames();
+    public List<String> getNames() throws ApplicationException {
+        List<String> companies = this.companiesController.getNames();
         return companies;
     }
 

@@ -75,9 +75,9 @@ public class CompaniesController {
         }
     }
 
-    public List<String> getCompaniesNames() throws ApplicationException {
+    public List<String> getNames() throws ApplicationException {
         try {
-            List<String> companiesNames = iCompaniesDao.getCompaniesNames();
+            List<String> companiesNames = iCompaniesDao.getNames();
             return companiesNames;
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get companies names failed");

@@ -5,7 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab78ec3b-c2bc-4ed3-a29d-f433dcf2431f" name="Default Changelist" comment=".">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CompaniesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CompaniesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dao/ICouponsDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/dao/ICouponsDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CouponsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ariye/coupons/logic/CouponsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ariye/coupons/api/CompaniesApi.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ariye/coupons/api/CompaniesApi.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ariye/coupons/logic/CompaniesController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ariye/coupons/logic/CompaniesController.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,12 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1610964771882</updated>
-    </task>
-    <task id="LOCAL‎00018" summary="h">
-      <created>1611844466591</created>
-      <option name="number" value="LOCAL‎00018" />
-      <option name="presentableId" value="LOCAL‎00018" />
-      <updated>1611844466591</updated>
     </task>
     <task id="LOCAL‎00019" summary="h">
       <created>1611863356078</created>
@@ -390,7 +388,13 @@
       <option name="presentableId" value="LOCAL‎00066" />
       <updated>1621881244088</updated>
     </task>
-    <option name="localTasksCounter" value="67" />
+    <task id="LOCAL‎00067" summary=".">
+      <created>1621883282166</created>
+      <option name="number" value="LOCAL‎00067" />
+      <option name="presentableId" value="LOCAL‎00067" />
+      <updated>1621883282166</updated>
+    </task>
+    <option name="localTasksCounter" value="68" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

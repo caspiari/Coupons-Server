@@ -29,7 +29,7 @@ public class CompaniesController {
             company = this.iCompaniesDao.save(company);
             return company.getId();
         } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create company failed " + company.toString());
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create company failed for: " + company.toString());
         }
     }
 
@@ -43,7 +43,7 @@ public class CompaniesController {
         try {
             this.iCompaniesDao.deleteById(id);
         } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete company failed " + id);
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete company failed for: " + id);
         }
     }
 
@@ -57,7 +57,7 @@ public class CompaniesController {
         } catch (ApplicationException e) {
             throw e;
         } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get company failed " + id);
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get company failed for: " + id);
         }
     }
 

@@ -44,6 +44,9 @@ public interface ICouponsDao extends CrudRepository<Coupon, Long> {
 
     @Query("select amount from Coupon where id = ?1")
     Long getAmount(long id);
+
+    @Query("select company.id from Coupon where id = ?1")
+    Long getCompanyId(Long id);
 }
 
 

@@ -20,12 +20,14 @@ import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
 
+import javax.annotation.PostConstruct;
+
 @Controller
 @EnableScheduling
 public class CouponsController {
 
     @Autowired
-    private ICouponsDao couponsDao;
+    private ICouponsDao iCouponsDao;
     @Autowired
     private CompaniesController companiesController;
 
@@ -33,7 +35,7 @@ public class CouponsController {
         this.validateCreateCoupon(couponDto, userLoginData);
         Coupon coupon = this.createCouponFromDto(couponDto, userLoginData);
         try {
-            coupon = this.couponsDao.save(coupon);
+            coupon = this.iCouponsDao.save(coupon);
             return coupon.getId();
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create coupon failed for: " + couponDto.toString());
@@ -42,7 +44,7 @@ public class CouponsController {
 
     public CouponDto getCoupon(long id) throws ApplicationException {
         try {
-            CouponDto couponDto = this.couponsDao.getById(id);
+            CouponDto couponDto = this.iCouponsDao.getById(id);
             if (couponDto == null) {
                 throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
             }
@@ -56,7 +58,7 @@ public class CouponsController {
 
     Coupon getEntity(long id) throws ApplicationException {
         try {
-            Coupon coupon = this.couponsDao.findById(id).get();
+            Coupon coupon = this.iCouponsDao.findById(id).get();
             return coupon;
         } catch (NoSuchElementException e) {
             throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
@@ -75,48 +77,45 @@ public class CouponsController {
         coupon.setCategory(couponDto.getCategory());
         coupon.setAmount(couponDto.getAmount());
         try {
-            this.couponsDao.save(coupon);
+            this.iCouponsDao.save(coupon);
         } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "update coupon failed " + couponDto.toString());
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "update coupon failed for: " + couponDto.toString());
         }
     }
 
-    void updateCouponAmount(Coupon coupon, Purchase purchase) throws ApplicationException {
+    void updateCouponAmount(Coupon coupon, Purchase purchase) throws ApplicationException { //This method is being used by purchases controller
         coupon.setAmount(coupon.getAmount() - purchase.getAmount());
         try {
-            this.couponsDao.save(coupon);
+            this.iCouponsDao.save(coupon);
         } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "update coupon amount failed " + coupon.toString());
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "update coupon amount failed for: " + coupon.toString());
         }
     }
 
     public void deleteCoupon(long id, UserLoginData userLoginData) throws ApplicationException {
+        this.validateDeleteCoupon(id, userLoginData);
         try {
-            this.validateDeleteCoupon(id, userLoginData);
-            this.couponsDao.deleteById(id);
+            this.iCouponsDao.deleteById(id);
         } catch (Exception e) {
-            if (e instanceof ApplicationException) {
-                throw (ApplicationException) e;
-            }
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete coupon failed " + id);
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete coupon failed for: " + id);
         }
     }
 
     public List<CouponDto> getCouponsByCompanyId(long id) throws ApplicationException {
         try {
-            List<CouponDto> couponsDtos = this.couponsDao.getByCompanyId(id);
+            List<CouponDto> couponsDtos = this.iCouponsDao.getByCompanyId(id);
             return couponsDtos;
         } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupons by company id failed " + id);
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupons by company id failed for: " + id);
         }
     }
 
     public List<CouponDto> getCouponsByType(CouponType couponType) throws ApplicationException {
         try {
-            List<CouponDto> couponsDtos = this.couponsDao.getByCategory(couponType);
+            List<CouponDto> couponsDtos = this.iCouponsDao.getByCategory(couponType);
             return couponsDtos;
         } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupons by type failed " + couponType);
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get coupons by type failed for: " + couponType);
         }
     }
 
@@ -125,10 +124,10 @@ public class CouponsController {
             userId = userLoginData.getId();
         }
         try {
-            List<CouponDto> couponsDtos = couponsDao.getByUserId(userId);
+            List<CouponDto> couponsDtos = iCouponsDao.getByUserId(userId);
             return couponsDtos;
         } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get purchased coupons by user id failed " + userId);
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get purchased coupons by user id failed for: " + userId);
         }
     }
 
@@ -140,16 +139,16 @@ public class CouponsController {
             throw new ApplicationException(ErrorType.INVALID_VALUE, "Max price must be a positive number");
         }
         try {
-            List<CouponDto> couponsDtos = couponsDao.getByMaxPrice(userId, maxPrice);
+            List<CouponDto> couponsDtos = iCouponsDao.getByMaxPrice(userId, maxPrice);
             return couponsDtos;
         } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get purchased coupons by max price failed " + userId);
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get purchased coupons by max price failed for: " + userId);
         }
     }
 
     public List<CouponDto> getAllCoupons() throws ApplicationException {
         try {
-            List<CouponDto> couponsDtos = this.couponsDao.getAll();
+            List<CouponDto> couponsDtos = this.iCouponsDao.getAll();
             return couponsDtos;
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get all coupons failed");
@@ -160,7 +159,7 @@ public class CouponsController {
     public void deleteExpiredCoupons() throws ApplicationException {
         try {
             Date now = new Date(System.currentTimeMillis());
-            this.couponsDao.deleteAllByEndDateBefore(now);
+            this.iCouponsDao.deleteAllByEndDateBefore(now);
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete expired coupons failed");
         }
@@ -176,22 +175,20 @@ public class CouponsController {
 /////////////// Validations:
 
     boolean isCouponAvailable(long id) throws ApplicationException {
+        Long amount;
         try {
-            Long amount = couponsDao.getAmount(id);
-            if (amount == null) {
-                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
-            }
-            return amount > 0;
+            amount = iCouponsDao.getAmount(id);
         } catch (Exception e) {
-            if (e instanceof ApplicationException) {
-                throw e;
-            }
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Is coupon available failed");
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Is coupon available failed for: " + id);
         }
+        if (amount == null) {
+            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
+        }
+        return amount > 0;
     }
 
     private void validateCreateCoupon(CouponDto couponDto, UserLoginData userLoginData) throws ApplicationException {
-        Long id = this.couponsDao.getIdByNameCompanyIdAndId(couponDto.getName(), couponDto.getCompanyId(), couponDto.getId());
+        Long id = this.iCouponsDao.getIdByNameCompanyIdAndId(couponDto.getName(), couponDto.getCompanyId(), couponDto.getId());
         if (id != null) {
             throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS);
         }
@@ -231,9 +228,9 @@ public class CouponsController {
         this.validateCreateCoupon(couponDto, userLoginData);
         Coupon coupon;
         try {
-            coupon = this.couponsDao.findById(couponDto.getId()).get();
+            coupon = this.iCouponsDao.findById(couponDto.getId()).get();
         } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Validate update coupon failed " + couponDto.toString());
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Validate update coupon failed for: " + couponDto.toString());
         }
         if (userLoginData.getUserType() == UserType.COMPANY) {
             if (userLoginData.getCompanyId() != coupon.getCompany().getId()) {
@@ -243,18 +240,23 @@ public class CouponsController {
         return coupon;
     }
 
-    private void validateDeleteCoupon(long id, UserLoginData userLoginData) throws Exception {
-            if (userLoginData.getUserType() == UserType.CUSTOMER) {
-                throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
-            }
-            CouponDto couponDto = this.couponsDao.getById(id);
-            if (couponDto == null) {
-                throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
-            }
-            if (userLoginData.getUserType() == UserType.COMPANY) {
-                if (couponDto.getCompanyId() != userLoginData.getCompanyId()) {
-                    throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, "This coupon belongs to another company " + userLoginData.toString());
-                }
-            }
+    private void validateDeleteCoupon(long id, UserLoginData userLoginData) throws ApplicationException {
+        if (userLoginData.getUserType() == UserType.CUSTOMER) {
+            throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
+        }
+        Long companyId;
+        try {
+            companyId = iCouponsDao.getCompanyId(id);
+        } catch (Exception e) {
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Validate delete coupon failed for: " + id + userLoginData.toString());
+        }
+        if (companyId == null) {
+            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Coupon id");
+        }
+        if (userLoginData.getUserType() == UserType.COMPANY && userLoginData.getCompanyId() != companyId) {
+            throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, "This coupon belongs to another company " + userLoginData.toString());
+        }
     }
+
+
 }

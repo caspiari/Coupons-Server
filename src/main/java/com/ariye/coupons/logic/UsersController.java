@@ -24,7 +24,7 @@ import com.ariye.coupons.exeptions.ApplicationException;
 public class UsersController {
 
     @Autowired
-    private IUsersDao usersDao;
+    private IUsersDao iUsersDao;
     @Autowired
     private CompaniesController companiesController;
     @Autowired
@@ -39,12 +39,12 @@ public class UsersController {
             String password = String.valueOf(user.getPassword().hashCode());
             user.setPassword(password);
             user.setCompany(company);
-            user = this.usersDao.save(user);
+            user = this.iUsersDao.save(user);
             return user.getId();
         } catch (ApplicationException e) {
             throw e;
         } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create user failed " + userDto.toString());
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Create user failed for: " + userDto.toString());
         }
     }
 
@@ -53,7 +53,7 @@ public class UsersController {
             id = userLoginData.getId();
         }
         try {
-            UserDto userDto = this.usersDao.getUserDtoById(id);
+            UserDto userDto = this.iUsersDao.getUserDtoById(id);
             if (userDto == null) {
                 throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
             }
@@ -67,7 +67,7 @@ public class UsersController {
 
     User getUser(long id) throws ApplicationException {
         try {
-            return this.usersDao.findById(id).get();
+            return this.iUsersDao.findById(id).get();
         } catch (NoSuchElementException e) {
             throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "User id");
         } catch (Exception e) {
@@ -92,9 +92,9 @@ public class UsersController {
         user.setUserType(userDto.getUserType());
         user.setCompany(company);
         try {
-            this.usersDao.save(user);
+            this.iUsersDao.save(user);
         } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Update user failed " + userDto.toString());
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Update user failed for: " + userDto.toString());
         }
     }
 
@@ -103,7 +103,7 @@ public class UsersController {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
         }
         try {
-            this.usersDao.deleteById(id);
+            this.iUsersDao.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST);
         } catch (Exception e) {
@@ -114,7 +114,7 @@ public class UsersController {
     private UserDto getUserDtoByUsername(String username) throws ApplicationException {
         this.validateEmail(username);
         try {
-            UserDto userDto = usersDao.findByUsername(username);
+            UserDto userDto = iUsersDao.findByUsername(username);
             if (userDto == null) {
                 throw new ApplicationException(ErrorType.USERNAME_DOES_NOT_EXIST);
             }
@@ -122,7 +122,7 @@ public class UsersController {
         } catch (ApplicationException e) {
             throw e;
         } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get user by username failed " + username);
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get user by username failed for: " + username);
         }
     }
 
@@ -131,7 +131,7 @@ public class UsersController {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
         }
         try {
-            List<UserDto> usersDtos = this.usersDao.getAll();
+            List<UserDto> usersDtos = this.iUsersDao.getAll();
             return usersDtos;
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get all users failed");
@@ -145,9 +145,9 @@ public class UsersController {
         userLoginDetails.setPassword(password);
         UserLoginData userLoginData;
         try {
-            userLoginData = usersDao.login(username, password);
+            userLoginData = iUsersDao.login(username, password);
         } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Login failed for " + userLoginDetails.getUsername());
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Login failed for: " + userLoginDetails.getUsername());
         }
         if (userLoginData == null) {
             getUserDtoByUsername(userLoginDetails.getUsername()); // If the user name is wrong it will throw 'User doesn't exist' exception.
@@ -200,7 +200,7 @@ public class UsersController {
 
     private Company validateUpdateUser(UserDto userDto, UserLoginData userLoginData) throws ApplicationException {
         try {
-            Long id = this.usersDao.getIdByUsernameAndId(userDto.getUsername(), userDto.getId());
+            Long id = this.iUsersDao.getIdByUsernameAndId(userDto.getUsername(), userDto.getId());
             if (id != null) {
                 throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS, "Username");
             }
@@ -235,7 +235,7 @@ public class UsersController {
         } catch (ApplicationException e) {
             throw e;
         } catch (Exception e) {
-            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Validate update user failed " + userDto.toString());
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Validate update user failed for: " + userDto.toString());
         }
     }
 

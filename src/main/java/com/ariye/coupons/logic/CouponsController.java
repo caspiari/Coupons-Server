@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
-import com.ariye.coupons.dao.ICouponsDao;
 import com.ariye.coupons.dto.CouponDto;
 import com.ariye.coupons.dto.UserLoginData;
 import com.ariye.coupons.entities.Company;
@@ -19,7 +18,7 @@ import com.ariye.coupons.enums.CouponType;
 import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
-
+import com.ariye.coupons.dao.ICouponsDao;
 import javax.annotation.PostConstruct;
 
 @Controller

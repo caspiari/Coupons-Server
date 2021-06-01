@@ -39,13 +39,13 @@ public class UsersApi {
         return id;
     }
 
-    @GetMapping("/{userId}")
-    public UserDto getUser(@PathVariable("userId") long id, HttpServletRequest request) throws ApplicationException {
+    @GetMapping("/{id}")
+    public UserDto getUser(@PathVariable("id") long id, HttpServletRequest request) throws ApplicationException {
         UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
         UserDto userDto = this.usersController.getUserDto(id, userLoginData);
         return userDto;
     }
-
+    
     @PutMapping
     public void updateUser(@RequestBody UserDto userDto, HttpServletRequest request) throws ApplicationException {
         UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");

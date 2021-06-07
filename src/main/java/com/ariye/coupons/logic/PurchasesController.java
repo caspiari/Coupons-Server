@@ -113,7 +113,7 @@ public class PurchasesController {
     }
 
     /**
-     * - This method is used for creation. Return entity with null id
+     * - This method is used for creation. Returns entity with null id
      */
     private Purchase createPurchaseFromDto(PurchaseDto purchaseDto) throws ApplicationException {
         User user = this.usersController.getUser(purchaseDto.getUserId());
@@ -125,6 +125,9 @@ public class PurchasesController {
     // Validations:
 
     private void validateCreatePurchase(Purchase purchase, Coupon coupon) throws ApplicationException {
+        if (purchase.getAmount() < 1) {
+            throw new ApplicationException(ErrorType.INVALID_AMOUNT);
+        }
         if (purchase.getAmount() > coupon.getAmount()) {
             throw new ApplicationException(ErrorType.NOT_ENOUGH_COUPONS_LEFT);
         }

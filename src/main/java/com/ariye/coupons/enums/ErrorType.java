@@ -15,7 +15,7 @@ public enum ErrorType {
     COUPON_TITLE_EXIST(611, "The title of this coupon is already exists, please change the title", false),
     INVALID_VALUE(612, "Invalid value", false),
     INVALID_EMAIL(613, "Email address is InValid, Please enter a valid email address", false),
-    INVALID_AMOUNT(614, "Coupon's amount must be more than 0", false),
+    INVALID_AMOUNT(614, "Amount must be more than 0", false),
     INVALID_DATES(615, "The dates you've entered are wrong", false),
     MUST_INSERT_A_VALUE(616, "Must insert a value", false),
     ID_MUST_BE_POSITIVE(617, "ID must be positive", false),

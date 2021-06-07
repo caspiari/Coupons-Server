@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import com.ariye.coupons.dao.ICompaniesDao;
 import com.ariye.coupons.dto.CompanyDto;
@@ -12,6 +13,8 @@ import com.ariye.coupons.entities.Company;
 import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
+
+import javax.annotation.PostConstruct;
 
 @Controller
 public class CompaniesController {
@@ -37,11 +40,10 @@ public class CompaniesController {
         if (userLoginData.getUserType() != UserType.ADMIN) {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
         }
-        if (!(this.isCompanyExist(id))) {
-            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Company id");
-        }
         try {
             this.iCompaniesDao.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST, "Company id");
         } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Delete company failed for: " + id);
         }

@@ -194,6 +194,9 @@ public class CouponsController {
         if (userLoginData.getUserType() == UserType.CUSTOMER) {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
         }
+        if (couponDto.getCategory() == null) {
+            throw new ApplicationException(ErrorType.MUST_INSERT_A_VALUE, "Coupon type");
+        }
         if (couponDto.getName() == null) {
             throw new ApplicationException(ErrorType.MUST_ENTER_NAME);
         }

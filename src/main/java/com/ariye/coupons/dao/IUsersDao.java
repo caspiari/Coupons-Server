@@ -16,6 +16,9 @@ public interface IUsersDao extends CrudRepository<User, Long> {
     @Query("select new com.ariye.coupons.dto.UserDto(u.id, u.username, u.firstName, u.lastName, u.password, u.userType, u.company.id, c.name) from User u left join Company c on u.company.id = c.id where u.id = ?1")
     UserDto getUserDtoById(long id);
 
+    @Query("select new com.ariye.coupons.dto.UserDto(u.id, u.username, u.firstName, u.lastName, u.password, u.userType, u.company.id, c.name) from User u left join Company c on u.company.id = c.id where u.company.id = ?1")
+    List<UserDto> getByComapnyId(long id);
+
     @Query("select id from User u where u.username = ?1 and u.id != ?2")
     Long getIdByUsernameAndId(String username, long id);//Used for validation
 

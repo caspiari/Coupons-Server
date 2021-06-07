@@ -45,7 +45,14 @@ public class UsersApi {
         UserDto userDto = this.usersController.getUserDto(id, userLoginData);
         return userDto;
     }
-    
+
+    @GetMapping("/byCompanyId")
+    public List<UserDto> getByCompanyId(@RequestParam("id") long id, HttpServletRequest request) throws ApplicationException {
+        UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
+        List<UserDto> users = this.usersController.getByCompanyId(id, userLoginData);
+        return users;
+    }
+
     @PutMapping
     public void updateUser(@RequestBody UserDto userDto, HttpServletRequest request) throws ApplicationException {
         UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");

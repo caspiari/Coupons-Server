@@ -82,9 +82,9 @@ public class CouponsApi {
     }
 
     @GetMapping("/byUserId")
-    public List<CouponDto> getPurchasedCouponsByUserId(@RequestParam("id") long userId, HttpServletRequest request) throws ApplicationException {
+    public List<CouponDto> getPurchasedCouponsByUserId(@RequestParam("id") long id, HttpServletRequest request) throws ApplicationException {
         UserLoginData userLoginData = (UserLoginData) request.getAttribute("userLoginData");
-        List<CouponDto> coupons = this.couponsController.getPurchasedCouponsByUserId(userId, userLoginData);
+        List<CouponDto> coupons = this.couponsController.getPurchasedCouponsByUserId(id, userLoginData);
         return coupons;
     }
 

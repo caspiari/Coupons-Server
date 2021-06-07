@@ -126,6 +126,18 @@ public class UsersController {
         }
     }
 
+    public List<UserDto> getByCompanyId(long id, UserLoginData userLoginData) throws ApplicationException {
+        if (userLoginData.getUserType() == UserType.CUSTOMER) {
+            throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());
+        }
+        try {
+            List<UserDto> usersDtos = this.iUsersDao.getByComapnyId(id);
+            return usersDtos;
+        } catch (Exception e) {
+            throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get all users failed");
+        }
+    }
+
     public List<UserDto> getAllUsers(UserLoginData userLoginData) throws ApplicationException {
         if (userLoginData.getUserType() != UserType.ADMIN) {
             throw new ApplicationException(ErrorType.UNAUTHORIZED_OPERATION, userLoginData.toString());

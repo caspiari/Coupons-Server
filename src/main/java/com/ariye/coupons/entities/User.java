@@ -69,6 +69,11 @@ public class User implements Serializable {
         this.lastName = userDto.getLastName();
         this.password = userDto.getPassword();
         this.userType = userDto.getUserType();
+//        if (userDto.getUserType().toString().equalsIgnoreCase("customer")) {
+//            this.userType = UserType.CUSTOMER;
+//        } else {
+//            this.userType = UserType.COMPANY;
+//        }
     }
 
     /**

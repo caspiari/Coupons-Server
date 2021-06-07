@@ -34,7 +34,7 @@ public class UsersController {
 
     public long createUser(UserDto userDto, UserLoginData userLoginData) throws ApplicationException {
         try {
-            Company company = this.validateUpdateUser(userDto, userLoginData); //same validations
+            Company company = this.validateUpdateUser(userDto, userLoginData, false); //same validations
             User user = new User(userDto);
             String password = String.valueOf(user.getPassword().hashCode());
             user.setPassword(password);
@@ -60,7 +60,7 @@ public class UsersController {
             return userDto;
         } catch (ApplicationException e) {
             throw e;
-        }  catch (Exception e) {
+        } catch (Exception e) {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get user failed. Id: " + id);
         }
     }
@@ -80,9 +80,9 @@ public class UsersController {
             userDto.setId(userLoginData.getId());
             userDto.setUserType(userLoginData.getUserType());
         }
-        Company company = this.validateUpdateUser(userDto, userLoginData);
         User user = this.getUser(userDto.getId());
-        if(!userDto.getPassword().equals(user.getPassword())) {
+        Company company = this.validateUpdateUser(userDto, userLoginData, true);
+        if (!userDto.getPassword().equals("")) {
             String password = String.valueOf(userDto.getPassword().hashCode());
             user.setPassword(password);
         }
@@ -210,7 +210,7 @@ public class UsersController {
         }
     }
 
-    private Company validateUpdateUser(UserDto userDto, UserLoginData userLoginData) throws ApplicationException {
+    private Company validateUpdateUser(UserDto userDto, UserLoginData userLoginData, boolean update) throws ApplicationException {
         try {
             Long id = this.iUsersDao.getIdByUsernameAndId(userDto.getUsername(), userDto.getId());
             if (id != null) {
@@ -237,7 +237,11 @@ public class UsersController {
                 throw new ApplicationException(ErrorType.NAME_IS_TOO_SHORT, "Last name");
             }
             if (userDto.getPassword().length() < 6) {
-                throw new ApplicationException(ErrorType.INVALID_PASSWORD);
+                if (update == false) {
+                    throw new ApplicationException(ErrorType.INVALID_PASSWORD);
+                } else if (userDto.getPassword().length() != 0) {
+                    throw new ApplicationException(ErrorType.INVALID_PASSWORD);
+                }
             }
             if (userDto.getUserType() == UserType.COMPANY) {
                 Company company = companiesController.getEntity(userDto.getCompanyId(), userLoginData);

@@ -2,7 +2,6 @@ package com.ariye.coupons.api;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.ariye.coupons.dto.CompanyDto;

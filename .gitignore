@@ -1,1 +1,6 @@
 /target/
+*.properties
+*.class
+*.prefs
+*.xml
+.project

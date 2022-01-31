@@ -1,12 +1,8 @@
 package com.ariye.coupons.dto;
 
-import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
-import com.ariye.coupons.exeptions.ApplicationException;
 import com.ariye.coupons.logic.CompaniesController;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Locale;
 
 public class UserDto {
 

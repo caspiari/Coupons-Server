@@ -1,24 +1,14 @@
 package com.ariye.coupons.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
-
-import com.ariye.coupons.dto.UserLoginData;
-import com.ariye.coupons.exeptions.ApplicationException;
-import com.ariye.coupons.logic.CompaniesController;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import com.ariye.coupons.dto.UserDto;
 import com.ariye.coupons.enums.UserType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 @Table(name = "users")
-@SuppressWarnings("serial")
 public class User implements Serializable {
 
     @Id

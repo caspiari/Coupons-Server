@@ -1,8 +1,6 @@
 package com.ariye.coupons.dto;
 
 import java.util.Date;
-import java.sql.Timestamp;
-
 
 public class PurchaseDto {
 

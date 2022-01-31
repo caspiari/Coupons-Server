@@ -19,7 +19,6 @@ import com.ariye.coupons.enums.ErrorType;
 import com.ariye.coupons.enums.UserType;
 import com.ariye.coupons.exeptions.ApplicationException;
 import com.ariye.coupons.dao.ICouponsDao;
-import javax.annotation.PostConstruct;
 
 @Controller
 @EnableScheduling

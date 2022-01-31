@@ -1,14 +1,11 @@
 package com.ariye.coupons.dao;
 
-import java.sql.Date;
 import java.util.List;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import com.ariye.coupons.entities.Purchase;
 import com.ariye.coupons.dto.PurchaseDto;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface IPurchasesDao extends CrudRepository<Purchase, Long> {

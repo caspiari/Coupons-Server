@@ -2,7 +2,6 @@ package com.ariye.coupons.logic;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.ariye.coupons.entities.User;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

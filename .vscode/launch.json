@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-Main<CouponsPhase2>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.ariye.coupons.Main",
+            "projectName": "CouponsPhase2",
+            "args": ""
+        }
+    ]
+}

@@ -73,7 +73,7 @@ public class UsersController {
             throw new ApplicationException(e, ErrorType.GENERAL_ERROR, "Get user entity failed for: " + id);
         }
     }
-
+    
     public void updateUser(UserDto userDto, UserLoginData userLoginData) throws ApplicationException {
         if (userLoginData.getUserType() != UserType.ADMIN) {
             userDto.setId(userLoginData.getId());
